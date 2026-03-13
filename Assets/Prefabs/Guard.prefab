@@ -9,11 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7023525717870270358}
-  - component: {fileID: 219846024379311182}
-  - component: {fileID: 8768287838650702097}
+  - component: {fileID: -7971874164648005751}
+  - component: {fileID: 144742379205006510}
   - component: {fileID: 6640311816452388084}
   - component: {fileID: 5290804947079446716}
-  m_Layer: 0
+  - component: {fileID: 7358943997179015677}
+  - component: {fileID: 356387805693302073}
+  m_Layer: 6
   m_Name: Guard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,13 +31,13 @@ Transform:
   m_GameObject: {fileID: 5074202673400818679}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 9.08, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4, y: 4, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!54 &219846024379311182
+--- !u!54 &-7971874164648005751
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,12 +59,12 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &8768287838650702097
+--- !u!135 &144742379205006510
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,11 +79,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.100000024
+  m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6640311816452388084
 MonoBehaviour:
@@ -136,7 +138,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0, g: 0.087194204, b: 1, a: 1}
   m_FlipX: 0
@@ -148,3 +150,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7358943997179015677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5074202673400818679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b077569bff795f440bf87059b7cb8227, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detect_radius: 5
+  view_angle: 90
+  target_mask:
+    serializedVersion: 2
+    m_Bits: 128
+  obstruction_mask:
+    serializedVersion: 2
+    m_Bits: 256
+--- !u!195 &356387805693302073
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5074202673400818679}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.1
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 0.20000005
+  m_BaseOffset: 0.100000024
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

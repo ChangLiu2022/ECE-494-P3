@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.AI;
+
 // used over calling GameEvents.AlertEvent
 using static GameEvents;
 
@@ -11,20 +13,26 @@ public class GuardController : MonoBehaviour
 
     private bool is_chasing = false;
 
-    private Rigidbody2D rb;
+    // -- OLD
+    // private Rigidbody rb;
+    // -- NEW
+    private NavMeshAgent guard;
     // PLAYER NEEDS TO HAVE TAG 'Player'
     private Transform player;
 
 
-    public void OnPlayerSpotted()
+    public void SpottedPlayer()
     {
-        if (is_chasing == false)
-        {
-            is_chasing = true;
-            Debug.Log(gameObject.name + " spotted the player, chasing!");
-        }
+        if (is_chasing)
+            return;
+
+        // spotted player set true and set agent's speed
+        is_chasing = true;
+        guard.speed = move_speed;
+
+        Debug.Log(gameObject.name + " spotted the player, chasing!");
     }
-    
+
 
     private void OnEnable()
     {
@@ -41,10 +49,19 @@ public class GuardController : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        /* -- OLD
+        rb = GetComponent<Rigidbody>();
         // less demanding than dynamic and we only want
         // the guards to move via explicit repositioning
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.isKinematic = true;
+        */
+        // -- NEW
+        guard = GetComponent<NavMeshAgent>();
+        guard.speed = move_speed;
+
+        // keep guard flat for top-down
+        guard.updateRotation = false;
+        guard.updateUpAxis = false;
     }
 
 
@@ -61,6 +78,7 @@ public class GuardController : MonoBehaviour
     }
 
 
+    // detection to see if player was spotted and to chase them
     private void FixedUpdate()
     {
         if (is_chasing && player != null)
@@ -72,31 +90,65 @@ public class GuardController : MonoBehaviour
     // THE MAP IN ORDER FOR THE GUARDS TO NAVIGATE THE MAP CORRECTLY
     private void ChasePlayer()
     {
-        // cast transform's Vector3 to a Vector2
-        Vector2 distance = 
-            ((Vector2)player.position - rb.position).normalized;
-        
-        // move the kinematic rb towards the player
-        rb.MovePosition(
-            rb.position + distance * move_speed * Time.fixedDeltaTime);
+        /* -- OLD
+        Vector3 direction = 
+            (player.position - transform.position).normalized;
 
-        // rotate the guard to face the player
+        rb.MovePosition(
+            transform.position + direction * move_speed * Time.fixedDeltaTime);
+
+        // rotate the guard to face the player around the y-axis
         // achieved via Atan2, takes the distances we found to the player
         // and converts those X and Y vals to be the rotation pointing
         // in that direction
-        rb.MoveRotation(Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg);
+        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        // preserve the 90 degree x axis. or not,
+        // IDK what we are going for exactly
+        rb.MoveRotation(Quaternion.Euler(90f, angle, 0f));
+        */
+        // -- NEW
+        // navmesh will handle pathfinding around walls
+        guard.SetDestination(player.position);
+
+        // manually rotate to face the movement direction
+        // only if we are moving substantially enough
+        if (guard.velocity.sqrMagnitude > 0.01f)
+        {
+            Vector3 direction = guard.velocity.normalized;
+            // rotate the guard to face the player around the y-axis
+            // achieved via Atan2, takes the distances we found to the player
+            // and converts those X and Y vals to be the rotation pointing
+            // in that direction
+            float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+            // preserve the 90 degree x axis. or not,
+            // IDK what we are going for exactly
+            transform.rotation = Quaternion.Euler(90f, angle, 0f);
+        }
     }
 
 
     private void OnAlertEvent(AlertEvent e)
     {
+        // all guards are alerted when collecible is collected
         is_chasing = true;
+
         Debug.Log(gameObject.name + " received AlertEvent, chasing!");
     }
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider collision)
     {
+        // DETECTION IS TRIGGERED BY BULLET PROJECTILE HAVING TAG BULLET
+        if (collision.CompareTag("Bullet"))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // only catch player if already chasing, this makes it so if
+        // a player rushes through and collides with a guard, it won't
+        // be an immediate game over, only after the chase starts can
+        // the guards catch the  player
         if (is_chasing == false)
             return;
 
