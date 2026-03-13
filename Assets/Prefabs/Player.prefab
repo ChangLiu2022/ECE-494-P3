@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 975920972793711383}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -272,6 +272,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4791959475514888856}
     m_Modifications:
+    - target: {fileID: 5577313352270940714, guid: 63dd1852a1717d74e99ee9d9a26a53f7,
+        type: 3}
+      propertyPath: shooting
+      value: 
+      objectReference: {fileID: 975920972793711383}
     - target: {fileID: 6965682478070366511, guid: 63dd1852a1717d74e99ee9d9a26a53f7,
         type: 3}
       propertyPath: m_Name
