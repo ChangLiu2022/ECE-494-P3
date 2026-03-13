@@ -15,7 +15,8 @@ TagManager:
   - Enemy
   - Player
   - Wall
-  - 
+  - PlayerBullet
+  - Background
   - 
   - 
   - 
