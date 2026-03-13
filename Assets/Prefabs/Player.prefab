@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9172226455244093325}
   - component: {fileID: 7518937583363464476}
   - component: {fileID: 975920972793711383}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -139,9 +139,9 @@ GameObject:
   - component: {fileID: 6247455865558907322}
   - component: {fileID: 4676857614444174295}
   - component: {fileID: 7716953599102228697}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -230,7 +230,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
+  m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8825911216660614086
 GameObject:
@@ -241,7 +241,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4791959475514888856}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: WeaponPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,10 +261,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3344783871265774342}
+  - {fileID: 5161228066759871358}
   m_Father: {fileID: 1283731058123813256}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &5083532542090827447
+--- !u!1001 &3406699652132193999
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -281,6 +281,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pistol
+      objectReference: {fileID: 0}
+    - target: {fileID: 6965682478070366511, guid: 63dd1852a1717d74e99ee9d9a26a53f7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7559110402353057201, guid: 63dd1852a1717d74e99ee9d9a26a53f7,
         type: 3}
@@ -337,9 +342,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63dd1852a1717d74e99ee9d9a26a53f7, type: 3}
---- !u!4 &3344783871265774342 stripped
+--- !u!4 &5161228066759871358 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7559110402353057201, guid: 63dd1852a1717d74e99ee9d9a26a53f7,
     type: 3}
-  m_PrefabInstance: {fileID: 5083532542090827447}
+  m_PrefabInstance: {fileID: 3406699652132193999}
   m_PrefabAsset: {fileID: 0}
