@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detect_radius: 5
-  view_angle: 45
+  view_angle: 60
   target_mask:
     serializedVersion: 2
     m_Bits: 128
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detect_radius: 5
-  view_angle: 45
+  view_angle: 60
   segments: 20
 --- !u!33 &4409280279823299547
 MeshFilter:

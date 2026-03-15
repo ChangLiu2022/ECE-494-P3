@@ -128,7 +128,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3139704988144222579}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1628094795}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18e4e3b41c5d32e46ac648c1a2393755, type: 3}
@@ -480,12 +480,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
---- !u!4 &497820431 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4791959475514888856, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
-    type: 3}
-  m_PrefabInstance: {fileID: 3139704988144222579}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &760448472
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,7 +492,7 @@ GameObject:
   - component: {fileID: 760448475}
   - component: {fileID: 760448474}
   - component: {fileID: 760448473}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1713,8 +1707,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2535166453606446258, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1628094800}
+      propertyPath: m_Constraints
+      value: 84
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e3a11b8e5db6cc46abe56d979c4553f, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
