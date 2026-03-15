@@ -75,3 +75,7 @@ public class VisionConeMesh : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
     }
 }
+
+
+// credits
+// https://youtu.be/gmuHI_wsOgI
