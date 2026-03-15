@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using static GameEvents;
+using static GunEvents;
 
 public class HasInventory : MonoBehaviour
 {
@@ -10,10 +11,14 @@ public class HasInventory : MonoBehaviour
     [SerializeField] private int bullets = 6;
 
     // to help determine whether the player can shoot
-    public int BulletCount() => bullets;
+    public int BulletCount => bullets;
 
     // to add/remove bullets manually
-    public void AddBullets(int delta) => bullets += delta;
+    public void AddBullets(int delta)
+    {
+        bullets += delta;
+        EventBus.Publish(new AmmoChangedEvent()); // to tell HUD to update ammo count
+    }
 
     // generic shoot method, can be modified later
     // rounds_used added for ease of shotgun, etc. implementation
@@ -21,16 +26,17 @@ public class HasInventory : MonoBehaviour
     {
         if(bullets < rounds_used)
         {
+            EventBus.Publish(new FailedToFireEvent());
             Debug.Log("Not enough bullets to shoot!");
             return;
         }
 
         bullets -= rounds_used;
+        EventBus.Publish(new AmmoChangedEvent()); // to tell HUD to update ammo count
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("We have collided!");
         // when the player collides with the gold:
         if(other.CompareTag("Gold"))
         {
@@ -39,4 +45,13 @@ public class HasInventory : MonoBehaviour
             EventBus.Publish(new AlertEvent()); // 3) publish the AlertEvent()
         }
     }
+}
+public static class GunEvents
+{
+    // alerts HUD to flash the ammo indicator red
+    public struct FailedToFireEvent { }
+
+
+    // used to tell HUD to update its ammo count
+    public struct AmmoChangedEvent { }
 }
