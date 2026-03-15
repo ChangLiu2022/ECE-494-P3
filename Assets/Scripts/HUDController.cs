@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 using static GameEvents;
 using static GunEvents;
 using static UnityEngine.GraphicsBuffer;
@@ -17,6 +18,16 @@ public class HUDController : MonoBehaviour
     [Header("Visual Settings")]
     [SerializeField] private float bounceDuration = 0.15f;
 
+    [Header("Game Over Hud")]
+    [SerializeField] private GameObject gameover_panel;
+    [SerializeField] private TMP_Text gameover_text;
+
+    [Header("Start Screen/Controls Overlay")]
+    [SerializeField] private GameObject controls_panel;
+    [SerializeField] private float start_delay = 3f;
+
+    private static bool show_start_screen = true;
+
     // used to change the text of the checklist
     private TMP_Text checklistText;
     private bool goldCollected = false;
@@ -28,8 +39,16 @@ public class HUDController : MonoBehaviour
     private bool isFlashing = false;
 
     // saves the checklistText gameObject
-    private void Awake()
+    private void Start()
     {
+        Time.timeScale = 0;
+
+        if (controls_panel != null && show_start_screen == false) 
+            controls_panel.SetActive(true);
+
+        if (gameover_panel != null)
+            gameover_panel.SetActive(false);
+
         if (checklistPanel == null)
         {
             Debug.LogError("ChecklistPanel not assigned!");
@@ -62,12 +81,39 @@ public class HUDController : MonoBehaviour
         if (inv != null && ammoDisplay != null) UpdateAmmoCount(new AmmoChangedEvent());
     }
 
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            if (show_start_screen == false)
+            {
+                controls_panel.SetActive(false);
+            }
+
+            else if (controls_panel != null)
+            {
+                controls_panel.SetActive(false);
+                show_start_screen = false;
+            }
+
+            Time.timeScale = 1;
+        }
+
+        if (gameover_panel.activeSelf == true && Input.GetKeyDown(KeyCode.F))
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+
     private void OnEnable()
     {
         EventBus.Subscribe<AlertEvent>(OnAlertEvent);
         EventBus.Subscribe<GameOverEvent>(OnGameOver);
         EventBus.Subscribe<AmmoChangedEvent>(UpdateAmmoCount);
         EventBus.Subscribe<FailedToFireEvent>(FlashIndicator);
+        EventBus.Subscribe<WinEvent>(OnWinEvent);
     }
 
     private void OnDisable()
@@ -76,6 +122,7 @@ public class HUDController : MonoBehaviour
         EventBus.Unsubscribe<GameOverEvent>(OnGameOver);
         EventBus.Unsubscribe<AmmoChangedEvent>(UpdateAmmoCount);
         EventBus.Unsubscribe<FailedToFireEvent>(FlashIndicator);
+        EventBus.Unsubscribe<WinEvent>(OnWinEvent);
     }
 
     // crosses off the first objective if the gold is collected
@@ -92,6 +139,19 @@ public class HUDController : MonoBehaviour
 
     private void OnGameOver(GameOverEvent e)
     {
+        Time.timeScale = 0;
+        gameover_panel.SetActive(true);
+        gameover_text.text = "<b>Game Over! \n\n You Lose Bud!</b>";
+        gameover_text.color = Color.red;
+    }
+
+    private void OnWinEvent(WinEvent e)
+    {
+        Time.timeScale = 0;
+        gameover_panel.SetActive(true);
+        gameover_text.text = "<b>Game Over! \n\n You Win!</b>";
+        gameover_text.color = Color.green;
+
         if (!goldCollected || checklistText == null) return;
 
         checklistText.text =
@@ -108,7 +168,7 @@ public class HUDController : MonoBehaviour
             Debug.Log("Ammo display not assigned!"); return;
         }
 
-        ammoDisplay.text = "Ammo: " + inv.BulletCount.ToString();
+        ammoDisplay.text = "<b>Ammo: " + inv.BulletCount.ToString() + "</b>";
     }
 
     // flashes the ammo count to indicate that the player is out of bullets

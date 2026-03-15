@@ -10,4 +10,7 @@ public class GameEvents
     // published when a guard catches the player
     // this is used to call the game over screen and mechanics
     public struct GameOverEvent { }
+
+    // idk maybe used for  later
+    public struct WinEvent { }
 }

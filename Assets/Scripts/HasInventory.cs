@@ -9,9 +9,17 @@ public class HasInventory : MonoBehaviour
 {
     [Header("Ammo")]
     [SerializeField] private int bullets = 6;
+    [SerializeField] private GameObject exit;
 
     // to help determine whether the player can shoot
     public int BulletCount => bullets;
+
+
+    private void Awake()
+    {
+        exit = GameObject.FindGameObjectWithTag("EXIT");
+        exit.SetActive(false);
+    }
 
     // to add/remove bullets manually
     public void AddBullets(int delta)
@@ -43,6 +51,12 @@ public class HasInventory : MonoBehaviour
             other.gameObject.SetActive(false); // 1) deactivate the game object ("pick it up")
             Debug.Log("Exit/ending the game!"); // 2) change game state (to be added later)
             EventBus.Publish(new AlertEvent()); // 3) publish the AlertEvent()
+            exit.SetActive(true);
+        }
+
+        else if (other.CompareTag("EXIT"))
+        {
+            EventBus.Publish(new WinEvent());
         }
     }
 }
