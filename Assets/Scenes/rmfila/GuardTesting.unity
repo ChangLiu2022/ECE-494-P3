@@ -816,6 +816,11 @@ PrefabInstance:
       propertyPath: point_b
       value: 
       objectReference: {fileID: 453656890}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: is_patrol
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
