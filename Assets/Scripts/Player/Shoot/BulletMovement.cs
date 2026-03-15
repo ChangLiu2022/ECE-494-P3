@@ -11,7 +11,7 @@ public class BulletMovement : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         transform.position += transform.forward * speed * Time.deltaTime;
     }
