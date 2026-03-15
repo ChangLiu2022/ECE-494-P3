@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2922938043160194069}
   - component: {fileID: 4895298086260136331}
   - component: {fileID: 7453511894413152300}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Door Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_Extents: {x: 1, y: 0.5, z: 0.5}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
@@ -132,9 +132,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7918979390345602087}
   - component: {fileID: 4556241299153521603}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Door
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -168,5 +168,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactRange: 2
-  swingAngle: 90
+  swingAngle: -90
   swingSpeed: 3

@@ -5159,11 +5159,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2033779405}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: swingAngle
-      value: -90
-      objectReference: {fileID: 0}
     - target: {fileID: 4562495650212646058, guid: 061459ba072f24dd19491d4569de9a26,
         type: 3}
       propertyPath: m_Name
