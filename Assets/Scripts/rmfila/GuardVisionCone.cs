@@ -19,7 +19,7 @@ public class GuardVisionCone : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        guard = GetComponent<GuardController>();
+        guard = GetComponentInParent<GuardController>();
         
         // start routine on right away
         StartCoroutine(DetectionRoutine());
@@ -63,7 +63,7 @@ public class GuardVisionCone : MonoBehaviour
             // is facing and the direction to the player is less than
             // half the assigned viewing angle. This is for half the
             // angle left, and half the angle right
-            if (Vector3.Angle(transform.up, direction) < view_angle / 2)
+            if (Vector3.Angle(transform.forward, direction) < view_angle / 2)
             {
                 float distance = 
                     Vector3.Distance(transform.position, target.position);
@@ -85,33 +85,6 @@ public class GuardVisionCone : MonoBehaviour
                     guard.SpottedPlayer();
                 }
             }
-        }
-    }
-
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        float half_fov = view_angle / 2f;
-
-        Vector3 left_edge = Quaternion.Euler(0, half_fov, 0) * transform.up;
-        Vector3 right_edge = Quaternion.Euler(0, -half_fov, 0) * transform.up;
-
-        Gizmos.DrawRay(transform.position, left_edge * detect_radius);
-        Gizmos.DrawRay(transform.position, right_edge * detect_radius);
-
-        int segments = 20;
-        for (int i = 0; i < segments; i++)
-        {
-            float angle_a = -half_fov + (view_angle / segments) * i;
-            float angle_b = -half_fov + (view_angle / segments) * (i + 1);
-
-            Vector3 point_a = transform.position +
-                Quaternion.Euler(0, angle_a, 0) * transform.up * detect_radius;
-            Vector3 point_b = transform.position +
-                Quaternion.Euler(0, angle_b, 0) * transform.up * detect_radius;
-
-            Gizmos.DrawLine(point_a, point_b);
         }
     }
 }
