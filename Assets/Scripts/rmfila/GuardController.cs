@@ -56,7 +56,7 @@ public class GuardController : MonoBehaviour
         rb.isKinematic = true;
         */
         // -- NEW
-        guard = GetComponent<NavMeshAgent>();
+        guard = GetComponentInChildren<NavMeshAgent>();
         guard.speed = move_speed;
 
         // keep guard flat for top-down
@@ -122,7 +122,7 @@ public class GuardController : MonoBehaviour
             float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
             // preserve the 90 degree x axis. or not,
             // IDK what we are going for exactly
-            transform.rotation = Quaternion.Euler(90f, angle, 0f);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
         }
     }
 
