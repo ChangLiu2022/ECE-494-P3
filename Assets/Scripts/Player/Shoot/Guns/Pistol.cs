@@ -7,6 +7,7 @@ public class Pistol : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private float fireRate = 0.3f;
     [SerializeField] private int ammo = -1;
+    [SerializeField] private HasInventory inventory;
 
     private float _nextFireTime;
 
@@ -14,6 +15,7 @@ public class Pistol : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && Time.time >= _nextFireTime && ammo != 0)
         {
+            inventory.Shoot(1);
             if (ammo > 0) ammo--;
             _nextFireTime = Time.time + fireRate;
 
