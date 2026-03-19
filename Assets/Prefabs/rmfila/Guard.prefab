@@ -55,6 +55,7 @@ MonoBehaviour:
   patrol_speed: 2
   pause_duration: 1.5
   chase_speed: 7
+  is_chasing: 0
 --- !u!195 &6650408569263145874
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -69,7 +70,7 @@ NavMeshAgent:
   m_Acceleration: 15
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0.1
+  m_StoppingDistance: 0.25
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -172,8 +173,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b077569bff795f440bf87059b7cb8227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detect_radius: 5
-  view_angle: 60
   target_mask:
     serializedVersion: 2
     m_Bits: 128
@@ -192,12 +191,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 910ccf6dfde6bed46b83245fe4aa4af4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detect_radius: 5
-  view_angle: 60
+  default_detect_radius: 5
+  default_view_angle: 90
   segments: 20
   obstruction_mask:
     serializedVersion: 2
     m_Bits: 384
+  default_mat: {fileID: 2100000, guid: c01767f96f2d0bd4981efb40353cecb3, type: 2}
+  flashlight_mat: {fileID: 2100000, guid: 80407a039379ac446bb1b9121a3e988b, type: 2}
+  chase_mat: {fileID: 2100000, guid: e1991011242a7fb4da508197a89677de, type: 2}
 --- !u!33 &4409280279823299547
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -226,7 +228,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 80407a039379ac446bb1b9121a3e988b, type: 2}
+  - {fileID: 2100000, guid: c01767f96f2d0bd4981efb40353cecb3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

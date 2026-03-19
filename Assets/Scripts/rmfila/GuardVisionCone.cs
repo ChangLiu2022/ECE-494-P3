@@ -1,26 +1,26 @@
 using System.Collections;
 using UnityEngine;
+using static GameEvents;
 
 public class GuardVisionCone : MonoBehaviour
 {
     [Header("Detection Settings")]
-    [SerializeField] private float detect_radius = 5f;
-    [SerializeField] private float view_angle = 90f;
     // player layer
     [SerializeField] LayerMask target_mask;
     // wall layer
     [SerializeField] LayerMask obstruction_mask;
 
-    // PLAYER NEEDS TAG "Player" IN ORDER TO WORK
-    private GameObject player;
     private GuardController guard;
+
+    // ref to the mesh so detection always matches the visual
+    private VisionConeMesh vision_cone;
 
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
         guard = GetComponentInParent<GuardController>();
-        
+        vision_cone = GetComponent<VisionConeMesh>();
+
         // start routine on right away
         StartCoroutine(DetectionRoutine());
     }
@@ -43,6 +43,9 @@ public class GuardVisionCone : MonoBehaviour
 
     private void DetectPlayer()
     {
+        float detect_radius = vision_cone.GetDetectRadius();
+        float view_angle = vision_cone.GetViewAngle();
+
         // cast a sphere around the guard to capture player in
         // should only grab player if target_mask is player's layer
         Collider[] range_check = 
@@ -63,7 +66,23 @@ public class GuardVisionCone : MonoBehaviour
             // is facing and the direction to the player is less than
             // half the assigned viewing angle. This is for half the
             // angle left, and half the angle right
-            if (Vector3.Angle(transform.forward, direction) < view_angle / 2)
+            float angle_to_player = 
+                Vector3.Angle(transform.forward, direction);
+            float dist_to_player = 
+                Vector3.Distance(transform.position, target.position);
+            float player_radius = 0.5f;
+            float edge_offset = 
+                Mathf.Atan2(player_radius, dist_to_player) * Mathf.Rad2Deg;
+
+            // angle_to_player - edge_offset is basically saying the angle
+            // between the line from the guard to the player's center (using
+            // this alone was causing me bugs where the player was in the
+            // guard's vision cone but not being detected) and a line from
+            // the guard to the player's radius edge is the offset we need
+            // to subtract from out line just to the player's center. This
+            // makes it so now the player is detect when the edge of it 
+            // enters the guard's vision cone
+            if (angle_to_player - edge_offset < view_angle / 2)
             {
                 float distance = 
                     Vector3.Distance(transform.position, target.position);

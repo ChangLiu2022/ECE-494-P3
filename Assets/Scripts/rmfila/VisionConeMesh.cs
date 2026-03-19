@@ -1,26 +1,57 @@
 using UnityEngine;
+using static GameEvents;
 
 public class VisionConeMesh : MonoBehaviour
 {
     [Header("Detection Settings")]
     [Tooltip("Must match what GuardVisionCone has.")]
-    [SerializeField] private float detect_radius = 5f;
-    [SerializeField] private float view_angle = 90f;
+    // what we will use as the default guard vision
+    [SerializeField] private float default_detect_radius = 5f;
+    [SerializeField] private float default_view_angle = 90f;
     // how 'fine' we want the vision cone to display
     // mot much gained from going higher
     [SerializeField] private int segments = 20;
     [Tooltip("For now, walls, but maybe player too?")]
     [SerializeField] private LayerMask obstruction_mask;
 
+    [Header("Vision Materials")]
+    [SerializeField] private Material default_mat;
+    [SerializeField] private Material flashlight_mat;
+    [SerializeField] private Material chase_mat;
+
+    private GuardController controller;
+
     private Mesh mesh;
+    private MeshRenderer view_renderer;
     private Vector3[] verticies;
     private int[] triangles;
+    // used to actually apply the guard vision fov and distance
+    private float view_angle;
+    private float detect_radius;
+    private bool lights_out;
+
+
+    private void OnEnable()
+    {
+        EventBus.Subscribe<LightsOutEvent>(OnLightsOutEvent);
+    }
+
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<LightsOutEvent>(OnLightsOutEvent);
+    }
 
 
     private void Start()
     {
         mesh = new Mesh();
+        controller = GetComponentInParent<GuardController>();
+        view_renderer = GetComponent<MeshRenderer>();
         GetComponent<MeshFilter>().mesh = mesh;
+
+        view_angle = default_view_angle;
+        detect_radius = default_detect_radius;
 
         // only need verticies and triangles to compose the mesh
         // no uv coords because I am applying a flat material
@@ -46,6 +77,18 @@ public class VisionConeMesh : MonoBehaviour
             // depending on how many we've done
             triangles[i * 3 + 1] = i + 1;
             triangles[i * 3 + 2] = i + 2;
+        }
+    }
+
+
+    // FOR TESTING, press L and this simulates the lights turning off
+    // and the guards switching to flashlight mode
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            EventBus.Publish(new LightsOutEvent());
+            Debug.Log("LightsOutEvent published");
         }
     }
 
@@ -101,6 +144,48 @@ public class VisionConeMesh : MonoBehaviour
         mesh.Clear();
         mesh.vertices = verticies;
         mesh.triangles = triangles;
+
+        // change the material of the vision cone's mesh renderer depending
+        // on if we are chasing or if the lights turned out
+        if (controller.is_chasing == true)
+        {
+            view_renderer.material = chase_mat;
+            return;
+        }
+
+        // if we are chasing, the flashlight_mat will always be overwritten
+        // by the the chase_mat if the guard is chasing
+        else if (lights_out == true)
+        {
+            view_renderer.material = flashlight_mat;
+            return;
+        }
+    }
+
+
+    // used to change the guards fov and distance based on the lights
+    private void OnLightsOutEvent(LightsOutEvent e)
+    {
+        float lights_off_view_angle = default_view_angle / 2;
+        float lights_off_detect_radius = default_detect_radius / 2;
+
+        view_angle = lights_off_view_angle;
+        detect_radius = lights_off_detect_radius;
+
+        lights_out = true;
+    }
+
+
+    // getters for guardvisioncone to always have latest fov vals
+    public float GetDetectRadius()
+    {
+        return detect_radius;
+    }
+
+
+    public float GetViewAngle()
+    {
+        return view_angle;
     }
 }
 

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,7 +24,8 @@ public class GuardController : MonoBehaviour
         "idk how this effects the speed fully.")]
     [SerializeField] private float chase_speed = 2f;
 
-    private bool is_chasing = false;
+    // set to public to expose to vision cone mesh for color swap
+    public bool is_chasing = false;
 
     // patrolling state
     // the target point guard is walking to
@@ -33,20 +35,23 @@ public class GuardController : MonoBehaviour
     // how long the guard has waited
     private float pause_time = 0f;
 
-    // -- OLD
-    // private Rigidbody rb;
-    // -- NEW
+    // this is to give grace period to player if they bump into guard
+    // idk, it felt wierd that when the player ran into the guard,
+    // it immediately game overed with no feedback. I feel like seeing
+    // the guard flip to chase mode and "attack" the player felt better
+    private bool is_catching = false;
+
     private NavMeshAgent guard;
-    // PLAYER NEEDS TO HAVE TAG 'Player'
     private Transform player;
 
 
     public void SpottedPlayer()
     {
+        // already chasing
         if (is_chasing)
             return;
 
-        // spotted player set true and set agent's speed
+        // spotted player start chasing
         is_chasing = true;
         is_paused = false;
         guard.speed = chase_speed;
@@ -57,7 +62,6 @@ public class GuardController : MonoBehaviour
 
     private void OnEnable()
     {
-        // subscribe to the collectible being grabbed
         EventBus.Subscribe<AlertEvent>(OnAlertEvent);
     }
 
@@ -70,13 +74,6 @@ public class GuardController : MonoBehaviour
 
     private void Awake()
     {
-        /* -- OLD
-        rb = GetComponent<Rigidbody>();
-        // less demanding than dynamic and we only want
-        // the guards to move via explicit repositioning
-        rb.isKinematic = true;
-        */
-        // -- NEW
         guard = GetComponentInChildren<NavMeshAgent>();
 
         // keep guard flat for top-down
@@ -120,24 +117,6 @@ public class GuardController : MonoBehaviour
 
     private void ChasePlayer()
     {
-        /* -- OLD
-        Vector3 dir = 
-            (player.position - transform.position).normalized;
-
-        rb.MovePosition(
-            transform.position + dir * move_speed * Time.fixedDeltaTime);
-
-        // rotate the guard to face the player around the y-axis
-        // achieved via Atan2, takes the distances we found to the player
-        // and converts those X and Y vals to be the rotation pointing
-        // in that dir
-        float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
-        // preserve the 90 degree x axis. or not,
-        // IDK what we are going for exactly
-        rb.MoveRotation(Quaternion.Euler(90f, angle, 0f));
-        */
-        // -- NEW
-        // navmesh will handle pathfinding around walls
         guard.SetDestination(player.position);
 
         // manually rotate to face the movement direction
@@ -246,25 +225,64 @@ public class GuardController : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        // DETECTION IS TRIGGERED BY BULLET PROJECTILE HAVING TAG BULLET
         if (collision.CompareTag("Bullet"))
         {
             Destroy(gameObject);
             return;
         }
 
-        // only catch player if already chasing, this makes it so if
-        // a player rushes through and collides with a guard, it won't
-        // be an immediate game over, only after the chase starts can
-        // the guards catch the  player
-        if (is_chasing == false)
+        if (collision.CompareTag("Player") == false)
             return;
 
-        if (collision.CompareTag("Player"))
+        // already chasing = instant game over, no grace
+        if (is_chasing)
+        {
+            Debug.Log("The player has been caught, Game Over!");
+            EventBus.Publish(new GameOverEvent());
+            return;
+        }
+
+        // first contact = start chasing and give 1 second to flee
+        SpottedPlayer();
+
+        if (is_catching == false)
+            StartCoroutine(GracePeriod());
+    }
+
+
+    // only can be called 1 time and thats on the initial contact with guard
+    // after this, if the player doesn't move from the guard collision field
+    // by the grace timer's end, it will be called again and have is_catching
+    // = to false, so it will game over. Otherwise, if the player leaves and
+    // enters again, that will call OnTriggerEnter, and this cannot be called
+    // again.
+    private void OnTriggerStay(Collider collision)
+    {
+        if (collision.CompareTag("Bullet"))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // still touching after grace period expired = game over
+        if (collision.CompareTag("Player") && 
+            is_chasing && is_catching == false)
         {
             Debug.Log("The player has been caught, Game Over!");
             EventBus.Publish(new GameOverEvent());
         }
+    }
+
+
+    // gives player that touched guard a moment of time
+    private IEnumerator GracePeriod()
+    {
+        // now can no longer get grace period
+        is_catching = true;
+        yield return new WaitForSeconds(0.5f);
+        // set to false that way on trigger enter can call a game over
+        // either way, this cannot be called again as explained above
+        is_catching = false;
     }
 }
 
