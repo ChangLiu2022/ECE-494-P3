@@ -13,6 +13,7 @@ public class GuardVisionCone : MonoBehaviour
     private GuardController guard;
 
     // ref to the mesh so detection always matches the visual
+    // also less stuff needed to be duplicated, keeping it DRY as they say
     private VisionConeMesh vision_cone;
 
 
