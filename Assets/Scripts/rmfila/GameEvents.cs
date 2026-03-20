@@ -13,6 +13,10 @@ public class GameEvents
 
     // stop game
     public struct WinEvent { }
+    
+    public struct PowerOffEvent { }
+    
+    public struct PowerOnEvent { }
 
 
     // lights event to toggle guard vision cone color and fov change for now
