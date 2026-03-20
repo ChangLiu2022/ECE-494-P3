@@ -5,13 +5,11 @@ public class VisionConeMesh : MonoBehaviour
 {
     [Header("Detection Settings")]
     [Tooltip("Must match what GuardVisionCone has.")]
-    // what we will use as the default guard vision
     [SerializeField] private float default_detect_radius = 5f;
     [SerializeField] private float default_view_angle = 90f;
     // how 'fine' we want the vision cone to display
     // mot much gained from going higher
     [SerializeField] private int segments = 20;
-    [Tooltip("For now, walls, but maybe player too?")]
     [SerializeField] private LayerMask obstruction_mask;
 
     [Header("Vision Materials")]
@@ -19,16 +17,32 @@ public class VisionConeMesh : MonoBehaviour
     [SerializeField] private Material flashlight_mat;
     [SerializeField] private Material chase_mat;
 
-    private GuardController controller;
-
-    private Mesh mesh;
-    private MeshRenderer view_renderer;
     private Vector3[] verticies;
     private int[] triangles;
     // used to actually apply the guard vision fov and distance
     private float view_angle;
     private float detect_radius;
     private bool lights_out;
+
+    private GuardController controller;
+    private Mesh mesh;
+    private MeshRenderer view_renderer;
+
+
+
+
+    // getters for guardvisioncone to always have latest fov vals
+    public float GetDetectRadius()
+    {
+        return detect_radius;
+    }
+
+
+    public float GetViewAngle()
+    {
+        return view_angle;
+    }
+
 
 
     private void OnEnable()
@@ -134,6 +148,8 @@ public class VisionConeMesh : MonoBehaviour
                 detect_radius,
                 obstruction_mask))
             {
+                // otherwise detect_distance is stops at the wall
+                // this prevents vision cone going displaying through walls
                 detect_distance = hit.distance;
             }
             // don't overwrite center point, but set where the point is
@@ -147,7 +163,7 @@ public class VisionConeMesh : MonoBehaviour
 
         // change the material of the vision cone's mesh renderer depending
         // on if we are chasing or if the lights turned out
-        if (controller.is_chasing == true)
+        if (controller.current_tier >= GuardTier.Tier3)
         {
             view_renderer.material = chase_mat;
             return;
@@ -173,19 +189,6 @@ public class VisionConeMesh : MonoBehaviour
         detect_radius = lights_off_detect_radius;
 
         lights_out = true;
-    }
-
-
-    // getters for guardvisioncone to always have latest fov vals
-    public float GetDetectRadius()
-    {
-        return detect_radius;
-    }
-
-
-    public float GetViewAngle()
-    {
-        return view_angle;
     }
 }
 

@@ -1,20 +1,19 @@
 using System.Collections;
 using UnityEngine;
-using static GameEvents;
+
 
 public class GuardVisionCone : MonoBehaviour
 {
     [Header("Detection Settings")]
-    // player layer
-    [SerializeField] LayerMask target_mask;
-    // wall layer
-    [SerializeField] LayerMask obstruction_mask;
-
-    private GuardController guard;
+    [SerializeField] private LayerMask player_mask;
+    [SerializeField] private LayerMask wall_mask;
 
     // ref to the mesh so detection always matches the visual
     // also less stuff needed to be duplicated, keeping it DRY as they say
     private VisionConeMesh vision_cone;
+    private GuardController guard;
+
+
 
 
     private void Start()
@@ -48,17 +47,17 @@ public class GuardVisionCone : MonoBehaviour
         float view_angle = vision_cone.GetViewAngle();
 
         // cast a sphere around the guard to capture player in
-        // should only grab player if target_mask is player's layer
+        // should only grab player if player_mask is player's layer
         Collider[] range_check = 
             Physics.OverlapSphere(
                 transform.position, 
                 detect_radius, 
-                target_mask
+                player_mask
             );
 
         if (range_check.Length != 0)
         {
-            // only player should exist on target_mask
+            // only player should exist on player_mask
             Transform target = range_check[0].transform;
             Vector3 direction = 
                 (target.position - transform.position).normalized;
@@ -90,22 +89,23 @@ public class GuardVisionCone : MonoBehaviour
 
                 // start a ray cast from the guard in the direction of the
                 // player, the distance we solved for to the player (no
-                // overshooting), and stop the raycast if it hits anything
-                // in the obstruction_mask (walls, etc...)
+                // overshooting), and stop the raycast if it hits walls
                 if (Physics.Raycast(
                     transform.position, 
                     direction, 
-                    distance, 
-                    obstruction_mask
+                    distance,
+                    wall_mask
                 ) == false)
                 {
-                    // if this is false, meaning we enter the code for the if
-                    // it means we did not hit a wall, and can see the player
-                    // call GuardController's SpottedPlayer() func
-                    guard.SpottedPlayer();
+                    // player is visible
+                    guard.SpottedPlayer(true);
+                    return;
                 }
             }
         }
+
+        // player is not visible this tick
+        guard.SpottedPlayer(false);
     }
 }
 
