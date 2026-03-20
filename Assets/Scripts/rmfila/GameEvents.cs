@@ -13,4 +13,8 @@ public class GameEvents
 
     // idk maybe used for  later
     public struct WinEvent { }
+    
+    public struct PowerOffEvent { }
+    
+    public struct PowerOnEvent { }
 }

@@ -21,8 +21,29 @@ public class Door : MonoBehaviour
 
         if (distance <= interactRange && Input.GetKeyDown(KeyCode.E))
         {
+            
+            if(isOpen)
+            {
+                targetAngle = 0f;
+            }
+            else
+            {
+                Vector3 localPos = transform.InverseTransformPoint(player.position);
+                if (localPos.x > 0)
+                {
+                    targetAngle = -swingAngle;
+
+                }
+                else
+                {
+                    targetAngle = swingAngle;
+
+                }
+
+            }
+            
             isOpen = !isOpen;
-            targetAngle = isOpen ? swingAngle : 0f;
+            
         }
 
         float currentY = transform.localEulerAngles.y;
