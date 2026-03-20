@@ -1,7 +1,9 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+// this script controls changing the white bar to accurately
+// display how long the guard will search for the player
 public class ChaseBarDisplay : MonoBehaviour
 {
     // the bar that shows how much time is left for chasing
@@ -10,6 +12,8 @@ public class ChaseBarDisplay : MonoBehaviour
     [SerializeField] private CanvasGroup canvas_group;
 
     private GuardController guard_controller;
+
+
 
 
     private void Start()
@@ -26,9 +30,7 @@ public class ChaseBarDisplay : MonoBehaviour
         fill_image.fillAmount = guard_controller.GetChaseBarRatio();
 
         // guard tier 3 or 4 = chasing
-        bool is_chasing = guard_controller.current_tier >= GuardTier.Tier3;
-
-        if (is_chasing == true)
+        if (guard_controller.current_tier >= GuardTier.Tier3 == true)
             // display chase bar when chasing
             canvas_group.alpha = 1f;
 

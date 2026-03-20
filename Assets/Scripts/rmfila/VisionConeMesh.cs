@@ -1,6 +1,7 @@
 using UnityEngine;
 using static GameEvents;
 
+
 public class VisionConeMesh : MonoBehaviour
 {
     [Header("Detection Settings")]
@@ -17,8 +18,10 @@ public class VisionConeMesh : MonoBehaviour
     [SerializeField] private Material flashlight_mat;
     [SerializeField] private Material chase_mat;
 
+    // used to build the mesh
     private Vector3[] verticies;
     private int[] triangles;
+
     // used to actually apply the guard vision fov and distance
     private float view_angle;
     private float detect_radius;
@@ -32,6 +35,7 @@ public class VisionConeMesh : MonoBehaviour
 
 
     // getters for guardvisioncone to always have latest fov vals
+    // this kept code DRY and reduce duplicate code
     public float GetDetectRadius()
     {
         return detect_radius;
@@ -132,7 +136,8 @@ public class VisionConeMesh : MonoBehaviour
             // start from -45 in this case and work up to 45
             float angle = -half_view + point_distance * i;
             // we want this to be casted straight out the guards eyes
-            Vector3 direction = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+            Vector3 direction = 
+                Quaternion.Euler(0, angle, 0) * Vector3.forward;
             // by default cast the detection cone out the full distance
             float detect_distance = detect_radius;
 
@@ -152,8 +157,7 @@ public class VisionConeMesh : MonoBehaviour
                 // this prevents vision cone going displaying through walls
                 detect_distance = hit.distance;
             }
-            // don't overwrite center point, but set where the point is
-            // the detect distance in the direction we solved for
+            // save verticies we calculated for the vision cone
             verticies[i + 1] = direction * detect_distance;
         }
 

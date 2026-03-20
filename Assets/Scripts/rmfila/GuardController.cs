@@ -143,6 +143,7 @@ public class GuardController : MonoBehaviour
     public float GetChaseBarRatio()
     {
         if (chase_bar_max > 0f)
+            // return the ratio to display on the bar
             return current_chase_bar / chase_bar_max;
 
         else
@@ -214,7 +215,7 @@ public class GuardController : MonoBehaviour
             current_tier == GuardTier.Tier2) && is_patrol)
             Patrol();
 
-        // we do not care about tier 3, as chaseplayer is handled elsewhere
+        // start chasing if tier 3 or 4 and update bar
         else if (current_tier == GuardTier.Tier4 || 
             current_tier == GuardTier.Tier3)
         {
@@ -342,6 +343,9 @@ public class GuardController : MonoBehaviour
 
         else
             // last known position when not
+            // this was set by previous functions to get the
+            // players last location after the loss sight delay
+            // was over. Before it was using its last KNOWN position
             destination = player_last_position;
 
         // only set a new destination if it actually changed
@@ -477,6 +481,7 @@ public class GuardController : MonoBehaviour
     }
 
 
+    // need a way to publish still
     private void OnGunshotEvent(GunshotEvent e)
     {
         // distance between where gunshot was soundedf and guard
