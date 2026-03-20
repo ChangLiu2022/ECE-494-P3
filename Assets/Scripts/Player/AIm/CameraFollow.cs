@@ -7,8 +7,8 @@ public class CameraFollow : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private Vector3 offset = new Vector3(0f, 15f, -8f);
-    [SerializeField] private bool useLERP = false;
-    [SerializeField] private float lerpSpeed = 100f;
+    [SerializeField] private bool useSmoothing = false;
+    [SerializeField] private float smoothSpeed = 10f;
 
     private void LateUpdate()
     {
@@ -16,8 +16,10 @@ public class CameraFollow : MonoBehaviour
 
         Vector3 desired = target.position + offset;
 
-        transform.position = useLERP
-            ? Vector3.Lerp(transform.position, desired, lerpSpeed * Time.deltaTime)
+        transform.position = useSmoothing
+            ? Vector3.Lerp(transform.position, desired, smoothSpeed * Time.deltaTime)
             : desired;
     }
+
+    public void SetTarget(Transform newTarget) => target = newTarget;
 }
