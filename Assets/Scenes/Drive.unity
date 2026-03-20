@@ -220,7 +220,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interaction: {fileID: 1427001764}
   prompt: {fileID: 1053059964}
-  _interactor: {fileID: 0}
 --- !u!4 &644104047 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4791959475514888856, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
@@ -450,8 +449,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1060499196}
   offset: {x: 0, y: 10, z: 0}
-  useLERP: 0
-  lerpSpeed: 100
+  useSmoothing: 0
+  smoothSpeed: 10
 --- !u!114 &942487871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -713,8 +712,6 @@ MonoBehaviour:
   traction: 1
   driftTraction: 1.5
   rollingDrag: 1
-  _velocity: {x: 0, y: 0, z: 0}
-  _active: 0
 --- !u!54 &1017578651
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -893,9 +890,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vehicleLayer:
+    serializedVersion: 2
     m_Bits: 2048
-  <ClosestVehicle>k__BackingField: {fileID: 0}
-  <CurrentVehicle>k__BackingField: {fileID: 0}
 --- !u!1 &1068425237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,9 +1126,6 @@ MonoBehaviour:
   exitPoint: {fileID: 0}
   cameraFollow: {fileID: 942487870}
   movement: {fileID: 1017578650}
-  <IsOccupied>k__BackingField: 0
-  <Driver>k__BackingField: {fileID: 0}
-  _crosshair: {fileID: 0}
 --- !u!135 &1225751665
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1299,9 +1292,6 @@ MonoBehaviour:
   exitPoint: {fileID: 0}
   cameraFollow: {fileID: 942487870}
   movement: {fileID: 2027414478}
-  <IsOccupied>k__BackingField: 0
-  <Driver>k__BackingField: {fileID: 0}
-  _crosshair: {fileID: 0}
 --- !u!135 &1427001765
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1491,8 +1481,6 @@ MonoBehaviour:
   traction: 1
   driftTraction: 1.5
   rollingDrag: 1
-  _velocity: {x: 0, y: 0, z: 0}
-  _active: 0
 --- !u!54 &2027414479
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1666,7 +1654,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interaction: {fileID: 1225751664}
   prompt: {fileID: 683101549}
-  _interactor: {fileID: 0}
 --- !u!23 &2133782663
 MeshRenderer:
   m_ObjectHideFlags: 0

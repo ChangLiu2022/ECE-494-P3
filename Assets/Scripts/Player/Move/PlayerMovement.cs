@@ -1,9 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Handles WASD movement on the XZ plane using Rigidbody.
-/// Configure the Rigidbody: gravity OFF, freeze Y position and X/Z rotation.
-/// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
