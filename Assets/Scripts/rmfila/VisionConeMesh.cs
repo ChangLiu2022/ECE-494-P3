@@ -6,8 +6,8 @@ public class VisionConeMesh : MonoBehaviour
 {
     [Header("Detection Settings")]
     [Tooltip("Must match what GuardVisionCone has.")]
-    [SerializeField] private float default_detect_radius = 5f;
-    [SerializeField] private float default_view_angle = 90f;
+    [SerializeField] private float default_detect_radius = 3f;
+    [SerializeField] private float default_view_angle = 60;
     // how 'fine' we want the vision cone to display
     // mot much gained from going higher
     [SerializeField] private int segments = 20;
@@ -32,8 +32,6 @@ public class VisionConeMesh : MonoBehaviour
     private MeshRenderer view_renderer;
 
 
-
-
     // getters for guardvisioncone to always have latest fov vals
     // this kept code DRY and reduce duplicate code
     public float GetDetectRadius()
@@ -47,13 +45,10 @@ public class VisionConeMesh : MonoBehaviour
         return view_angle;
     }
 
-
-
     private void OnEnable()
     {
         EventBus.Subscribe<LightsOutEvent>(OnLightsOutEvent);
     }
-
 
     private void OnDisable()
     {
@@ -109,7 +104,6 @@ public class VisionConeMesh : MonoBehaviour
             Debug.Log("LightsOutEvent published");
         }
     }
-
 
     private void LateUpdate()
     {
@@ -186,8 +180,8 @@ public class VisionConeMesh : MonoBehaviour
     // used to change the guards fov and distance based on the lights
     private void OnLightsOutEvent(LightsOutEvent e)
     {
-        float lights_off_view_angle = default_view_angle / 2;
-        float lights_off_detect_radius = default_detect_radius / 2;
+        float lights_off_view_angle = default_view_angle / 1.5f;
+        float lights_off_detect_radius = default_detect_radius / 1.5f;
 
         view_angle = lights_off_view_angle;
         detect_radius = lights_off_detect_radius;

@@ -14,8 +14,10 @@ public class GameEvents
     // stop game
     public struct WinEvent { }
     
+
     public struct PowerOffEvent { }
     
+
     public struct PowerOnEvent { }
 
 

@@ -278,22 +278,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   current_tier: 1
   guns_out: 0
-  is_patrol: 0
+  guard_mode: 0
   point_a: {fileID: 0}
   point_b: {fileID: 0}
-  patrol_speed: 3
+  patrol_speed: 1
   pause_duration: 1.5
-  return_timeout: 10
-  chase_speed: 5
-  erratic_speed: 7
-  lost_sight_delay: 2
-  chase_bar_max: 10
+  erratic_speed: 3
+  chase_bar_max: 4
   chase_bar_decay: 1
-  chase_bar_refill: 5
-  search_turn_angle: 60
-  search_turn_speed: 60
-  erratic_turn_speed: 150
-  gunshot_alert_radius: 5
+  chase_bar_refill: 4
+  turn_speed: 100
+  return_timeout: 30
+  overshoot_distance: 3
+  gunshot_alert_radius: 10
 --- !u!195 &6650408569263145874
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -304,10 +301,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Speed: 3
+  m_Acceleration: 15
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 0
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -315,7 +312,7 @@ NavMeshAgent:
   m_Height: 0.1
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!135 &8059752126526752325
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -490,7 +487,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fill_image: {fileID: 6397303050761644047}
   canvas_group: {fileID: 8308794279230826048}
-  fade_speed: 4
 --- !u!114 &5664585891401441386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,8 +517,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 910ccf6dfde6bed46b83245fe4aa4af4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  default_detect_radius: 5
-  default_view_angle: 90
+  default_detect_radius: 3
+  default_view_angle: 60
   segments: 20
   obstruction_mask:
     serializedVersion: 2

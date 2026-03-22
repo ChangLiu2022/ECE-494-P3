@@ -469,10 +469,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8308794279230826048, guid: 0582c51a44f45e947914f9713d0e2588,
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
-      propertyPath: m_Alpha
+      propertyPath: guard_mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: turn_speed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: patrol_speed
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: erratic_speed
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1374,6 +1389,21 @@ PrefabInstance:
       propertyPath: exit
       value: 
       objectReference: {fileID: 1398812845}
+    - target: {fileID: 8510052184503467877, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8510052184503467877, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+        type: 3}
+      propertyPath: acceleration
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8510052184503467877, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+        type: 3}
+      propertyPath: deceleration
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2071,6 +2101,26 @@ PrefabInstance:
       propertyPath: is_patrol
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: guard_mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: turn_speed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: patrol_speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: erratic_speed
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2581,8 +2631,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 529001546}
   offset: {x: 0, y: 10, z: 0}
-  useLERP: 0
-  lerpSpeed: 100
+  useSmoothing: 0
+  smoothSpeed: 10
 --- !u!114 &1400698440
 MonoBehaviour:
   m_ObjectHideFlags: 0

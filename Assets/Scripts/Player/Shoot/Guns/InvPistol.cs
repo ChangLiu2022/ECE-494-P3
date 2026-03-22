@@ -1,6 +1,5 @@
 using UnityEngine;
 using static GameEvents;
-
 using static GunEvents;
 
 public class InvPistol : MonoBehaviour
@@ -51,6 +50,9 @@ public class InvPistol : MonoBehaviour
             Vector3 pos = (firePoint != null) ? firePoint.position : transform.position;
             Quaternion rot = Quaternion.LookRotation(shooting.AimDirection, Vector3.up);
             Instantiate(bulletPrefab, pos, rot);
+
+            // publish gunshot event for guards to hear, and push player pos
+            EventBus.Publish(new GunshotEvent { player_position = pos });
         }
     }
 }
