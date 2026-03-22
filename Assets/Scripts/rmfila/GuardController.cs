@@ -61,8 +61,15 @@ public class GuardController : MonoBehaviour
     "runs in the player's travel direction before sweeping.")]
     [SerializeField] private float overshoot_distance = 3f;
 
-    [Header("Alert Settings")]
+    [Header("Shooting Settings")]
+    [SerializeField] private GameObject bullet_prefab;
+    [SerializeField] private Transform fire_point;
+    [SerializeField] private float fire_rate = 1f;
+    [SerializeField] private float shoot_range = 10f;
     [SerializeField] private float gunshot_alert_radius = 10f;
+    [Tooltip("How long the guard waits until it shoots upon catching " +
+        "the player.")]
+    [SerializeField] private float sight_delay = 0.5f;
 
 
     // set by GuardVisionCone each detection tick
@@ -88,6 +95,7 @@ public class GuardController : MonoBehaviour
     private Transform target_point;
     private Transform player;
     private NavMeshAgent guard;
+    private GameObject guard_weapon;
 
     // patrol pause
     private bool is_paused = false;
@@ -113,6 +121,10 @@ public class GuardController : MonoBehaviour
     // seeing the guard flip to chase mode first feels better
     private bool is_catching = false;
 
+    // shoot timer
+    private float next_fire_time = 0f;
+    private float sight_timer = 0f;
+
 
     // ----- START PUBLIC ----- \\
     public void SpottedPlayer(bool value)
@@ -129,8 +141,12 @@ public class GuardController : MonoBehaviour
 
         CancelSearchAndReturn();
 
-        if (current_tier < GuardTier.Tier3)
+        // stops regressing back to tier 3 after pulling guns out
+        if (guns_out)
+            TierUp(GuardTier.Tier4);
+        else if (current_tier < GuardTier.Tier3)
             TierUp(GuardTier.Tier3);
+
     }
 
 
@@ -174,6 +190,9 @@ public class GuardController : MonoBehaviour
     {
         start_position = transform.position;
         start_rotation = transform.rotation;
+
+        guard_weapon = fire_point.parent.gameObject;
+        guard_weapon.SetActive(false);
 
         GameObject player_object = GameObject.FindWithTag("Player");
 
@@ -225,11 +244,13 @@ public class GuardController : MonoBehaviour
             if (is_investigating)
             {
                 Investigate();
+                ShootAtPlayer();
                 return;
             }
 
             UpdateChaseBar();
             ChasePlayer();
+            ShootAtPlayer();
         }
     }
     // ----- END MAIN LIFE ----- \\
@@ -456,6 +477,52 @@ public class GuardController : MonoBehaviour
     // ----- END PATROL ----- \\
 
 
+    // ----- START SHOOT LOGIC ----- \\
+    private void ShootAtPlayer()
+    {
+        if (current_tier < GuardTier.Tier4 || can_see_player == false || player == null)
+            return;
+
+        if (can_see_player == true)
+            sight_timer += Time.fixedDeltaTime;
+        else
+            // reset if sight is lost
+            sight_timer = 0f;
+
+        // dont shoot unnless you can see player, and its been longer
+        // than half a second so you don't die right away 
+        // MAYBE REMOVE DEPENDING ON HOW PUNISHING WE WANT TO BE
+        if (can_see_player == false || sight_timer < sight_delay)
+            return;
+
+        float distance = 
+            Vector3.Distance(transform.position, player.position);
+
+        if (distance > shoot_range)
+            return;
+
+        if (Time.time < next_fire_time)
+            return;
+
+        next_fire_time = Time.time + fire_rate;
+
+        // the straight path from the bullet spawn to the player
+        Vector3 direction = 
+            (player.position - fire_point.position).normalized;
+
+        Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
+
+        GameObject bullet_obj =
+            Instantiate(bullet_prefab, fire_point.position, rotation);
+        BulletMovement bullet = bullet_obj.GetComponent<BulletMovement>();
+
+        if (bullet != null)
+            bullet.Initialize(gameObject.tag);
+
+    }
+    // ----- START SHOOT LOGIC ----- \\
+
+
     // ----- START ROTATION HELPERS ----- \\
     // smoothly rotates the guard to face its movement direction
     // from now on, anytime the guard needs to face the directing
@@ -565,6 +632,10 @@ public class GuardController : MonoBehaviour
         // fired, not their current spot
         player_last_position = e.player_position;
         guns_out = true;
+
+        if (guard_weapon != null)
+            guard_weapon.SetActive(true);
+
         is_investigating = true;
 
         CancelSearchAndReturn();
@@ -625,7 +696,7 @@ public class GuardController : MonoBehaviour
         Debug.Log("Player caught! Game Over.");
         EventBus.Publish(new GameOverEvent());
     }
-    // ----- END EVENT HANDLERS ----- \\
+    // ----- END COLLISION HANDLERS ----- \\
 
 
     // ----- START COROUTINES ----- \\

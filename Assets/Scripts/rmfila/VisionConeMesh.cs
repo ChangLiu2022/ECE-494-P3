@@ -6,8 +6,8 @@ public class VisionConeMesh : MonoBehaviour
 {
     [Header("Detection Settings")]
     [Tooltip("Must match what GuardVisionCone has.")]
-    [SerializeField] private float default_detect_radius = 3f;
-    [SerializeField] private float default_view_angle = 60;
+    [SerializeField] private float default_detect_radius = 5f;
+    [SerializeField] private float default_view_angle = 40f;
     // how 'fine' we want the vision cone to display
     // mot much gained from going higher
     [SerializeField] private int segments = 20;
