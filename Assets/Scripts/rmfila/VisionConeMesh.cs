@@ -47,12 +47,14 @@ public class VisionConeMesh : MonoBehaviour
 
     private void OnEnable()
     {
-        EventBus.Subscribe<LightsOutEvent>(OnLightsOutEvent);
+        EventBus.Subscribe<PowerOffEvent>(OnPowerOffEvent);
+        EventBus.Subscribe<PowerOnEvent>(OnPowerOnEvent);
     }
 
     private void OnDisable()
     {
-        EventBus.Unsubscribe<LightsOutEvent>(OnLightsOutEvent);
+        EventBus.Unsubscribe<PowerOffEvent>(OnPowerOffEvent);
+        EventBus.Unsubscribe<PowerOnEvent>(OnPowerOnEvent);
     }
 
 
@@ -93,17 +95,6 @@ public class VisionConeMesh : MonoBehaviour
         }
     }
 
-
-    // FOR TESTING, press L and this simulates the lights turning off
-    // and the guards switching to flashlight mode
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            EventBus.Publish(new LightsOutEvent());
-            Debug.Log("LightsOutEvent published");
-        }
-    }
 
     private void LateUpdate()
     {
@@ -166,7 +157,6 @@ public class VisionConeMesh : MonoBehaviour
             view_renderer.material = chase_mat;
             return;
         }
-
         // if we are chasing, the flashlight_mat will always be overwritten
         // by the the chase_mat if the guard is chasing
         else if (lights_out == true)
@@ -174,19 +164,26 @@ public class VisionConeMesh : MonoBehaviour
             view_renderer.material = flashlight_mat;
             return;
         }
+        else
+        {
+            view_renderer.material = default_mat;
+        }
     }
 
 
-    // used to change the guards fov and distance based on the lights
-    private void OnLightsOutEvent(LightsOutEvent e)
+    private void OnPowerOffEvent(PowerOffEvent e)
     {
-        float lights_off_view_angle = default_view_angle / 1.5f;
-        float lights_off_detect_radius = default_detect_radius / 1.5f;
-
-        view_angle = lights_off_view_angle;
-        detect_radius = lights_off_detect_radius;
-
+        view_angle = default_view_angle / 1.5f;
+        detect_radius = default_detect_radius / 1.5f;
         lights_out = true;
+    }
+
+
+    private void OnPowerOnEvent(PowerOnEvent e)
+    {
+        view_angle = default_view_angle;
+        detect_radius = default_detect_radius;
+        lights_out = false;
     }
 }
 

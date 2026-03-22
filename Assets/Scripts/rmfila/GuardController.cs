@@ -56,7 +56,6 @@ public class GuardController : MonoBehaviour
 
     [Header("Search Settings")]
     [SerializeField] private float turn_speed = 100f;
-    [SerializeField] private float return_timeout = 30f;
     [Tooltip("How far past the last seen position the guard " +
     "runs in the player's travel direction before sweeping.")]
     [SerializeField] private float overshoot_distance = 3f;
@@ -100,6 +99,8 @@ public class GuardController : MonoBehaviour
     // patrol pause
     private bool is_paused = false;
     private float pause_time = 0f;
+
+    private float return_timeout = 30f;
 
     // chase tracking
     private bool had_sight = false;
@@ -520,7 +521,7 @@ public class GuardController : MonoBehaviour
             bullet.Initialize(gameObject.tag);
 
     }
-    // ----- START SHOOT LOGIC ----- \\
+    // ----- END SHOOT LOGIC ----- \\
 
 
     // ----- START ROTATION HELPERS ----- \\
