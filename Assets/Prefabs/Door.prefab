@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 461010c41f6b04579b39443104fd6887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactRange: 2
+  interactRange: 0.75
   swingAngle: -90
   swingSpeed: 3
+  doorCollider: {fileID: 4895298086260136331}
