@@ -86,13 +86,4 @@ public class LaserController : MonoBehaviour
         rend.enabled = false;
         gameObject.SetActive(false);
     }
-
-    // for testing, REMOVE later
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            EventBus.Publish(new LightsOutEvent());
-        }
-    }
 }
