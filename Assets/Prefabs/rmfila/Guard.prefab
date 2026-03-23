@@ -321,14 +321,13 @@ MonoBehaviour:
   chase_bar_decay: 1
   chase_bar_refill: 4
   turn_speed: 100
-  return_timeout: 30
   overshoot_distance: 3
   bullet_prefab: {fileID: 95569608102249964, guid: 59c833da2ebe39d44b6c27b2e01a03de,
     type: 3}
   fire_point: {fileID: 619472383794619858}
   fire_rate: 1
   shoot_range: 10
-  gunshot_alert_radius: 10
+  gunshot_alert_radius: 4
   sight_delay: 0.5
 --- !u!195 &6650408569263145874
 NavMeshAgent:
