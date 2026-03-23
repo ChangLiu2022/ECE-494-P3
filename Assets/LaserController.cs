@@ -8,16 +8,19 @@ public class LaserController : MonoBehaviour
 
     private void OnEnable()
     {
-        EventBus.Subscribe<LightsOutEvent>(OnLightsOutEvent);
+        //EventBus.Subscribe<PowerOnEvent>(OnAlertEvent);
+        EventBus.Subscribe<PowerOffEvent>(OnLightsOutEvent);
     }
+
 
     private void OnDisable()
     {
-        EventBus.Unsubscribe<LightsOutEvent>(OnLightsOutEvent);
+        //EventBus.Unsubscribe<PowerOnEvent>(OnAlertEvent);
+        EventBus.Unsubscribe<PowerOffEvent>(OnLightsOutEvent);
     }
 
     // disables laser if the lights are turned out!
-    private void OnLightsOutEvent(LightsOutEvent e)
+    private void OnLightsOutEvent(PowerOffEvent e)
     {
         StartCoroutine(LaserBlinksOff());
     }
@@ -25,7 +28,7 @@ public class LaserController : MonoBehaviour
     // alerts guards if the laser is tripped!
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Body"))
         {
             EventBus.Publish(new AlertEvent());
             Debug.Log("Laser tripped!");

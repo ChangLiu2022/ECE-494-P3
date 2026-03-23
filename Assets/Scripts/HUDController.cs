@@ -188,7 +188,6 @@ public class HUDController : MonoBehaviour
 
         for (int i = 0; i < inv.BulletCount; i++)
         {
-            Debug.Log("Done!");
             GameObject icon = Instantiate(ammoPrefab, ammoContainer);
             ammoIcons.Add(icon);
         }
