@@ -10,6 +10,7 @@ TagManager:
   - EXIT
   - Enemy
   - Floor
+  - PlayerCar
   layers:
   - Default
   - TransparentFX
