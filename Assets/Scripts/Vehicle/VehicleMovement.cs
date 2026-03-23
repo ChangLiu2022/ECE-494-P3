@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class VehicleMovement : MonoBehaviour
 {
     [Header("Speed")]
@@ -21,63 +22,66 @@ public class VehicleMovement : MonoBehaviour
 
     private Vector3 _velocity;
     private bool _active;
+    private Rigidbody _rb;
+    private float _throttle;
+    private float _steer;
 
     public Vector3 Velocity => _velocity;
+    public bool IsActive => _active;
 
     public void SetActive(bool active)
     {
         _active = active;
     }
 
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody>();
+        _rb.useGravity = false;
+        _rb.isKinematic = true;
+    }
+
     private void Update()
     {
-        float dt = Time.deltaTime;
-        Vector3 forward = transform.right;
+        _throttle = _active ? Input.GetAxis("Vertical") : 0f;
+        _steer = _active ? Input.GetAxis("Horizontal") : 0f;
+    }
 
-        float throttle = _active ? Input.GetAxis("Vertical") : 0f;
-        float steer = _active ? Input.GetAxis("Horizontal") : 0f;
+    private void FixedUpdate()
+    {
+        float dt = Time.fixedDeltaTime;
+        Vector3 forward = transform.right;
 
         float forwardSpeed = Vector3.Dot(_velocity, forward);
         Vector3 forwardVel = forward * forwardSpeed;
         Vector3 sidewaysVel = _velocity - forwardVel;
 
         // Engine / brake
-        if (throttle > 0f) //gas
+        if (_throttle > 0f)
         {
-            if (forwardSpeed < -0.5f) //braking while going backwards
-            {
-                _velocity += forward * brakeForce * throttle * dt;
-            }
-            else if (forwardSpeed >= -0.5f && forwardSpeed <= 0.01f) //almost stopping
-            {
-                _velocity += forward * engineForce * 0.2f * throttle * dt;
-            }
-
-            else // accelerating
-            {
-                _velocity += forward * engineForce * throttle * dt;
-            }
+            if (forwardSpeed < -0.5f)
+                _velocity += forward * brakeForce * _throttle * dt;
+            else if (forwardSpeed >= -0.5f && forwardSpeed <= 0.01f)
+                _velocity += forward * engineForce * 0.2f * _throttle * dt;
+            else
+                _velocity += forward * engineForce * _throttle * dt;
         }
-        else if (throttle < 0f) //brake
+        else if (_throttle < 0f)
         {
             if (forwardSpeed > 0.5f)
-                _velocity += forward * brakeForce * throttle * dt;
+                _velocity += forward * brakeForce * _throttle * dt;
             else if (forwardSpeed <= 0.5f && forwardSpeed >= -0.01f)
-            {
-                _velocity += forward * engineForce * 0.2f * throttle * dt;
-            }
+                _velocity += forward * engineForce * 0.2f * _throttle * dt;
             else
-            {
-                _velocity += forward * engineForce * 0.4f * throttle * dt;
-            }
-
+                _velocity += forward * engineForce * 0.4f * _throttle * dt;
         }
 
         // Steering
         float speed = _velocity.magnitude;
         if (speed > minSpeedToSteer)
         {
-            transform.Rotate(Vector3.up * steer * steerAngle * dt);
+            Quaternion rot = Quaternion.Euler(0f, _steer * steerAngle * dt, 0f);
+            _rb.MoveRotation(_rb.rotation * rot);
         }
 
         // Traction
@@ -86,7 +90,7 @@ public class VehicleMovement : MonoBehaviour
         forwardVel = forward * forwardSpeed;
         sidewaysVel = _velocity - forwardVel;
 
-        bool drifting = throttle < 0f && Mathf.Abs(steer) > 0.1f && forwardSpeed > 1f;
+        bool drifting = _throttle < 0f && Mathf.Abs(_steer) > 0.1f && forwardSpeed > 1f;
         float currentTraction = drifting ? driftTraction : traction;
         sidewaysVel = Vector3.MoveTowards(sidewaysVel, Vector3.zero, currentTraction * speed * dt);
         _velocity = forwardVel + sidewaysVel;
@@ -99,6 +103,6 @@ public class VehicleMovement : MonoBehaviour
         _velocity = Vector3.ClampMagnitude(_velocity, maxSpeed);
 
         // Apply
-        transform.position += _velocity * dt;
+        _rb.MovePosition(_rb.position + _velocity * dt);
     }
 }
