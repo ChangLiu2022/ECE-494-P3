@@ -11,8 +11,9 @@ public class Crosshair : MonoBehaviour
     }
     private void Update()
     {
-        if (aiming == null) return;
+        //if (aiming == null) return;
 
-        transform.position = aiming.AimPoint;
+        //transform.position = aiming.AimPoint;
+        transform.position = Input.mousePosition;
     }
 }
