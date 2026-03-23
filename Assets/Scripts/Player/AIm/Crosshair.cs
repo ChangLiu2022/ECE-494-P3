@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class Crosshair : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private PlayerAiming aiming;
-
     private void Awake()
     {
         Cursor.visible = false;
