@@ -42,7 +42,7 @@ public class BulletMovement : MonoBehaviour
         if (other.CompareTag("Floor"))
             return;
 
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Body"))
         {
             Debug.Log("Player was shot! Game Over.");
             EventBus.Publish(new GameEvents.GameOverEvent());
