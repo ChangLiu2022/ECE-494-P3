@@ -14,8 +14,6 @@ public class ChaseBarDisplay : MonoBehaviour
     private GuardController guard_controller;
 
 
-
-
     private void Start()
     {
         guard_controller = GetComponentInParent<GuardController>();
@@ -33,7 +31,6 @@ public class ChaseBarDisplay : MonoBehaviour
         if (guard_controller.current_tier >= GuardTier.Tier3 == true)
             // display chase bar when chasing
             canvas_group.alpha = 1f;
-
         else
             // disable it otherwise
             canvas_group.alpha = 0f;

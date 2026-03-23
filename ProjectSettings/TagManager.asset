@@ -8,6 +8,8 @@ TagManager:
   - Wall
   - Gold
   - EXIT
+  - Enemy
+  - Floor
   layers:
   - Default
   - TransparentFX

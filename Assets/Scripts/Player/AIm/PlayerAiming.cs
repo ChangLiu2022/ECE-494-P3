@@ -25,7 +25,7 @@ public class PlayerAiming : MonoBehaviour
         groundPlane = new Plane(Vector3.up, Vector3.zero);
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         UpdateAimPoint();
         RotateTowardAim();
