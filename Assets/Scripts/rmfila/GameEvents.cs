@@ -30,4 +30,12 @@ public class GameEvents
     {
         public Vector3 player_position;
     }
+
+    public struct VehicleEnterEvent
+    {
+        public Transform vehicleTransform;
+    }
+
+    public struct VehicleExitEvent { }
+
 }
