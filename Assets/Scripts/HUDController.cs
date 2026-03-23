@@ -44,6 +44,7 @@ public class HUDController : MonoBehaviour
     // saves the checklistText gameObject
     private void Start()
     {
+        UnfreezeGame();
         if (gameover_panel != null)
             gameover_panel.SetActive(false);
 
