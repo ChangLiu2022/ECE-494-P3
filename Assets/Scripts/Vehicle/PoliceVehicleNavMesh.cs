@@ -6,6 +6,7 @@ public class PoliceVehicleNavMesh : MonoBehaviour
     private NavMeshAgent _agent;
     private Transform _target;
     private bool _chasing;
+    [SerializeField] private Vector3 TransformOffset;
 
     private void Awake()
     {
@@ -41,6 +42,6 @@ public class PoliceVehicleNavMesh : MonoBehaviour
     private void Update()
     {
         if (_chasing && _target != null)
-            _agent.SetDestination(_target.position);
+            _agent.SetDestination(_target.position + TransformOffset);
     }
 }
