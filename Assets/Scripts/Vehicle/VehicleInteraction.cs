@@ -39,9 +39,12 @@ public class VehicleInteraction : MonoBehaviour
 
         if (cameraFollow != null)
             cameraFollow.SetTarget(MovingPart);
+            cameraFollow.SetVehicleView();
 
         if (movement != null)
             movement.SetActive(true);
+
+        EventBus.Publish(new GameEvents.VehicleEnterEvent { vehicleTransform = MovingPart });
     }
 
     public void Exit()
@@ -54,6 +57,10 @@ public class VehicleInteraction : MonoBehaviour
             movement.SetActive(false);
 
         player.transform.SetParent(null);
+
+        var pit = GetComponent<VehiclePit>();
+        if (pit != null)
+            pit.ClearActiveFlag();
 
         Vector3 exitPos = (exitPoint != null) ? exitPoint.position : MovingPart.position + MovingPart.right * 2f;
         player.transform.position = exitPos;
@@ -68,6 +75,9 @@ public class VehicleInteraction : MonoBehaviour
 
         if (cameraFollow != null)
             cameraFollow.SetTarget(player.transform);
+            cameraFollow.SetDefaultView();
+
+        EventBus.Publish(new GameEvents.VehicleExitEvent());
     }
 
     private void SetPlayerVisible(PlayerController player, bool visible)
