@@ -33,7 +33,7 @@ public class VehiclePit : MonoBehaviour
     {
         if (IsPitted) return;
 
-        Debug.Log($"Vehicle pitted! Lost {coinLoss} coins.");
+        EventBus.Publish(new GameEvents.VehiclePitEvent());
 
         _wasActive = _movement.IsActive;
         _movement.SetActive(false);
