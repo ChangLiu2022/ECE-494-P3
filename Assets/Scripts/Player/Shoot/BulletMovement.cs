@@ -24,19 +24,19 @@ public class BulletMovement : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (((1 << other.gameObject.layer) & hitMask) != 0)
-        {
-            Destroy(gameObject);
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         // skip anything tagged the same as whoever fired this bullet
         if (owner_tag != "" && other.CompareTag(owner_tag))
+        {
+            Debug.Log("Bullet ignored collision with: " + other.gameObject.name + " | Tag: " + other.tag);
             return;
+        }
+        else
+        {
+            Debug.Log("Bullet (not ignored) collided with: " + other.gameObject.name + " | Tag: " + other.tag);
+        }
+
 
         // skip the floor entirely
         if (other.CompareTag("Floor"))

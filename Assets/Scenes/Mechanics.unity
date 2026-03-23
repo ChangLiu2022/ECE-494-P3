@@ -1975,29 +1975,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 2535166453606446258, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4851233415881762159, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
-        type: 3}
-      propertyPath: exit
-      value: 
-      objectReference: {fileID: 1920111694}
     - target: {fileID: 4851233415881762159, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
       propertyPath: bullets
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 6638549660510828012, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+    - target: {fileID: 9172226455244093325, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
-      propertyPath: m_Constraints
-      value: 84
-      objectReference: {fileID: 0}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 1384157230}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 8242851905848333663, guid: 0e3a11b8e5db6cc46abe56d979c4553f, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e3a11b8e5db6cc46abe56d979c4553f, type: 3}
@@ -4292,6 +4281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 838035979}
   offset: {x: 0, y: 10, z: 0}
+  vehicleOffset: {x: 0, y: 25, z: 0}
   useSmoothing: 0
   smoothSpeed: 10
 --- !u!1 &1401475675
@@ -6287,7 +6277,7 @@ GameObject:
   - component: {fileID: 2030737997}
   m_Layer: 10
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
