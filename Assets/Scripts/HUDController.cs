@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,8 +9,13 @@ using static GunEvents;
 public class HUDController : MonoBehaviour
 {
     [Header("Panel Dependencies")]
-    [SerializeField] private GameObject checklistPanel;
-    [SerializeField] private TMP_Text ammoDisplay;
+    [SerializeField] private GameObject escapePanel;
+    [SerializeField] private GameObject controlsPanel;
+    //[SerializeField] private TMP_Text ammoDisplay;
+    [SerializeField] private Transform ammoContainer;
+    [SerializeField] private GameObject ammoPrefab;
+
+    private List<GameObject> ammoIcons = new List<GameObject>();
 
     [Header("Visual Settings")]
     [SerializeField] private float bounceDuration = 0.15f;
@@ -18,9 +24,10 @@ public class HUDController : MonoBehaviour
     [SerializeField] private GameObject gameover_panel;
     [SerializeField] private TMP_Text gameover_text;
 
-    [Header("Start Screen/Controls Overlay")]
-    [SerializeField] private GameObject controls_panel;
-    [SerializeField] private float start_delay = 3f;
+    [Header("Game Freezing Necessities")]
+    [SerializeField] private PlayerAiming player;
+    [SerializeField] private InvPistol gun;
+    [SerializeField] private GameObject crosshair;
 
     private static bool show_start_screen = true;
 
@@ -37,25 +44,21 @@ public class HUDController : MonoBehaviour
     // saves the checklistText gameObject
     private void Start()
     {
-        Time.timeScale = 0;
-
-        if (controls_panel != null && show_start_screen == false) 
-            controls_panel.SetActive(true);
-
+        UnfreezeGame();
         if (gameover_panel != null)
             gameover_panel.SetActive(false);
 
-        if (checklistPanel == null)
+        if (escapePanel == null)
         {
-            Debug.LogError("ChecklistPanel not assigned!");
+            Debug.LogError("EscapePanel not assigned!");
             return;
         }
 
         // automatically finds the first TMP_Text in the panel's children
-        checklistText = checklistPanel.GetComponentInChildren<TMP_Text>();
+        checklistText = escapePanel.GetComponentInChildren<TMP_Text>();
         if (checklistText == null)
         {
-            Debug.LogError("No TMP_Text found in checklistPanel children!");
+            Debug.LogError("No TMP_Text found in EscapePanel children!");
         }
 
         GameObject player = GameObject.Find("Player");
@@ -74,33 +77,40 @@ public class HUDController : MonoBehaviour
             Debug.LogError("No GameObject with name 'Player' found in the scene.");
         }
 
-        if (inv != null && ammoDisplay != null) UpdateAmmoCount(new AmmoChangedEvent());
+        UpdateAmmoCount(new AmmoChangedEvent());
     }
 
+    private bool is_paused = false;
+    private bool can_pause = true;
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.F))
-        {
-            if (show_start_screen == false)
-            {
-                controls_panel.SetActive(false);
-            }
-
-            else if (controls_panel != null)
-            {
-                controls_panel.SetActive(false);
-                show_start_screen = false;
-            }
-
-            Time.timeScale = 1;
-        }
-
         if (gameover_panel.activeSelf == true && Input.GetKeyDown(KeyCode.F))
         {
             Time.timeScale = 1;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        if(Input.GetKeyDown(KeyCode.G) && can_pause)
+        {
+            ShowHideEscapeMenu();
+        }
+    }
+
+    public void ShowHideEscapeMenu()
+    {
+        if (is_paused)
+        {
+            UnfreezeGame();
+            escapePanel.SetActive(false);
+        }
+        else
+        {
+            FreezeGame();
+            escapePanel.SetActive(true);
+        }
+
+        is_paused = !is_paused;
     }
 
     private void OnEnable()
@@ -129,7 +139,8 @@ public class HUDController : MonoBehaviour
         goldCollected = true;
 
         checklistText.text =
-            "<b><s>1) Collect the gold</s>\n" +
+            "<b>Objectives:\n" +
+            "<s>1) Collect the gold</s>\n" +
             "2) Exit the map</b>";
     }
 
@@ -143,7 +154,8 @@ public class HUDController : MonoBehaviour
 
     private void OnWinEvent(WinEvent e)
     {
-        Time.timeScale = 0;
+        FreezeGame();
+        can_pause = false;
         gameover_panel.SetActive(true);
         gameover_text.text = "<b>Game Over! \n\n You Win!</b>";
         gameover_text.color = Color.green;
@@ -151,7 +163,8 @@ public class HUDController : MonoBehaviour
         if (!goldCollected || checklistText == null) return;
 
         checklistText.text =
-            "<b><s>1) Collect the gold\n" +
+            "<b>Objectives:" +
+            "<s>1) Collect the gold\n" +
             "2) Exit the map</s></b>";
     }
 
@@ -159,12 +172,26 @@ public class HUDController : MonoBehaviour
     private void UpdateAmmoCount(AmmoChangedEvent e)
     {
         if (inv == null) return;
-        if (ammoDisplay == null)
+        if (ammoContainer == null)
         {
-            Debug.Log("Ammo display not assigned!"); return;
+            Debug.Log("Ammo container not assigned!"); return;
+        }
+        if(ammoPrefab == null)
+        {
+            Debug.Log("Ammo prefab not assigned!"); return;
         }
 
-        ammoDisplay.text = "<b>Ammo: " + inv.BulletCount.ToString() + "</b>";
+        foreach (var icon in ammoIcons)
+            Destroy(icon);
+
+        ammoIcons.Clear();
+
+        for (int i = 0; i < inv.BulletCount; i++)
+        {
+            Debug.Log("Done!");
+            GameObject icon = Instantiate(ammoPrefab, ammoContainer);
+            ammoIcons.Add(icon);
+        }
     }
 
     // flashes the ammo count to indicate that the player is out of bullets
@@ -182,27 +209,73 @@ public class HUDController : MonoBehaviour
 
     private IEnumerator FlashBounceRoutine()
     {
-        if (ammoDisplay == null) yield break;
+        // Spawn temporary ammo icon
+        GameObject tempIcon = Instantiate(ammoPrefab, ammoContainer);
 
-        RectTransform rect = ammoDisplay.GetComponent<RectTransform>();
-        if (rect == null) yield break;
+        RectTransform rect = tempIcon.GetComponent<RectTransform>();
+        UnityEngine.UI.Image img = tempIcon.GetComponent<UnityEngine.UI.Image>();
 
-        Color originalColor = ammoDisplay.color;
+        if (rect == null || img == null)
+        {
+            Destroy(tempIcon);
+            yield break;
+        }
+
         Vector3 originalScale = rect.localScale;
 
         Color flashColor = Color.red;
         Vector3 bounceScale = originalScale * 1.2f;
 
-        // grow + turn red
-        ammoDisplay.color = flashColor;
+        // Flash + grow
+        img.color = flashColor;
         rect.localScale = bounceScale;
 
         yield return new WaitForSeconds(bounceDuration);
 
-        // return to normal
-        ammoDisplay.color = originalColor;
+        // Return to normal
         rect.localScale = originalScale;
+
+        yield return new WaitForSeconds(0.05f); // tiny delay for readability
+
+        // Remove the icon
+        Destroy(tempIcon);
 
         isFlashing = false;
     }
+
+    private void FreezeGame()
+    {
+        Time.timeScale = 0f;
+        crosshair.SetActive(false);
+        Cursor.visible = true;
+        if (gun != null) gun.enabled = false;
+        if (player != null) player.enabled = false;
+    }
+
+    private void UnfreezeGame()
+    {
+        Time.timeScale = 1f;
+        crosshair.SetActive(true);
+        Cursor.visible = false;
+        if (gun != null) gun.enabled = true;
+        if (player != null) player.enabled = true;
+    }
+
+    public void ShowControlsPanel()
+    {
+        controlsPanel.SetActive(true);
+        escapePanel.SetActive(false);
+    }
+
+    public void HideControlsPanel()
+    {
+        controlsPanel.SetActive(false);
+        escapePanel.SetActive(true);
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
 }

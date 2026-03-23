@@ -16,6 +16,14 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        if (((1 << other.gameObject.layer) & hitMask) != 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (((1 << other.gameObject.layer) & hitMask) != 0)
