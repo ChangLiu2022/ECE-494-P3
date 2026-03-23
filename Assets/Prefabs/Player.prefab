@@ -78,9 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c12075a1ee44940897cd3058c8a000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
-  acceleration: 50
-  deceleration: 50
+  moveSpeed: 2.5
+  acceleration: 15
+  deceleration: 15
 --- !u!114 &9172226455244093325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,8 +112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e04372bb823b7ad4c88cfc0df118de70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Movement: {fileID: 8510052184503467877}
-  Aiming: {fileID: 9172226455244093325}
 --- !u!114 &975920972793711383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,7 +256,7 @@ GameObject:
   - component: {fileID: 4791959475514888856}
   m_Layer: 7
   m_Name: WeaponPivot
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -292,6 +290,11 @@ PrefabInstance:
       propertyPath: shooting
       value: 
       objectReference: {fileID: 975920972793711383}
+    - target: {fileID: 4128674975482840398, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_Name
@@ -301,6 +304,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7559110402353057201, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}

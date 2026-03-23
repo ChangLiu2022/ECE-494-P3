@@ -14,8 +14,6 @@ public class GuardVisionCone : MonoBehaviour
     private GuardController guard;
 
 
-
-
     private void Start()
     {
         guard = GetComponentInParent<GuardController>();

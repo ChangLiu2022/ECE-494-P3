@@ -7,7 +7,7 @@ public class VisionConeMesh : MonoBehaviour
     [Header("Detection Settings")]
     [Tooltip("Must match what GuardVisionCone has.")]
     [SerializeField] private float default_detect_radius = 5f;
-    [SerializeField] private float default_view_angle = 90f;
+    [SerializeField] private float default_view_angle = 40f;
     // how 'fine' we want the vision cone to display
     // mot much gained from going higher
     [SerializeField] private int segments = 20;
@@ -32,8 +32,6 @@ public class VisionConeMesh : MonoBehaviour
     private MeshRenderer view_renderer;
 
 
-
-
     // getters for guardvisioncone to always have latest fov vals
     // this kept code DRY and reduce duplicate code
     public float GetDetectRadius()
@@ -47,17 +45,16 @@ public class VisionConeMesh : MonoBehaviour
         return view_angle;
     }
 
-
-
     private void OnEnable()
     {
-        EventBus.Subscribe<LightsOutEvent>(OnLightsOutEvent);
+        EventBus.Subscribe<PowerOffEvent>(OnPowerOffEvent);
+        EventBus.Subscribe<PowerOnEvent>(OnPowerOnEvent);
     }
-
 
     private void OnDisable()
     {
-        EventBus.Unsubscribe<LightsOutEvent>(OnLightsOutEvent);
+        EventBus.Unsubscribe<PowerOffEvent>(OnPowerOffEvent);
+        EventBus.Unsubscribe<PowerOnEvent>(OnPowerOnEvent);
     }
 
 
@@ -95,18 +92,6 @@ public class VisionConeMesh : MonoBehaviour
             // depending on how many we've done
             triangles[i * 3 + 1] = i + 1;
             triangles[i * 3 + 2] = i + 2;
-        }
-    }
-
-
-    // FOR TESTING, press L and this simulates the lights turning off
-    // and the guards switching to flashlight mode
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            EventBus.Publish(new LightsOutEvent());
-            Debug.Log("LightsOutEvent published");
         }
     }
 
@@ -172,7 +157,6 @@ public class VisionConeMesh : MonoBehaviour
             view_renderer.material = chase_mat;
             return;
         }
-
         // if we are chasing, the flashlight_mat will always be overwritten
         // by the the chase_mat if the guard is chasing
         else if (lights_out == true)
@@ -180,19 +164,26 @@ public class VisionConeMesh : MonoBehaviour
             view_renderer.material = flashlight_mat;
             return;
         }
+        else
+        {
+            view_renderer.material = default_mat;
+        }
     }
 
 
-    // used to change the guards fov and distance based on the lights
-    private void OnLightsOutEvent(LightsOutEvent e)
+    private void OnPowerOffEvent(PowerOffEvent e)
     {
-        float lights_off_view_angle = default_view_angle / 2;
-        float lights_off_detect_radius = default_detect_radius / 2;
-
-        view_angle = lights_off_view_angle;
-        detect_radius = lights_off_detect_radius;
-
+        view_angle = default_view_angle / 1.5f;
+        detect_radius = default_detect_radius / 1.5f;
         lights_out = true;
+    }
+
+
+    private void OnPowerOnEvent(PowerOnEvent e)
+    {
+        view_angle = default_view_angle;
+        detect_radius = default_detect_radius;
+        lights_out = false;
     }
 }
 
