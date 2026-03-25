@@ -195,7 +195,7 @@ public class GuardController : MonoBehaviour
         guard_weapon = fire_point.parent.gameObject;
         guard_weapon.SetActive(false);
 
-        GameObject player_object = GameObject.FindWithTag("Body");
+        GameObject player_object = GameObject.FindWithTag("Player");
 
         if (player_object != null)
         {
@@ -513,13 +513,7 @@ public class GuardController : MonoBehaviour
 
         Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
 
-        GameObject bullet_obj =
-            Instantiate(bullet_prefab, fire_point.position, rotation);
-        BulletMovement bullet = bullet_obj.GetComponent<BulletMovement>();
-
-        if (bullet != null)
-            bullet.Initialize(gameObject.tag);
-
+        Instantiate(bullet_prefab, fire_point.position, rotation);
     }
     // ----- END SHOOT LOGIC ----- \\
 
@@ -651,13 +645,14 @@ public class GuardController : MonoBehaviour
     // ----- START COLLISION HANDLERS ----- \\
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.CompareTag("Bullet"))
+        if (collision.gameObject.layer ==
+            LayerMask.NameToLayer("PlayerBullet"))
         {
             Destroy(gameObject);
-            return; 
+            return;
         }
 
-        if (collision.CompareTag("Body") == false)
+        if (collision.CompareTag("Player") == false)
             return;
 
         // already chasing = instant game over
@@ -677,14 +672,15 @@ public class GuardController : MonoBehaviour
 
     private void OnTriggerStay(Collider collision)
     {
-        if (collision.CompareTag("Bullet"))
+        if (collision.gameObject.layer ==
+            LayerMask.NameToLayer("PlayerBullet"))
         {
             Destroy(gameObject);
             return;
         }
 
         // Still touching after grace period expired = game over
-        if (collision.CompareTag("Body") && is_catching == false &&
+        if (collision.CompareTag("Player") && is_catching == false &&
             current_tier >= GuardTier.Tier3)
         {
             EndGame();

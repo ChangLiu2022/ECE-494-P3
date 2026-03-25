@@ -38,7 +38,7 @@ public class AppearOnCollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Body") && shouldAppear)
+        if(other.CompareTag("Player") && shouldAppear)
         {
             StartFade(1f); // fade in
         }
@@ -46,7 +46,7 @@ public class AppearOnCollision : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Body") && shouldAppear)
+        if (other.CompareTag("Player") && shouldAppear)
         {
             StartFade(0f); // fade in
         }
