@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2922938043160194069}
   - component: {fileID: 4895298086260136331}
   - component: {fileID: 7453511894413152300}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: Door Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,9 +132,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7918979390345602087}
   - component: {fileID: 4556241299153521603}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: Door
-  m_TagString: Wall
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

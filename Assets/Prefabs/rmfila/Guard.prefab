@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1097901769974680470}
   - component: {fileID: 1740830286938043063}
   - component: {fileID: 6397303050761644047}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: RawImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8864927779740348015}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: AlertnessBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 680344554134016248}
   - component: {fileID: 3781216046112201315}
   - component: {fileID: 8308794279230826048}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: AlertCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2149925945423150459}
-  m_Layer: 6
+  m_Layer: 25
   m_Name: WeaponPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -272,9 +272,9 @@ GameObject:
   - component: {fileID: 6650408569263145874}
   - component: {fileID: 8059752126526752325}
   - component: {fileID: 1595233470680574436}
-  m_Layer: 6
+  m_Layer: 25
   m_Name: Guard
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -410,7 +410,7 @@ GameObject:
   - component: {fileID: 6641649249117806457}
   - component: {fileID: 7699371024171559215}
   - component: {fileID: 5332478970926176433}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -488,7 +488,7 @@ GameObject:
   - component: {fileID: 5905701795597713951}
   - component: {fileID: 4409280279823299547}
   - component: {fileID: 7002466652040452497}
-  m_Layer: 6
+  m_Layer: 25
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,10 +539,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player_mask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   wall_mask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
 --- !u!114 &5905701795597713951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,7 +560,7 @@ MonoBehaviour:
   segments: 20
   obstruction_mask:
     serializedVersion: 2
-    m_Bits: 384
+    m_Bits: 0
   default_mat: {fileID: 2100000, guid: c01767f96f2d0bd4981efb40353cecb3, type: 2}
   flashlight_mat: {fileID: 2100000, guid: 80407a039379ac446bb1b9121a3e988b, type: 2}
   chase_mat: {fileID: 2100000, guid: e1991011242a7fb4da508197a89677de, type: 2}
@@ -624,7 +624,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2731708990056823373}
   - component: {fileID: 430198159726640723}
-  m_Layer: 6
+  m_Layer: 25
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -706,6 +706,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2149925945423150459}
     m_Modifications:
+    - target: {fileID: 4128674975482840398, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_Name
@@ -714,7 +719,7 @@ PrefabInstance:
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}

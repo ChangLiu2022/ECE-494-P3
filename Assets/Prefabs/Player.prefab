@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 7518937583363464476}
   - component: {fileID: 975920972793711383}
   - component: {fileID: 4851233415881762159}
-  m_Layer: 7
+  m_Layer: 26
   m_Name: Player
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 3279107589382106606}
   - component: {fileID: 4995289232742559205}
   - component: {fileID: 5802405313675561366}
-  m_Layer: 7
+  m_Layer: 26
   m_Name: Body
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -255,9 +255,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4791959475514888856}
-  m_Layer: 7
+  m_Layer: 26
   m_Name: WeaponPivot
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -293,8 +293,13 @@ PrefabInstance:
       objectReference: {fileID: 975920972793711383}
     - target: {fileID: 4128674975482840398, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
+      propertyPath: m_Layer
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 4128674975482840398, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
+        type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
@@ -304,12 +309,12 @@ PrefabInstance:
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7559110402353057201, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}

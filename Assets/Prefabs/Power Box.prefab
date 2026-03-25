@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3041629705652802236}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 3292731832792966864}
   - component: {fileID: 3585536900746672761}
   - component: {fileID: 5661224235980149270}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 6610865268427462380}
   - component: {fileID: 5247183725473470817}
   - component: {fileID: 218653236273842190}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 2027362921768031381}
   - component: {fileID: 1900987518639663176}
   - component: {fileID: 134847030425092025}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Power Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
