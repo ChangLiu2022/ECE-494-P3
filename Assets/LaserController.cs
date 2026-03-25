@@ -32,6 +32,7 @@ public class LaserController : MonoBehaviour
         {
             EventBus.Publish(new AlertEvent());
             Debug.Log("Laser tripped!");
+
         }
     }
 

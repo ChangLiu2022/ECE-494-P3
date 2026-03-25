@@ -50,7 +50,7 @@ public class BulletMovement : MonoBehaviour
 
     private void HandleHit(Collider other)
     {
-        // player layer = game over
+        // game over
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             Debug.Log("Player was shot! Game Over.");
@@ -59,14 +59,21 @@ public class BulletMovement : MonoBehaviour
             return;
         }
 
-        // enemy layer = guard was hit
+        // guard was hit
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             Debug.Log("Guard hit: " + other.gameObject.name);
-            Destroy(other.transform.root.gameObject);
+
+            GuardController guard =
+                other.transform.root.GetComponent<GuardController>();
+
+            if (guard != null)
+                guard.TakeDamage(transform.forward);
+
             Destroy(gameObject);
             return;
         }
+
 
         // wall or anything else on the mask = destroy bullet
         Destroy(gameObject);

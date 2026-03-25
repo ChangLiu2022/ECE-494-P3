@@ -16,7 +16,7 @@ public class GuardVisionCone : MonoBehaviour
 
     private void Start()
     {
-        guard = GetComponentInParent<GuardController>();
+        guard = transform.root.GetComponentInChildren<GuardController>();
         vision_cone = GetComponent<VisionConeMesh>();
 
         // start routine on right away
