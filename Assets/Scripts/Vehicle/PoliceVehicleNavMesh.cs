@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,10 +9,21 @@ public class PoliceVehicleNavMesh : MonoBehaviour
     private bool _chasing;
     [SerializeField] private Vector3 TransformOffset;
 
-    private void Awake()
+    private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _agent.enabled = false;
+        StartCoroutine(EnableAgentNextFrame());
     }
+
+
+    private IEnumerator EnableAgentNextFrame()
+    {
+        yield return null;
+        _agent.enabled = true;
+        _agent.isStopped = true;
+    }
+
 
     private void OnEnable()
     {
