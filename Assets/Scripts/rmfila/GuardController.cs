@@ -179,15 +179,12 @@ public class GuardController : MonoBehaviour
 
     private void Awake()
     {
-        guard = transform.root.GetComponentInChildren<NavMeshAgent>();
+        guard = GetComponentInChildren<NavMeshAgent>();
 
         // keep guard flat for top-down
         guard.updateRotation = false;
         guard.updateUpAxis = false;
     }
-
-
-    public void TakeDamage(Vector3 direction) { }
 
 
     private void Start()
@@ -198,7 +195,7 @@ public class GuardController : MonoBehaviour
         guard_weapon = fire_point.parent.gameObject;
         guard_weapon.SetActive(false);
 
-        GameObject player_object = GameObject.FindWithTag("Player");
+        GameObject player_object = GameObject.FindWithTag("Body");
 
         if (player_object != null)
         {
@@ -445,7 +442,7 @@ public class GuardController : MonoBehaviour
             // true if the angle between the current rotation 
             // and target is less than 1
             bool facing_target =
-                Quaternion.Angle(transform.parent.rotation,
+                Quaternion.Angle(transform.rotation, 
                 YawFromDirection(to_target)) < 1f;
 
             // only unpause once the timer is done AND the turn is complete
@@ -516,7 +513,13 @@ public class GuardController : MonoBehaviour
 
         Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
 
-        Instantiate(bullet_prefab, fire_point.position, rotation);
+        GameObject bullet_obj =
+            Instantiate(bullet_prefab, fire_point.position, rotation);
+        BulletMovement bullet = bullet_obj.GetComponent<BulletMovement>();
+
+        if (bullet != null)
+            bullet.Initialize(gameObject.tag);
+
     }
     // ----- END SHOOT LOGIC ----- \\
 
@@ -550,8 +553,8 @@ public class GuardController : MonoBehaviour
     // applies one rotation step toward the target yaw
     private void SmoothRotateTo(Quaternion target)
     {
-        transform.parent.rotation = Quaternion.RotateTowards(
-            transform.parent.rotation,
+        transform.rotation = Quaternion.RotateTowards(
+            transform.rotation,
             target,
             turn_speed * Time.fixedDeltaTime);
     }
@@ -648,14 +651,13 @@ public class GuardController : MonoBehaviour
     // ----- START COLLISION HANDLERS ----- \\
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.layer ==
-            LayerMask.NameToLayer("PlayerBullet"))
+        if (collision.CompareTag("Bullet"))
         {
             Destroy(gameObject);
-            return;
+            return; 
         }
 
-        if (collision.CompareTag("Player") == false)
+        if (collision.CompareTag("Body") == false)
             return;
 
         // already chasing = instant game over
@@ -675,15 +677,14 @@ public class GuardController : MonoBehaviour
 
     private void OnTriggerStay(Collider collision)
     {
-        if (collision.gameObject.layer ==
-            LayerMask.NameToLayer("PlayerBullet"))
+        if (collision.CompareTag("Bullet"))
         {
             Destroy(gameObject);
             return;
         }
 
         // Still touching after grace period expired = game over
-        if (collision.CompareTag("Player") && is_catching == false &&
+        if (collision.CompareTag("Body") && is_catching == false &&
             current_tier >= GuardTier.Tier3)
         {
             EndGame();
@@ -767,7 +768,7 @@ public class GuardController : MonoBehaviour
                 if (Mathf.Approximately(offset, sweep[index]))
                     index = (index + 1) % sweep.Length;
 
-                transform.parent.rotation =
+                transform.rotation = 
                     Quaternion.Euler(0f, anchor_angle + offset, 0f);
 
                 yield return null;
@@ -825,12 +826,13 @@ public class GuardController : MonoBehaviour
     // smoothly rotates until within 1 degree of target
     private IEnumerator RotateUntilFacing(Quaternion target)
     {
-        while (Quaternion.Angle(transform.parent.rotation, target) > 1f)
+        while (Quaternion.Angle(transform.rotation, target) > 1f)
         {
-            transform.parent.rotation = Quaternion.RotateTowards(
-                transform.parent.rotation,
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
                 target,
                 turn_speed * 1.5f * Time.deltaTime);
+
             yield return null;
         }
     }

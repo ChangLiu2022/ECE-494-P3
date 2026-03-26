@@ -49,7 +49,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6965682478070366511}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -102,4 +102,3 @@ MonoBehaviour:
   firePoint: {fileID: 0}
   fireRate: 0.1
   ammo: -1
-  inventory: {fileID: 0}

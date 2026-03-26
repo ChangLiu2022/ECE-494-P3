@@ -5,14 +5,18 @@ public class BulletMovement : MonoBehaviour
     [SerializeField] private float speed = 20f;
     [SerializeField] private float lifetime = 30f;
 
-    [SerializeField] private LayerMask hit_mask;
+    private string owner_tag = "";
 
-    private Rigidbody rb;
+
+    public void Initialize(string owner)
+    {
+        owner_tag = owner;
+    }
 
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        var rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.velocity = transform.forward * speed;
@@ -20,38 +24,25 @@ public class BulletMovement : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
-    private void FixedUpdate()
-    {
-        // raycast ahead by how far the bullet moves this frame
-        // catches thin walls that triggers skip over
-        float step = speed * Time.fixedDeltaTime;
-
-        if (Physics.Raycast(
-            transform.position,
-            rb.velocity.normalized,
-            out RaycastHit hit,
-            step,
-            hit_mask))
-        {
-            HandleHit(hit.collider);
-        }
-    }
-
-
     private void OnTriggerEnter(Collider other)
     {
-        // only react to things on the hit_mask
-        if (((1 << other.gameObject.layer) & hit_mask) == 0)
+        // skip anything tagged the same as whoever fired this bullet
+        if (owner_tag != "" && other.CompareTag(owner_tag))
+        {
+            Debug.Log("Bullet ignored collision with: " + other.gameObject.name + " | Tag: " + other.tag);
+            return;
+        }
+        else
+        {
+            Debug.Log("Bullet (not ignored) collided with: " + other.gameObject.name + " | Tag: " + other.tag);
+        }
+
+
+        // skip the floor entirely
+        if (other.CompareTag("Floor"))
             return;
 
-        HandleHit(other);
-    }
-
-
-    private void HandleHit(Collider other)
-    {
-        // game over
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (other.CompareTag("Body"))
         {
             Debug.Log("Player was shot! Game Over.");
             EventBus.Publish(new GameEvents.GameOverEvent());
@@ -59,23 +50,10 @@ public class BulletMovement : MonoBehaviour
             return;
         }
 
-        // guard was hit
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            Debug.Log("Guard hit: " + other.gameObject.name);
+        // if its hits walls and guards destroy it so it doesn't
+        // do the banana peel effect
+        Debug.Log("Bullet destroyed by: " + other.gameObject.name + " | Tag: " + other.tag);
 
-            GuardController guard =
-                other.transform.root.GetComponentInChildren<GuardController>();
-
-            if (guard != null)
-                guard.TakeDamage(transform.forward);
-
-            Destroy(gameObject);
-            return;
-        }
-
-
-        // wall or anything else on the mask = destroy bullet
         Destroy(gameObject);
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4747031174550462579}
   - component: {fileID: 2847711997974930552}
   - component: {fileID: 3095093594179013804}
-  m_Layer: 16
+  m_Layer: 12
   m_Name: Wall
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 5314993490392346354}
   - component: {fileID: 561519942091022087}
   - component: {fileID: 6201177163967286027}
-  m_Layer: 16
+  m_Layer: 12
   m_Name: VentExit (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 9134496447250123839}
   - component: {fileID: 7060897751252484182}
   - component: {fileID: 7987761390391434233}
-  m_Layer: 16
+  m_Layer: 12
   m_Name: Wall (17)
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -340,7 +340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2559044042857914816}
-  m_Layer: 16
+  m_Layer: 12
   m_Name: Vents
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 5031450146509040681}
   - component: {fileID: 6368695732433886541}
   - component: {fileID: 4693448487542437345}
-  m_Layer: 16
+  m_Layer: 12
   m_Name: VentExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -504,7 +504,7 @@ GameObject:
   - component: {fileID: 1521642921329006908}
   - component: {fileID: 3562707923799449318}
   - component: {fileID: 8529577785201481283}
-  m_Layer: 16
+  m_Layer: 0
   m_Name: VentEntrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -624,7 +624,7 @@ GameObject:
   - component: {fileID: 5226003127768647780}
   - component: {fileID: 361127459658051686}
   - component: {fileID: 2594806716769717818}
-  m_Layer: 16
+  m_Layer: 12
   m_Name: Wall (1)
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -728,7 +728,7 @@ GameObject:
   - component: {fileID: 8785047009953759593}
   - component: {fileID: 7530442514465254240}
   - component: {fileID: 863548986701317285}
-  m_Layer: 16
+  m_Layer: 12
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -812,7 +812,7 @@ GameObject:
   - component: {fileID: 753992816683270209}
   - component: {fileID: 3953890005584319659}
   - component: {fileID: 5825621971572039235}
-  m_Layer: 16
+  m_Layer: 12
   m_Name: Wall (18)
   m_TagString: Wall
   m_Icon: {fileID: 0}

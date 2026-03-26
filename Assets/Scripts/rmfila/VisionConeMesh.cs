@@ -61,7 +61,7 @@ public class VisionConeMesh : MonoBehaviour
     private void Start()
     {
         mesh = new Mesh();
-        controller = transform.root.GetComponentInChildren< GuardController>();
+        controller = GetComponentInParent<GuardController>();
         view_renderer = GetComponent<MeshRenderer>();
         GetComponent<MeshFilter>().mesh = mesh;
 

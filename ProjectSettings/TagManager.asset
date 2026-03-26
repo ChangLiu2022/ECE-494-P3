@@ -5,10 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bullet
+  - Wall
   - Gold
   - EXIT
+  - Enemy
+  - Floor
   - PlayerCar
-  - Wall
   - Body
   layers:
   - Default
@@ -17,28 +19,28 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - Ground
-  - 
-  - 
-  - 
-  - PlayerBullet
-  - GuardBullet
-  - 
-  - Wall
-  - Vent
-  - Bridge
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   - Enemy
   - Player
+  - Wall
+  - PlayerBullet
+  - Background
   - Vehicle
+  - Vent
+  - Bridge
+  - Laser
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

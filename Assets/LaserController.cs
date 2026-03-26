@@ -28,11 +28,10 @@ public class LaserController : MonoBehaviour
     // alerts guards if the laser is tripped!
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Body"))
         {
             EventBus.Publish(new AlertEvent());
             Debug.Log("Laser tripped!");
-
         }
     }
 
