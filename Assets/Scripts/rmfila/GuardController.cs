@@ -179,7 +179,7 @@ public class GuardController : MonoBehaviour
 
     private void Awake()
     {
-        guard = GetComponentInParent<NavMeshAgent>();
+        guard = transform.root.GetComponentInChildren<NavMeshAgent>();
 
         // keep guard flat for top-down
         guard.updateRotation = false;

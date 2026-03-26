@@ -65,7 +65,7 @@ public class BulletMovement : MonoBehaviour
             Debug.Log("Guard hit: " + other.gameObject.name);
 
             GuardController guard =
-                other.transform.root.GetComponent<GuardController>();
+                other.transform.root.GetComponentInChildren<GuardController>();
 
             if (guard != null)
                 guard.TakeDamage(transform.forward);
