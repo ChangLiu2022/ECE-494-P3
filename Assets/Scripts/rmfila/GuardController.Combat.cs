@@ -60,7 +60,7 @@ public partial class GuardController
 
     // handles bullet impact
     // damage, knockback, stagger
-    private void TakeDamage(Collider bullet)
+    public void TakeDamage(Collider bullet)
     {
         Vector3 knockback_dir = bullet.transform.forward;
 

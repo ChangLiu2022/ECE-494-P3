@@ -6,13 +6,13 @@ public class BulletMovement : MonoBehaviour
     [SerializeField] private float speed = 20f;
     [SerializeField] private float lifetime = 30f;
 
-    private string owner_tag = "";
+    private Collider bullet_collider;
     private float aliveTime = 0f;
     private Rigidbody rb;
 
-    public void Initialize(string owner)
+    public void Initialize(GameObject owner)
     {
-        Collider bullet_collider = GetComponent<Collider>();
+        bullet_collider = GetComponent<Collider>();
 
         if (bullet_collider == null)
             return;
@@ -50,13 +50,6 @@ public class BulletMovement : MonoBehaviour
             return;
         }
 
-        if ((owner_tag != "" && hit.collider.CompareTag(owner_tag)) || hit.collider.CompareTag("Floor") ||
-            hit.collider.CompareTag("Enemy"))
-        {
-            rb.MovePosition(transform.position + transform.forward * stepDistance);
-            return;
-        }
-
         rb.MovePosition(transform.position + transform.forward * stepDistance);
 
         if (hit.collider.CompareTag("Body"))
@@ -67,26 +60,13 @@ public class BulletMovement : MonoBehaviour
             return;
         }
 
+        if (hit.collider.CompareTag("Enemy"))
+        {
+            hit.collider.GetComponentInParent<GuardController>().TakeDamage(bullet_collider);
+            return;
+        }
+
         Debug.Log("Bullet destroyed by: " + hit.collider.gameObject.name);
         Destroy(gameObject);
-    }
-
-    private void OnTriggerEnter(Collider collision)
-    {
-        if (!collision.CompareTag("Floor"))
-        {
-            Destroy(gameObject);
-
-        }
-    }
-
-
-    private void OnTriggerStay(Collider collision)
-    {
-        if (!collision.CompareTag("Floor"))
-        {
-            Destroy(gameObject);
-
-        }
     }
 }
