@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BulletMovement : MonoBehaviour
@@ -6,43 +7,48 @@ public class BulletMovement : MonoBehaviour
     [SerializeField] private float lifetime = 30f;
 
     private string owner_tag = "";
-
+    private float aliveTime = 0f;
+    private Rigidbody rb;
 
     public void Initialize(string owner)
     {
         owner_tag = owner;
     }
 
-
     private void Start()
     {
-        var rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
-        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-        rb.velocity = transform.forward * speed;
-
-        Destroy(gameObject, lifetime);
+        rb.isKinematic = true;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void FixedUpdate()
     {
-        // skip anything tagged the same as whoever fired this bullet
-        if (owner_tag != "" && other.CompareTag(owner_tag))
+        aliveTime += Time.fixedDeltaTime;
+        if (aliveTime >= lifetime)
         {
-            Debug.Log("Bullet ignored collision with: " + other.gameObject.name + " | Tag: " + other.tag);
+            Destroy(gameObject);
             return;
         }
-        else
+
+        float stepDistance = speed * Time.fixedDeltaTime;
+
+        if (!Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, stepDistance))
         {
-            Debug.Log("Bullet (not ignored) collided with: " + other.gameObject.name + " | Tag: " + other.tag);
+            rb.MovePosition(transform.position + transform.forward * stepDistance);
+            return;
         }
 
-
-        // skip the floor entirely
-        if (other.CompareTag("Floor"))
+        if ((owner_tag != "" && hit.collider.CompareTag(owner_tag)) || hit.collider.CompareTag("Floor") ||
+            hit.collider.CompareTag("Enemy"))
+        {
+            rb.MovePosition(transform.position + transform.forward * stepDistance);
             return;
+        }
 
-        if (other.CompareTag("Body"))
+        rb.MovePosition(transform.position + transform.forward * stepDistance);
+
+        if (hit.collider.CompareTag("Body"))
         {
             Debug.Log("Player was shot! Game Over.");
             EventBus.Publish(new GameEvents.GameOverEvent());
@@ -50,10 +56,26 @@ public class BulletMovement : MonoBehaviour
             return;
         }
 
-        // if its hits walls and guards destroy it so it doesn't
-        // do the banana peel effect
-        Debug.Log("Bullet destroyed by: " + other.gameObject.name + " | Tag: " + other.tag);
-
+        Debug.Log("Bullet destroyed by: " + hit.collider.gameObject.name);
         Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (!collision.CompareTag("Floor"))
+        {
+            Destroy(gameObject);
+
+        }
+    }
+
+
+    private void OnTriggerStay(Collider collision)
+    {
+        if (!collision.CompareTag("Floor"))
+        {
+            Destroy(gameObject);
+
+        }
     }
 }
