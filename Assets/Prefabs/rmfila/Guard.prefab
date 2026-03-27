@@ -336,7 +336,7 @@ MonoBehaviour:
   fire_point: {fileID: 619472383794619858}
   fire_rate: 1
   shoot_range: 5
-  gunshot_alert_radius: 10
+  gunshot_alert_radius: 5
   sight_delay: 0.5
   weapon_draw_time: 1
   guards_sprite_renderer: {fileID: 430198159726640723}
@@ -344,6 +344,7 @@ MonoBehaviour:
     type: 3}
   lethal_guard_sprite: {fileID: 21300000, guid: cb9edd1b489bc440fbd45a8af4af3b01,
     type: 3}
+  investigate_timeout: 6
 --- !u!195 &6650408569263145874
 NavMeshAgent:
   m_ObjectHideFlags: 0
