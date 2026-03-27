@@ -3243,8 +3243,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 838035979}
   offset: {x: 0, y: 10, z: 0}
-  useLERP: 0
-  lerpSpeed: 100
+  useSmoothing: 0
+  smoothSpeed: 10
 --- !u!1 &1398306157
 GameObject:
   m_ObjectHideFlags: 0

@@ -41,6 +41,13 @@ public class HUDController : MonoBehaviour
     // used to prevent coroutine being called while it's already running
     private bool isFlashing = false;
 
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
+
+
     // saves the checklistText gameObject
     private void Start()
     {
@@ -91,7 +98,7 @@ public class HUDController : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-        if(Input.GetKeyDown(KeyCode.G) && can_pause)
+        if(Input.GetKeyDown(KeyCode.Escape) && can_pause)
         {
             ShowHideEscapeMenu();
         }

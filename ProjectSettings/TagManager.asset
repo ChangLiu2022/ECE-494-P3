@@ -8,6 +8,10 @@ TagManager:
   - Wall
   - Gold
   - EXIT
+  - Enemy
+  - Floor
+  - PlayerCar
+  - Body
   layers:
   - Default
   - TransparentFX
@@ -21,9 +25,9 @@ TagManager:
   - PlayerBullet
   - Background
   - Vehicle
-  - 
-  - 
-  - 
+  - Vent
+  - Bridge
+  - Laser
   - 
   - 
   - 

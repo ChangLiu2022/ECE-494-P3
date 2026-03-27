@@ -1,4 +1,5 @@
 using UnityEngine;
+using static GameEvents;
 
 public class Shotgun : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Shotgun : MonoBehaviour
 
     private float _nextFireTime;
 
+    // TODO add shothun bullets to inventory
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0) && Time.time >= _nextFireTime && ammo != 0)
@@ -22,13 +25,34 @@ public class Shotgun : MonoBehaviour
             Vector3 pos = (firePoint != null) ? firePoint.position : transform.position;
             float halfSpread = spreadAngle / 2f;
 
+            GameObject bullet_obj;
+
             for (int i = 0; i < pelletCount; i++)
             {
                 float angle = Mathf.Lerp(-halfSpread, halfSpread, (float)i / (pelletCount - 1));
                 Quaternion spread = Quaternion.AngleAxis(angle, Vector3.up);
                 Quaternion rot = Quaternion.LookRotation(spread * shooting.AimDirection, Vector3.up);
-                Instantiate(bulletPrefab, pos, rot);
+                bullet_obj = Instantiate(bulletPrefab, pos, rot);
+
+                BulletMovement bullet =
+                    bullet_obj.GetComponent<BulletMovement>();
+
+                // set owner tag of the gun
+                if (bullet_obj != null)
+                {
+                    // pass the Player parent so the bullet ignores all
+                    // player colliders (body, pickup triggers, etc.)
+                    GameObject player_root = GameObject.Find("Player");
+
+                    if (player_root != null)
+                        bullet.Initialize(player_root);
+                    else
+                        bullet.Initialize(gameObject);
+                }
             }
+
+            // publish gunshot event for guards to hear, and push player pos
+            EventBus.Publish(new GunshotEvent { player_position = pos });
         }
     }
 }

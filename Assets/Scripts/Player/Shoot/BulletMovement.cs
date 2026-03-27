@@ -1,34 +1,72 @@
+using System;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class BulletMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 20f;
-    [SerializeField] private float lifetime = 3f;
-    [SerializeField] private LayerMask hitMask = ~0;
+    [SerializeField] private float lifetime = 30f;
+
+    private Collider bullet_collider;
+    private float aliveTime = 0f;
+    private Rigidbody rb;
+
+    public void Initialize(GameObject owner)
+    {
+        bullet_collider = GetComponent<Collider>();
+
+        if (bullet_collider == null)
+            return;
+
+        // grab every collider on the owner and its children
+        // covers the guard's sphere collider, agent, etc
+        Collider[] owner_colliders =
+            owner.GetComponentsInChildren<Collider>();
+
+        for (int i = 0; i < owner_colliders.Length; i++)
+            Physics.IgnoreCollision(bullet_collider, owner_colliders[i]);
+    }
 
     private void Start()
     {
-        var rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
-        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-        rb.velocity = transform.forward * speed;
-
-        Destroy(gameObject, lifetime);
+        rb.isKinematic = true;
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void FixedUpdate()
     {
-        if (((1 << other.gameObject.layer) & hitMask) != 0)
+        aliveTime += Time.fixedDeltaTime;
+        if (aliveTime >= lifetime)
         {
             Destroy(gameObject);
+            return;
         }
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (((1 << other.gameObject.layer) & hitMask) != 0)
+        float stepDistance = speed * Time.fixedDeltaTime;
+
+        if (!Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, stepDistance))
         {
-            Destroy(gameObject);
+            rb.MovePosition(transform.position + transform.forward * stepDistance);
+            return;
         }
+
+        rb.MovePosition(transform.position + transform.forward * stepDistance);
+
+        if (hit.collider.CompareTag("Body"))
+        {
+            Debug.Log("Player was shot! Game Over.");
+            EventBus.Publish(new GameEvents.GameOverEvent());
+            Destroy(gameObject);
+            return;
+        }
+
+        if (hit.collider.CompareTag("Enemy"))
+        {
+            hit.collider.GetComponentInParent<GuardController>().TakeDamage(bullet_collider);
+            return;
+        }
+
+        Debug.Log("Bullet destroyed by: " + hit.collider.gameObject.name);
+        Destroy(gameObject);
     }
 }
