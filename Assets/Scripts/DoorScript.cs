@@ -14,7 +14,7 @@ public class Door : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
+        player = GameObject.FindWithTag("Body").transform;
         closedAngle = transform.localEulerAngles.y;
         targetAngle = closedAngle;
     }
