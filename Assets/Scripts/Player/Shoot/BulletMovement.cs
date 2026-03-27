@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BulletMovement : MonoBehaviour
@@ -5,44 +6,53 @@ public class BulletMovement : MonoBehaviour
     [SerializeField] private float speed = 20f;
     [SerializeField] private float lifetime = 30f;
 
-    private string owner_tag = "";
+    private Collider bullet_collider;
+    private float aliveTime = 0f;
+    private Rigidbody rb;
 
-
-    public void Initialize(string owner)
+    public void Initialize(GameObject owner)
     {
-        owner_tag = owner;
-    }
+        bullet_collider = GetComponent<Collider>();
 
+        if (bullet_collider == null)
+            return;
+
+        // grab every collider on the owner and its children
+        // covers the guard's sphere collider, agent, etc
+        Collider[] owner_colliders =
+            owner.GetComponentsInChildren<Collider>();
+
+        for (int i = 0; i < owner_colliders.Length; i++)
+            Physics.IgnoreCollision(bullet_collider, owner_colliders[i]);
+    }
 
     private void Start()
     {
-        var rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
-        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-        rb.velocity = transform.forward * speed;
-
-        Destroy(gameObject, lifetime);
+        rb.isKinematic = true;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void FixedUpdate()
     {
-        // skip anything tagged the same as whoever fired this bullet
-        if (owner_tag != "" && other.CompareTag(owner_tag))
+        aliveTime += Time.fixedDeltaTime;
+        if (aliveTime >= lifetime)
         {
-            Debug.Log("Bullet ignored collision with: " + other.gameObject.name + " | Tag: " + other.tag);
+            Destroy(gameObject);
             return;
         }
-        else
+
+        float stepDistance = speed * Time.fixedDeltaTime;
+
+        if (!Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, stepDistance))
         {
-            Debug.Log("Bullet (not ignored) collided with: " + other.gameObject.name + " | Tag: " + other.tag);
+            rb.MovePosition(transform.position + transform.forward * stepDistance);
+            return;
         }
 
+        rb.MovePosition(transform.position + transform.forward * stepDistance);
 
-        // skip the floor entirely
-        if (other.CompareTag("Floor"))
-            return;
-
-        if (other.CompareTag("Body"))
+        if (hit.collider.CompareTag("Body"))
         {
             Debug.Log("Player was shot! Game Over.");
             EventBus.Publish(new GameEvents.GameOverEvent());
@@ -50,10 +60,13 @@ public class BulletMovement : MonoBehaviour
             return;
         }
 
-        // if its hits walls and guards destroy it so it doesn't
-        // do the banana peel effect
-        Debug.Log("Bullet destroyed by: " + other.gameObject.name + " | Tag: " + other.tag);
+        if (hit.collider.CompareTag("Enemy"))
+        {
+            hit.collider.GetComponentInParent<GuardController>().TakeDamage(bullet_collider);
+            return;
+        }
 
+        Debug.Log("Bullet destroyed by: " + hit.collider.gameObject.name);
         Destroy(gameObject);
     }
 }

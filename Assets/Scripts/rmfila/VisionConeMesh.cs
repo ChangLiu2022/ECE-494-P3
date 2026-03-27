@@ -58,15 +58,19 @@ public class VisionConeMesh : MonoBehaviour
     }
 
 
+    private void Awake()
+    {
+        view_angle = default_view_angle;
+        detect_radius = default_detect_radius;
+    }
+
+
     private void Start()
     {
         mesh = new Mesh();
         controller = GetComponentInParent<GuardController>();
         view_renderer = GetComponent<MeshRenderer>();
         GetComponent<MeshFilter>().mesh = mesh;
-
-        view_angle = default_view_angle;
-        detect_radius = default_detect_radius;
 
         // only need verticies and triangles to compose the mesh
         // no uv coords because I am applying a flat material

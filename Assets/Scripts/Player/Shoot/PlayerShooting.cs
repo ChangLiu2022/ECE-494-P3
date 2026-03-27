@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerShooting : MonoBehaviour
 {
     [SerializeField] private PlayerAiming aiming;
-    [SerializeField] private MonoBehaviour gun;
 
     private void Awake()
     {

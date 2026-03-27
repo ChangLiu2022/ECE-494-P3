@@ -56,7 +56,16 @@ public class InvPistol : MonoBehaviour
 
             // set owner tag of the gun
             if (bullet != null)
-                bullet.Initialize("Player");
+            {
+                // pass the Player parent so the bullet ignores all
+                // player colliders (body, pickup triggers, etc.)
+                GameObject player_root = GameObject.Find("Player");
+
+                if (player_root != null)
+                    bullet.Initialize(player_root);
+                else
+                    bullet.Initialize(gameObject);
+            }
 
             // publish gunshot event for guards to hear, and push player pos
             EventBus.Publish(new GunshotEvent { player_position = pos });
