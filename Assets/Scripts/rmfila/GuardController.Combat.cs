@@ -111,8 +111,7 @@ public partial class GuardController
         player_last_position =
             transform.position + investigate_dir * (overshoot_distance * 2f);
 
-        /* OLD!!!
-         * used warp instead and didnt disrupt the guard's rotation
+
         Vector3 knockback_start = transform.position;
         Vector3 raw_target = 
             transform.position + knockback_dir * knockback_distance;
@@ -138,14 +137,16 @@ public partial class GuardController
         }
 
         guard.Warp(knockback_end);
-        */
+        
 
         // NEW!!! -- apply knockback
+        /*
         if (TryGetNavPoint(transform.position, knockback_dir,
             knockback_distance, 0.3f, out Vector3 knockback_end))
         {
             yield return MoveWithTimeout(knockback_end, 0.12f);
         }
+        */
 
         yield return new WaitForSeconds(stagger_duration);
 
