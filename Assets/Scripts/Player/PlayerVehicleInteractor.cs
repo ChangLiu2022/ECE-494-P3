@@ -54,19 +54,27 @@ public class PlayerVehicleInteractor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Entered trigger: " + other.name);
         if (((1 << other.gameObject.layer) & vehicleLayer) == 0) return;
 
         var vehicle = other.GetComponentInParent<VehicleInteraction>();
         if (vehicle != null && !_nearby.Contains(vehicle))
+        {
             _nearby.Add(vehicle);
+            Debug.Log($"Entered vehicle trigger: {vehicle.name}");
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        Debug.Log("Exited trigger: " + other.name);
         if (((1 << other.gameObject.layer) & vehicleLayer) == 0) return;
 
         var vehicle = other.GetComponentInParent<VehicleInteraction>();
         if (vehicle != null)
+        {
             _nearby.Remove(vehicle);
+            Debug.Log($"Exited vehicle trigger: {vehicle.name}");
+        }
     }
 }
