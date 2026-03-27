@@ -195,7 +195,7 @@ public class GuardController : MonoBehaviour
         guard_weapon = fire_point.parent.gameObject;
         guard_weapon.SetActive(false);
 
-        GameObject player_object = GameObject.FindWithTag("Player");
+        GameObject player_object = GameObject.FindWithTag("Body");
 
         if (player_object != null)
         {
@@ -654,10 +654,10 @@ public class GuardController : MonoBehaviour
         if (collision.CompareTag("Bullet"))
         {
             Destroy(gameObject);
-            return;
+            return; 
         }
 
-        if (collision.CompareTag("Player") == false)
+        if (collision.CompareTag("Body") == false)
             return;
 
         // already chasing = instant game over
@@ -684,7 +684,7 @@ public class GuardController : MonoBehaviour
         }
 
         // Still touching after grace period expired = game over
-        if (collision.CompareTag("Player") && is_catching == false &&
+        if (collision.CompareTag("Body") && is_catching == false &&
             current_tier >= GuardTier.Tier3)
         {
             EndGame();
