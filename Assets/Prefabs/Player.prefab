@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 7518937583363464476}
   - component: {fileID: 975920972793711383}
   - component: {fileID: 4851233415881762159}
+  - component: {fileID: 395810331660379925}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -349,7 +350,7 @@ GameObject:
   - component: {fileID: 4791959475514888856}
   m_Layer: 7
   m_Name: WeaponPivot
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -498,7 +499,7 @@ PrefabInstance:
     - target: {fileID: 4128674975482840398, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
@@ -518,7 +519,7 @@ PrefabInstance:
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7559110402353057201, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}

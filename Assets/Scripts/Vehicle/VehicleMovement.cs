@@ -29,6 +29,12 @@ public class VehicleMovement : MonoBehaviour
     public Vector3 Velocity => _velocity;
     public bool IsActive => _active;
 
+    public void SetVelocity(Vector3 vel)
+    {
+        _velocity = vel;
+        _rb.velocity = vel;
+    }
+
     public void SetActive(bool active)
     {
         _active = active;
@@ -38,7 +44,11 @@ public class VehicleMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _rb.useGravity = false;
-        _rb.isKinematic = true;
+        _rb.interpolation = RigidbodyInterpolation.Interpolate;
+        _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        _rb.constraints = RigidbodyConstraints.FreezePositionY
+                        | RigidbodyConstraints.FreezeRotationX
+                        | RigidbodyConstraints.FreezeRotationZ;
     }
 
     private void Update()
@@ -50,13 +60,15 @@ public class VehicleMovement : MonoBehaviour
     private void FixedUpdate()
     {
         float dt = Time.fixedDeltaTime;
+
+        // 1. Read back velocity from physics (includes collision effects)
+        _velocity = _rb.velocity;
+        _velocity.y = 0f;
+
         Vector3 forward = transform.right;
-
         float forwardSpeed = Vector3.Dot(_velocity, forward);
-        Vector3 forwardVel = forward * forwardSpeed;
-        Vector3 sidewaysVel = _velocity - forwardVel;
 
-        // Engine / brake
+        // 2. Engine / brake
         if (_throttle > 0f)
         {
             if (forwardSpeed < -0.5f)
@@ -76,7 +88,7 @@ public class VehicleMovement : MonoBehaviour
                 _velocity += forward * engineForce * 0.4f * _throttle * dt;
         }
 
-        // Steering
+        // 3. Steering
         float speed = _velocity.magnitude;
         if (speed > minSpeedToSteer)
         {
@@ -84,25 +96,26 @@ public class VehicleMovement : MonoBehaviour
             _rb.MoveRotation(_rb.rotation * rot);
         }
 
-        // Traction
+        // 4. Traction
         forward = transform.right;
         forwardSpeed = Vector3.Dot(_velocity, forward);
-        forwardVel = forward * forwardSpeed;
-        sidewaysVel = _velocity - forwardVel;
+        Vector3 forwardVel = forward * forwardSpeed;
+        Vector3 sidewaysVel = _velocity - forwardVel;
 
         bool drifting = _throttle < 0f && Mathf.Abs(_steer) > 0.1f && forwardSpeed > 1f;
         float currentTraction = drifting ? driftTraction : traction;
         sidewaysVel = Vector3.MoveTowards(sidewaysVel, Vector3.zero, currentTraction * speed * dt);
         _velocity = forwardVel + sidewaysVel;
 
-        // Rolling drag
+        // 5. Rolling drag
         if (speed > 0.01f)
             _velocity = Vector3.MoveTowards(_velocity, Vector3.zero, rollingDrag * dt);
 
-        // Max speed
+        // 6. Max speed
         _velocity = Vector3.ClampMagnitude(_velocity, maxSpeed);
 
-        // Apply
-        _rb.MovePosition(_rb.position + _velocity * dt);
+        // 7. Push to physics
+        _velocity.y = 0f;
+        _rb.velocity = _velocity;
     }
 }

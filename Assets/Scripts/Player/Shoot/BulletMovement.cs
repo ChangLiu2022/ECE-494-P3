@@ -12,7 +12,18 @@ public class BulletMovement : MonoBehaviour
 
     public void Initialize(string owner)
     {
-        owner_tag = owner;
+        Collider bullet_collider = GetComponent<Collider>();
+
+        if (bullet_collider == null)
+            return;
+
+        // grab every collider on the owner and its children
+        // covers the guard's sphere collider, agent, etc
+        Collider[] owner_colliders =
+            owner.GetComponentsInChildren<Collider>();
+
+        for (int i = 0; i < owner_colliders.Length; i++)
+            Physics.IgnoreCollision(bullet_collider, owner_colliders[i]);
     }
 
     private void Start()
