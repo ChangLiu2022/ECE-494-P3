@@ -8,16 +8,21 @@ public partial class GuardController
     private void HandleSpotting()
     {
         guard.ResetPath();
+
+        // always face the player when spotting them
+        // it looks like the guard is going "hmmm what is that"
         FaceTarget(player.position);
 
         if (can_see_player && player != null)
         {
-            // keep last known position current during spotting so its
-            // valid the instant the bar fills and the chase begins
+            // update the last known position and direction to be what
+            // the guard sees so when the chase starts, they have a valid
+            // starting point
             player_last_position = player.position;
 
             Vector3 spot_diff = player.position - player_previous_position;
 
+            // only update the direction if the change is substantial enough
             if (spot_diff.sqrMagnitude > 0.01f)
                 player_last_direction = spot_diff.normalized;
 
@@ -31,12 +36,15 @@ public partial class GuardController
             float fill_multiplier = 1f + proximity_exponent *
                 (normalized_proximity * normalized_proximity);
 
+            // update the chase bar
             current_chase_bar = Mathf.Min(current_chase_bar + 
                 chase_bar_fill_rate * fill_multiplier * Time.fixedDeltaTime,
                 chase_bar_max);
 
+            // check if the bar is full
             if (current_chase_bar >= chase_bar_max)
             {
+                // no longer spotting but activating a chase
                 is_spotting = false;
 
                 if (guns_out)
@@ -53,21 +61,12 @@ public partial class GuardController
             current_chase_bar = Mathf.Max(current_chase_bar - 
                 chase_bar_decay * Time.fixedDeltaTime, 0f);
 
+            // no longer spotting, but returning to normal,
             if (current_chase_bar <= 0f)
             {
                 is_spotting = false;
-
-                // if we did not see the player, our chasebar reset to 0,
-                // we are a tier 2 guard, and we are not a patrol guard
-                // then we need to run the static search routine. This
-                // is for both static and static search guards. they do the
-                // same thing one tier2 is achieved.
-                if (current_tier == GuardTier.Tier2 && guard_mode !=
-                    GuardMode.Patrol && static_search_routine == null)
-                {
-                    static_search_routine =
-                        StartCoroutine(StaticScanRoutine());
-                }
+                
+                static_search_routine = StartCoroutine(ResumeIdleRoutine());
             }
         }
     }
@@ -124,7 +123,10 @@ public partial class GuardController
     {
         if (can_see_player && player != null)
         {
+            // save the latest information of the player to
+            // use when we lose sight
             had_sight = true;
+            // reset timer to full
             sight_loss_timer = pursuit_window;
             player_last_position = player.position;
 
@@ -139,25 +141,33 @@ public partial class GuardController
                     difference.magnitude / Time.fixedDeltaTime;
             }
 
+            // update the tracking formation
             player_previous_position = player.position;
             current_chase_bar = chase_bar_max;
             return;
         }
-        // blind pursuit, keep predicting where the player went.
+
+        // lost sight, keep predicting where the player went.
         // player_last_position moves forward each frame so the guard
         // chases a moving predicted target instead of freezing at the corner
         if (sight_loss_timer > 0f)
         {
+            // decrement timer on sight loss
             sight_loss_timer -= Time.fixedDeltaTime;
 
+            // while timer is active, keep pushing the player's
+            // last_position so the guard chases a moving predicted
+            // point rather than freezing at a corner where sight was loss
             if (player_estimated_speed > 0.1f)
                 player_last_position += player_last_direction * 
                     player_estimated_speed * Time.fixedDeltaTime;
         }
 
+        // we are in the exact frame sight was lost
         if (had_sight)
             had_sight = false;
 
+        // capture the point to later use for the point to overshoot
         if (had_sight_last_frame && can_see_player == false)
             sight_loss_direction =
                 (player_last_position - transform.position).normalized;
@@ -200,7 +210,9 @@ public partial class GuardController
         // don't start until the pursuit window has closed
         if (can_see_player == false && sight_loss_timer <= 0f &&
             HasReachedDestination() && active_routine == null)
+        {
             active_routine = StartCoroutine(SearchAndReturnRoutine());
+        }
     }
 
     // walks to player_last_position regardless of chase bar logic
@@ -221,7 +233,9 @@ public partial class GuardController
         else
             FaceTarget(player_last_position);
 
-        if (HasReachedDestination() && active_routine == null)
+        investigate_timer += Time.deltaTime;
+        if ((HasReachedDestination() || investigate_timer >= 
+            investigate_timeout) && active_routine == null)
         {
             is_investigating = false;
 

@@ -5,8 +5,6 @@ public class BulletMovement : MonoBehaviour
     [SerializeField] private float speed = 20f;
     [SerializeField] private float lifetime = 30f;
 
-    private string owner_tag = "";
-
 
     public void Initialize(GameObject owner)
     {

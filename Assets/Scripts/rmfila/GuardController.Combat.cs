@@ -5,33 +5,41 @@ using UnityEngine.AI;
 
 public partial class GuardController
 {
-    // only shoot when tier 4, weapon drawn, and player visible
     private void ShootAtPlayer()
     {
+        // only shoot when tier 4, weapon drawn, and player visible
         if (current_tier < GuardTier.Tier4 || is_drawing_weapon ||
             can_see_player == false || player == null)
         {
             return;
         }
 
+        // increment the amount of time the guard has
+        // seen the player, used to give a moment before they
+        // shoot, almost like they're lining up the shot
         if (can_see_player == true)
             sight_timer += Time.fixedDeltaTime;
 
+        // reset if lost sight of player
         else
             sight_timer = 0f;
 
+        // only shoot if we have seen the player for the delay time
         if (sight_timer < sight_delay)
             return;
 
+        // if distance between guard and player is too far, do not shoot
         if (Vector3.Distance
             (transform.position, player.position) > shoot_range)
         {
             return;
         }
 
+        // fire rate limit
         if (Time.time < next_fire_time)
             return;
 
+        // add the fire_rate to the current time for next time we can fire
         next_fire_time = Time.time + fire_rate;
 
         Vector3 direction = 
@@ -39,6 +47,7 @@ public partial class GuardController
 
         Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
 
+        // bullet is instantiated going in the direction of the player
         GameObject bullet_obj =
             Instantiate(bullet_prefab, fire_point.position, rotation);
 
@@ -67,6 +76,9 @@ public partial class GuardController
 
         // still alive, stagger so the player can escape
         if (is_staggered == false)
+            // pass the knockback_direction and investigation direction to be
+            // the opposite to where the bullet was traveling. this way the
+            // guard investigates where the bullet came from
             StartCoroutine(StaggerRoutine(knockback_dir, -knockback_dir));
     }
 
@@ -89,11 +101,18 @@ public partial class GuardController
         guard.ResetPath();
 
         sight_loss_direction = investigate_dir;
+
+        // ----- TODO: make it so the guard can maybe navigate in the -----
+        //       actual player's direction, not its assumed
+
+        // we want to overshoot where the bullet came from to keep
+        // looking in that direction, assuming the player ran away
+        // in that direction too.
         player_last_position =
             transform.position + investigate_dir * (overshoot_distance * 2f);
 
-        // raycast along the navmesh surface
-        // stops naturally at wall boundaries
+        /* OLD!!!
+         * used warp instead and didnt disrupt the guard's rotation
         Vector3 knockback_start = transform.position;
         Vector3 raw_target = 
             transform.position + knockback_dir * knockback_distance;
@@ -119,41 +138,43 @@ public partial class GuardController
         }
 
         guard.Warp(knockback_end);
+        */
+
+        // NEW!!! -- apply knockback
+        if (TryGetNavPoint(transform.position, knockback_dir,
+            knockback_distance, 0.3f, out Vector3 knockback_end))
+        {
+            yield return MoveWithTimeout(knockback_end, 0.12f);
+        }
+
         yield return new WaitForSeconds(stagger_duration);
 
         is_staggered = false;
 
-        if (can_see_player)
-        {
-            if (guns_out)
-                TierUp(GuardTier.Tier4);
+        // reset the chase bar after stagger
+        current_chase_bar = chase_bar_max;
 
-            else if (current_tier < GuardTier.Tier3)
-                TierUp(GuardTier.Tier3);
-        }
-
-        else
-        {
-            current_chase_bar = chase_bar_max;
+        // if the player is not visible after being staggered
+        if (!can_see_player)
+            // investigate the last known area
             is_investigating = true;
 
-            if (guns_out)
-                TierUp(GuardTier.Tier4);
-
-            else
-                TierUp(GuardTier.Tier3);
-        }
+        // guard is set to be lethal mode because they were shot
+        TierUp(GuardTier.Tier4);
     }
 
     // weapon draw delay, guard is tier 4 but can't shoot until complete
     private IEnumerator DrawWeaponRoutine()
     {
         is_drawing_weapon = true;
+
         yield return new WaitForSeconds(weapon_draw_time);
 
         if (guard_weapon != null)
         {
+            // after wait time, set the gun to be active
             guard_weapon.SetActive(true);
+            // update the sprite
             guards_sprite_renderer.sprite = lethal_guard_sprite;
         }
 

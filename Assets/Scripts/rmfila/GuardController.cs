@@ -147,6 +147,10 @@ public partial class GuardController : MonoBehaviour
     private bool had_sight_last_frame = false;
     private Vector3 sight_loss_direction;
 
+    private float investigate_timer = 0f;
+    public float investigate_timeout = 6f;
+
+
 
     // called by GuardVisionCone every detection tick
     // distance is how far the player is from the guard (0 when not visible)

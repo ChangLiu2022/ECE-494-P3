@@ -20,10 +20,13 @@ public partial class GuardController
 
         is_searching = false;
         is_returning = false;
+
         ApplySpeed();
     }
 
 
+    // determines if the guard's agent has reached its destination
+    // or if its close enough.
     private bool HasReachedDestination()
     {
         return guard.pathPending == false &&
@@ -39,43 +42,21 @@ public partial class GuardController
         is_searching = true;
         guard.ResetPath();
 
-        // push past the last known position in the direction the guard
-        // was already traveling, continues naturally around corners
+        // sight_loss_direction is the direction the guard was
+        // moving to the player when it loss sight. Ensure its not 0/garbage
         if (sight_loss_direction.sqrMagnitude > 0.01f)
         {
-            Vector3 overshoot_raw = player_last_position + 
-                sight_loss_direction * overshoot_distance;
-
-            Vector3 overshoot_point;
-
-            if (NavMesh.Raycast(player_last_position,
-                overshoot_raw, out NavMeshHit edge_hit, NavMesh.AllAreas))
+            if (TryGetNavPoint(player_last_position, sight_loss_direction, 
+                overshoot_distance, 0.5f, out Vector3 overshoot))
             {
-                overshoot_point = 
-                    edge_hit.position - sight_loss_direction * 0.3f;
-            }
-            else
-                overshoot_point = overshoot_raw;
-
-            if (NavMesh.SamplePosition(overshoot_point, out NavMeshHit hit,
-                overshoot_distance, NavMesh.AllAreas))
-            {
-                guard.SetDestination(hit.position);
-
-                while (HasReachedDestination() == false)
-                {
-                    FaceMovementDirection();
-                    yield return null;
-                }
+                // stop a bunch of guards from getting stuck
+                // while searching
+                yield return MoveWithTimeout(overshoot, 3f);
             }
         }
 
-        guard.ResetPath();
-
+        // anchor the current rotation to base all our rotations on
         Quaternion scan_anchor = transform.rotation;
-
-        guard.obstacleAvoidanceType = 
-            ObstacleAvoidanceType.NoObstacleAvoidance;
 
         yield return ScanIfOpen(scan_anchor, -70f);
         yield return new WaitForSeconds(0.4f);
@@ -83,51 +64,20 @@ public partial class GuardController
         yield return new WaitForSeconds(0.4f);
         yield return ScanIfOpen(scan_anchor, 0f, 1f);
 
-        guard.obstacleAvoidanceType = 
-            ObstacleAvoidanceType.HighQualityObstacleAvoidance;
-
         // continue further in the same direction,
         // looks around the corner more,
         if (sight_loss_direction.sqrMagnitude > 0.01f)
         {
-            Vector3 further_raw = transform.position + sight_loss_direction *
-                (overshoot_distance * 0.6f);
+            guard.speed = patrol_speed;
 
-            Vector3 further_point;
-
-            if (NavMesh.Raycast(transform.position,
-                further_raw, out NavMeshHit edge_hit2, NavMesh.AllAreas))
+            if (TryGetNavPoint(transform.position, sight_loss_direction, 
+                overshoot_distance * 0.6f, 0.3f, out Vector3 further))
             {
-                further_point =
-                    edge_hit2.position - sight_loss_direction * 0.3f;
-            }
-
-            else
-                further_point = further_raw;
-
-            if (NavMesh.SamplePosition(further_point, out NavMeshHit hit2,
-                overshoot_distance, NavMesh.AllAreas))
-            {
-                guard.speed = patrol_speed;
-                guard.SetDestination(hit2.position);
-
-                float push_elapsed = 0f;
-
-                while (push_elapsed < 3f && HasReachedDestination() == false)
-                {
-                    push_elapsed += Time.deltaTime;
-                    FaceMovementDirection();
-                    yield return null;
-                }
+                yield return MoveWithTimeout(further, 3f);
             }
         }
 
-        guard.ResetPath();
-
         scan_anchor = transform.rotation;
-
-        guard.obstacleAvoidanceType = 
-            ObstacleAvoidanceType.NoObstacleAvoidance;
 
         yield return ScanIfOpen(scan_anchor, -45f);
         yield return new WaitForSeconds(0.3f);
@@ -135,27 +85,15 @@ public partial class GuardController
         yield return new WaitForSeconds(0.3f);
         yield return ScanIfOpen(scan_anchor, 0f, 1f);
 
-        guard.obstacleAvoidanceType = 
-            ObstacleAvoidanceType.HighQualityObstacleAvoidance;
-
         current_chase_bar = 0f;
         is_searching = false;
         is_returning = true;
 
         ErraticDrop();
 
-        guard.SetDestination(start_position);
+        yield return MoveWithTimeout(start_position, return_timeout);
 
-        float time_elapsed = 0f;
-
-        while (time_elapsed < return_timeout &&
-            HasReachedDestination() == false)
-        {
-            time_elapsed += Time.deltaTime;
-            FaceMovementDirection();
-            yield return null;
-        }
-
+        // if guard is patrol, go back to patrolling
         if (guard_mode == GuardMode.Patrol && 
             point_a != null && point_b != null)
         {
@@ -175,6 +113,7 @@ public partial class GuardController
         {
             Quaternion look_right = 
                 start_rotation * Quaternion.Euler(0f, 180f, 0f);
+
             yield return RotateUntilFacing(look_right);
             yield return new WaitForSeconds(pause_duration);
             yield return RotateUntilFacing(start_rotation);
@@ -225,5 +164,84 @@ public partial class GuardController
                 transform.rotation, target, turn_speed * Time.deltaTime);
             yield return null;
         }
+    }
+
+
+    private IEnumerator MoveWithTimeout(Vector3 destination, float timeout)
+    {
+        guard.SetDestination(destination);
+
+        float elapsed = 0f;
+
+        // wait until we have actuall arrived to the desintation
+        // to move on
+        while (elapsed < timeout && !HasReachedDestination())
+        {
+            elapsed += Time.deltaTime;
+            // until we reach the dest, keep updating the facing
+            // direction of guard to be correct
+            FaceMovementDirection();
+            yield return null;
+        }
+
+        guard.ResetPath();
+    }
+
+
+    private bool TryGetNavPoint(Vector3 origin, Vector3 direction,
+        float distance, float pullback, out Vector3 result)
+    {
+        // ----- TODO: the guard shouldn't stop 0.5f units away from -----
+        //       the edge hit, otherwise, they do not make it to
+        //       their ideal path, but stop at the wall they hit
+
+        // this is the raw point we are going to be traveling to when
+        // the guard loses sight of the player.
+        // This is the "ideal" destination
+        Vector3 raw = origin + direction * distance;
+        Vector3 point;
+
+        // Raycast to find if the ideal overshoot point is in a way
+        if (NavMesh.Raycast
+            (origin, raw, out NavMeshHit edge_hit, NavMesh.AllAreas))
+        {             
+            // if we get an edge hit, pull the distance of where the ray
+            // hit back by 0.5f, stop guard from getting stuuck
+            point = edge_hit.position - direction * pullback;
+        }
+
+        else
+            // otherwise, the idea spot is ideal
+            point = raw;
+
+        // safety net to ensure that the position
+        // we got is a valid position
+        if (NavMesh.SamplePosition
+            (point, out NavMeshHit hit, distance, NavMesh.AllAreas))
+        {
+            result = hit.position;
+            return true;
+        }
+
+        result = Vector3.zero;
+        return false;
+    }
+
+
+    private IEnumerator ResumeIdleRoutine()
+    {
+        yield return RotateUntilFacing(start_rotation);
+
+        if (guard_mode == GuardMode.StaticSearch)
+            static_search_routine = StartCoroutine(StaticScanRoutine());
+
+        else if (guard_mode == GuardMode.Patrol && 
+            point_a != null && point_b != null)
+        {
+            target_point = point_a;
+            guard.SetDestination(target_point.position);
+        }
+
+        static_search_routine = null;
     }
 }

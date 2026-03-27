@@ -26,6 +26,7 @@ public class ChaseBarDisplay : MonoBehaviour
         // hide when empty and not actively chasing
         if (ratio > 0f || guard_controller.current_tier >= GuardTier.Tier3)
             canvas_group.alpha = 1f;
+
         else
             canvas_group.alpha = 0f;
     }
