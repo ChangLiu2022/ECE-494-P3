@@ -313,24 +313,29 @@ MonoBehaviour:
   guns_out: 0
   guard_mode: 0
   max_health: 2
-  stagger_duration: 1.2
-  knockback_distance: 1.5
+  stagger_duration: 1
+  knockback_distance: 0.5
   point_a: {fileID: 0}
   point_b: {fileID: 0}
   patrol_speed: 1
   pause_duration: 1.5
   erratic_speed: 3
-  chase_bar_max: 4
+  chase_bar_max: 6
   chase_bar_decay: 3
-  chase_bar_fill_rate: 1
+  chase_bar_fill_rate: 5
   proximity_exponent: 2
-  turn_speed: 100
-  overshoot_distance: 3
+  turn_speed: 150
+  overshoot_distance: 1.5
+  pursuit_distance: 5
+  pursuit_window: 3
+  wall_mask:
+    serializedVersion: 2
+    m_Bits: 256
   bullet_prefab: {fileID: 95569608102249964, guid: 59c833da2ebe39d44b6c27b2e01a03de,
     type: 3}
   fire_point: {fileID: 619472383794619858}
   fire_rate: 1
-  shoot_range: 10
+  shoot_range: 5
   gunshot_alert_radius: 10
   sight_delay: 0.5
   weapon_draw_time: 1
@@ -566,8 +571,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   default_detect_radius: 5
-  default_view_angle: 40
-  segments: 20
+  default_view_angle: 45
+  segments: 40
   obstruction_mask:
     serializedVersion: 2
     m_Bits: 384
