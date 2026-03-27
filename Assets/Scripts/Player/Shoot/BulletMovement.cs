@@ -5,12 +5,21 @@ public class BulletMovement : MonoBehaviour
     [SerializeField] private float speed = 20f;
     [SerializeField] private float lifetime = 30f;
 
-    private string owner_tag = "";
 
-
-    public void Initialize(string owner)
+    public void Initialize(GameObject owner)
     {
-        owner_tag = owner;
+        Collider bullet_collider = GetComponent<Collider>();
+
+        if (bullet_collider == null)
+            return;
+
+        // grab every collider on the owner and its children
+        // covers the guard's sphere collider, agent, etc
+        Collider[] owner_colliders =
+            owner.GetComponentsInChildren<Collider>();
+
+        for (int i = 0; i < owner_colliders.Length; i++)
+            Physics.IgnoreCollision(bullet_collider, owner_colliders[i]);
     }
 
 
@@ -26,19 +35,6 @@ public class BulletMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // skip anything tagged the same as whoever fired this bullet
-        if (owner_tag != "" && other.CompareTag(owner_tag))
-        {
-            Debug.Log("Bullet ignored collision with: " + other.gameObject.name + " | Tag: " + other.tag);
-            return;
-        }
-        else
-        {
-            Debug.Log("Bullet (not ignored) collided with: " + other.gameObject.name + " | Tag: " + other.tag);
-        }
-
-
-        // skip the floor entirely
         if (other.CompareTag("Floor"))
             return;
 
@@ -50,10 +46,7 @@ public class BulletMovement : MonoBehaviour
             return;
         }
 
-        // if its hits walls and guards destroy it so it doesn't
-        // do the banana peel effect
-        Debug.Log("Bullet destroyed by: " + other.gameObject.name + " | Tag: " + other.tag);
-
+        // walls, guards hit by another guard's bullet, etc.
         Destroy(gameObject);
     }
 }

@@ -32,6 +32,12 @@ public class GameEvents
         public Vector3 player_position;
     }
 
+
+    // published when a guard returns home after a failed chase
+    // every guard that receives this drops to tier 2 permanently
+    public struct ErraticAlertEvent { }
+
+
     public struct VehicleEnterEvent
     {
         public Transform vehicleTransform;

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7518937583363464476}
   - component: {fileID: 975920972793711383}
   - component: {fileID: 4851233415881762159}
+  - component: {fileID: 395810331660379925}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -138,8 +139,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd296ba8d9156f04fba14391315cbb56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullets: 2
+  bullets: 4
   exit: {fileID: 0}
+--- !u!114 &395810331660379925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2535166453606446258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abb98d021593e1c43ae1fff7019c53a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicleLayer:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!1 &7909408897269097381
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +169,7 @@ GameObject:
   - component: {fileID: 5802405313675561366}
   m_Layer: 7
   m_Name: Body
-  m_TagString: Player
+  m_TagString: Body
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -257,7 +273,7 @@ GameObject:
   - component: {fileID: 4791959475514888856}
   m_Layer: 7
   m_Name: WeaponPivot
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -294,7 +310,7 @@ PrefabInstance:
     - target: {fileID: 4128674975482840398, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
@@ -309,7 +325,7 @@ PrefabInstance:
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7559110402353057201, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
