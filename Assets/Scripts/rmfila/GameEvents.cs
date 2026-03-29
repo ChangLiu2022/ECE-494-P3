@@ -46,4 +46,7 @@ public class GameEvents
     public struct VehiclePitEvent { }
     public struct VehicleExitEvent { }
 
+    public struct GameFreezeEvent { }
+    public struct GameUnfreezeEvent { }
+
 }
