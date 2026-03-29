@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 7918979390345602087}
   - component: {fileID: 7317370812749974377}
   - component: {fileID: 644221064380075017}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: NewDoors
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ MonoBehaviour:
   guard_layer:
     serializedVersion: 2
     m_Bits: 64
-  sound_blocker: {fileID: 0}
+  sound_blocker: {fileID: 6450803907698247082}
 --- !u!65 &644221064380075017
 BoxCollider:
   m_ObjectHideFlags: 0
