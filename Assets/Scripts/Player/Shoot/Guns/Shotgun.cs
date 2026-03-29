@@ -11,6 +11,8 @@ public class Shotgun : MonoBehaviour
     [SerializeField] private int pelletCount = 5;
     [SerializeField] private float spreadAngle = 30f;
 
+    [SerializeField] private LayerMask wallLayer;
+
     private float _nextFireTime;
 
     // TODO add shothun bullets to inventory
@@ -19,6 +21,11 @@ public class Shotgun : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && Time.time >= _nextFireTime && ammo != 0)
         {
+            if (Physics.CheckSphere(firePoint.position, 0.1f, wallLayer))
+            {
+                Debug.Log("FirePoint is inside a wall, skipping shot");
+                return;
+            }
             if (ammo > 0) ammo--;
             _nextFireTime = Time.time + fireRate;
 

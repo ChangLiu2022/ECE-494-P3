@@ -55,6 +55,13 @@ public class HasInventory : MonoBehaviour
         {
             EventBus.Publish(new WinEvent());
         }
+        
+        else if (other.CompareTag("PistolAmmo"))
+        {
+            bullets = 6;
+            other.gameObject.SetActive(false);
+            EventBus.Publish(new AmmoChangedEvent());
+        }
     }
 }
 public static class GunEvents
