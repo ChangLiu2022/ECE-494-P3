@@ -3373,6 +3373,8 @@ MonoBehaviour:
   location2: {fileID: 230089301}
   location3: {fileID: 2002566378}
   nodeDuration: 2
+  nodePause: 1
+  mapController: {fileID: 701901246}
 --- !u!4 &460782424
 Transform:
   m_ObjectHideFlags: 0
@@ -4912,7 +4914,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: 1200, y: 1000}
+  m_SizeDelta: {x: 1200, y: 950}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &701901246
 MonoBehaviour:
@@ -4927,7 +4929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hiddenPosition: {x: 0, y: 100}
-  visiblePosition: {x: 0, y: -1030}
+  visiblePosition: {x: 0, y: -980}
   slideSpeed: 1.3
   slideCurve:
     serializedVersion: 2

@@ -9,7 +9,7 @@ public struct CutsceneNode
 {
     public Vector3 position;       // target position
     public float duration;         // time to stay / move
-    public float lerpSpeed;        // speed multiplier (optional)
+    public float pauseTime;        // time to pause at target
 }
 
 // Event for triggering a cutscene
@@ -38,6 +38,10 @@ public class CutsceneManager : MonoBehaviour
 
     [Header("Timing")]
     [SerializeField] private float nodeDuration = 2f;
+    [SerializeField] private float nodePause = 1f;
+
+    [Header("Dependencies")]
+    [SerializeField] private MapController mapController;
 
     private Coroutine currentCutscene;
     private Transform cameraTransform;
@@ -81,7 +85,7 @@ public class CutsceneManager : MonoBehaviour
         {
             position = pos,
             duration = nodeDuration,
-            lerpSpeed = 1f
+            pauseTime = nodePause
         };
     }
 
@@ -94,6 +98,7 @@ public class CutsceneManager : MonoBehaviour
     {
         if (nodes == null || nodes.Count == 0) return;
 
+        if (mapController != null) mapController.enabled = false;
         EventBus.Publish(new GameFreezeEvent()); // Freeze the game during cutscene
         if (followScript != null) followScript.enabled = false;
         if (currentCutscene != null)
@@ -106,12 +111,17 @@ public class CutsceneManager : MonoBehaviour
     {
         foreach (var node in nodes)
         {
+            if (node.pauseTime > 0f)
+            {
+                yield return new WaitForSecondsRealtime(node.pauseTime);
+            }
+
             Vector3 startPos = cameraTransform.position;
             Quaternion startRot = cameraTransform.rotation;
 
             float elapsed = 0f;
             float duration = Mathf.Max(node.duration, 0.0001f);
-            float speed = Mathf.Max(node.lerpSpeed, 1f);
+            float speed = 1f;
 
             while (elapsed < duration)
             {
@@ -131,6 +141,7 @@ public class CutsceneManager : MonoBehaviour
             cameraTransform.rotation = startRot;
         }
 
+        if (mapController != null) mapController.enabled = true;
         EventBus.Publish(new GameUnfreezeEvent()); // Unfreeze after cutscene
         if (followScript != null) followScript.enabled = true;
         currentCutscene = null;
