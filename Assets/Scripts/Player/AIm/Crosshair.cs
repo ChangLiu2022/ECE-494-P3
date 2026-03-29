@@ -2,15 +2,20 @@ using UnityEngine;
 
 public class Crosshair : MonoBehaviour
 {
+    [SerializeField] private float offsetX = 0f;
+    [SerializeField] private float offsetY = 0f;
+
     private void Awake()
     {
         Cursor.visible = false;
     }
+
     private void Update()
     {
-        //if (aiming == null) return;
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.x += offsetX;
+        mousePos.y += offsetY;
 
-        //transform.position = aiming.AimPoint;
-        transform.position = Input.mousePosition;
+        transform.position = mousePos;
     }
 }

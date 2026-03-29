@@ -1,5 +1,0 @@
-Crosshair courtesy of hc
-https://opengameart.org/content/crosshairs-and-reticles
-
-Bullet courtesy of oglsdl
-https://opengameart.org/content/bullet-symbol

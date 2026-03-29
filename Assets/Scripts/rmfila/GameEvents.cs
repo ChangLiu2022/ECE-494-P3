@@ -43,6 +43,9 @@ public class GameEvents
 
     public struct VehicleExitEvent { }
 
+    public struct GameFreezeEvent { }
+    public struct GameUnfreezeEvent { }
+
 
     public struct NoiseWaveEvent
     {
