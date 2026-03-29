@@ -68,7 +68,12 @@ public class InvPistol : MonoBehaviour
             }
 
             // publish gunshot event for guards to hear, and push player pos
-            EventBus.Publish(new GunshotEvent { player_position = pos });
+            EventBus.Publish(new NoiseWaveEvent
+            {
+                origin = pos,
+                radius = 5f,
+                is_gunshot = true
+            });
         }
     }
 }

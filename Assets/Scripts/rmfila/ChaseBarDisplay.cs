@@ -22,7 +22,7 @@ public class ChaseBarDisplay : MonoBehaviour
         float ratio = guard_controller.GetChaseBarRatio();
         fill_image.fillAmount = ratio;
 
-        // show bar whenever it has any fill (spotting or chasing)
+        // show bar whenever it has any fill
         // hide when empty and not actively chasing
         if (ratio > 0f || guard_controller.current_tier >= GuardTier.Tier3)
             canvas_group.alpha = 1f;

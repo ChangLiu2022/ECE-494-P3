@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using static GameEvents;
 
 
@@ -11,17 +12,10 @@ public partial class GuardController
         // reset timer when the alert is called
         investigate_timer = 0f;
 
-        if (player != null)
-        {
-            // so not all guards have the same target position
-            // set when going to an alert
-            Vector2 rand_offset = Random.insideUnitCircle * 0.75f;
+        Vector2 rand_offset = Random.insideUnitCircle * 0.75f;
 
-            // update the last known location of the player on the  alert
-            // with the random offset added
-            player_last_position = player.position + 
-                new Vector3(rand_offset.x, 0f, rand_offset.y);
-        }
+        player_last_position = 
+            e.position + new Vector3(rand_offset.x, 0f, rand_offset.y);
 
         // we want to investigate the laser alert
         is_investigating = true;
@@ -29,7 +23,7 @@ public partial class GuardController
         current_chase_bar = chase_bar_max;
 
         // cancel anything going on
-        CancelSearchAndReturn();
+        CancelAllRoutines();
 
         // alert is triggered by lasers going off,
         // nothing should indicate to use lethality yet
@@ -40,33 +34,72 @@ public partial class GuardController
     }
 
 
-    // overrides player_last_position if called
-    private void OnGunshotEvent(GunshotEvent e)
+    private void OnNoiseWaveEvent(NoiseWaveEvent e)
     {
-        investigate_timer = 0f;
+        // if the guard is farther than the sound radius
+        // ignore it immediately
+        float distance_unfiltered = 
+            Vector3.Distance(transform.position, e.origin);
 
-        // check that the distance from the current guard to the location
-        // where the gunshot was produced is within the range of hearing
-        if (Vector3.Distance
-            (transform.position, e.player_position) > gunshot_alert_radius)
-        {
-            // return if its out of range
+        if (distance_unfiltered > e.radius)
             return;
+
+        // check if sound can actually reach this guard via walkable path
+        NavMeshPath path = new NavMeshPath();
+
+        // navmesh path is made up of waypoints
+        NavMesh.CalculatePath(e.origin, 
+            transform.position, 
+            NavMesh.AllAreas, 
+            path);
+
+        // if path is not valid, do nothing
+        if (path.status == NavMeshPathStatus.PathInvalid ||
+            path.status == NavMeshPathStatus.PathPartial)
+            return;
+
+        float total_path = 0f;
+
+        // each iteration measures the distance between consecutive corners
+        // corners are from starting point, to around corners, to destination
+        // get the total distance the path is to travel between all corners
+        for (int i = 1; i < path.corners.Length; i++)
+            total_path += 
+                Vector3.Distance(path.corners[i - 1], path.corners[i]);
+
+        // if the total path length is too far from the radius to be heard
+        // ignore it. This means that the distance the sound has to travel
+        // is the actual walkable path, not a straight line distance
+        if (total_path > e.radius)
+            return;
+
+        // checks along each segment of the path for door colliders
+        // QueryTriggerInteraction.Ignore = doors are triggers
+        // but we want to hit them
+        for (int i = 1; i < path.corners.Length; i++)
+        {
+
+            Vector3 direction = 
+                (path.corners[i] - path.corners[i - 1]).normalized;
+
+            float distance_filtered = 
+                Vector3.Distance(path.corners[i - 1], path.corners[i]);
+
+            // if this path segment hits a door, sound can't reach through it
+            if (Physics.Raycast(path.corners[i - 1],
+                direction,
+                distance_filtered, 
+                door_mask, 
+                QueryTriggerInteraction.Ignore))
+            {
+                return;
+            }
         }
 
-        Vector2 rand_offset = Random.insideUnitCircle * 0.75f;
+        // delay based on path length so closer guards react sooner
+        float delay = total_path / noise_wave_expand_speed;
 
-        player_last_position = e.player_position + 
-            new Vector3(rand_offset.x, 0f, rand_offset.y);
-
-        // we are lethal now
-        guns_out = true;
-        is_investigating = true;
-        is_spotting = false;
-        current_chase_bar = chase_bar_max;
-
-        CancelSearchAndReturn();
-        TierUp(GuardTier.Tier4);
+        StartCoroutine(ReactToNoiseWave(e.is_gunshot, e.origin, delay));
     }
 
 
@@ -83,10 +116,15 @@ public partial class GuardController
         ApplySpeed();
 
         // regardless of if the guard is static or static searching
-        // they will not be treated the same -- meaning all static guards
+        // they will not be treated the same meaning all static guards
         // become static searching guards
         if (guard_mode != GuardMode.Patrol)
+        {
+            if (static_search_routine != null)
+                StopCoroutine(static_search_routine);
+
             static_search_routine = StartCoroutine(StaticScanRoutine());
+        }
     }
 
 
@@ -145,5 +183,59 @@ public partial class GuardController
         is_catching = true;
         yield return new WaitForSeconds(0.5f);
         is_catching = false;
+    }
+
+
+    private IEnumerator ReactToNoiseWave
+        (bool is_gunshot, Vector3 origin, float delay)
+    {
+        // do not react to anything until the delay based on distance
+        // is waited out
+        yield return new WaitForSeconds(delay + 0.1f);
+
+        // no investigation should be happening
+        // guard is now reacting to noise
+        investigate_timer = 0f;
+
+        CancelAllRoutines();
+
+        // go to noise but choose a random offset around the source
+        Vector2 rand_offset = Random.insideUnitCircle * 0.75f;
+
+        player_last_position = 
+            origin + new Vector3(rand_offset.x, 0f, rand_offset.y);
+
+        // if the noise was a gunshot, guard draws gun out
+        if (is_gunshot)
+        {
+            guns_out = true;
+            TierUp(GuardTier.Tier4);
+            is_investigating = true;
+            is_spotting = false;
+        }
+
+        else
+        {
+            // guard is not yet chasing
+            if (current_tier < GuardTier.Tier3)
+            {
+                // this means guard heard player's footsteps, so start
+                // spotting, freeze, stare, and let bar fill up
+                current_chase_bar = Mathf.Max(current_chase_bar, chase_bar_fill_rate);
+                is_spotting = true;
+                is_investigating = false;
+                guard.ResetPath();
+            }
+
+            // guard is already chasing
+            else
+            {
+                // already alert so skip spotting and go to investigate
+                // the sound's origin
+                is_investigating = true;
+                is_spotting = false;
+                current_chase_bar = chase_bar_max;
+            }
+        }
     }
 }

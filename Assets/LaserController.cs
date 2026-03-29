@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static GameEvents;
 
@@ -30,7 +29,8 @@ public class LaserController : MonoBehaviour
     {
         if(other.CompareTag("Body"))
         {
-            EventBus.Publish(new AlertEvent());
+            // event now publishes the source of the event
+            EventBus.Publish(new AlertEvent { position = transform.position });
             Debug.Log("Laser tripped!");
         }
     }

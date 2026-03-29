@@ -156,11 +156,15 @@ public class VisionConeMesh : MonoBehaviour
 
         // change the material of the vision cone's mesh renderer depending
         // on if we are chasing or if the lights turned out
+        if (controller == null)
+            return;
+
         if (controller.current_tier >= GuardTier.Tier3)
         {
             view_renderer.material = chase_mat;
             return;
         }
+
         // if we are chasing, the flashlight_mat will always be overwritten
         // by the the chase_mat if the guard is chasing
         else if (lights_out == true)
