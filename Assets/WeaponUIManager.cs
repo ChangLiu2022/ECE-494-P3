@@ -30,7 +30,7 @@ public class WeaponUIManager : MonoBehaviour
     private int currentIndex = -1; // -1 = none selected
 
     // Unlock state
-    private bool pistolUnlocked = false;
+    private bool pistolUnlocked = true;
     private bool shotgunUnlocked = false;
     private bool rifleUnlocked = false;
     private bool isHolstered = false;
@@ -70,9 +70,9 @@ public class WeaponUIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
             TrySwapWeapon();
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(KeyCode.Space))
             ToggleHolster();
-
+        /*
         // Cheat codes for unlocking
         if (Input.GetKeyDown(KeyCode.Alpha1))
             EventBus.Publish(new GunEvents.PistolUnlockedEvent());
@@ -80,6 +80,7 @@ public class WeaponUIManager : MonoBehaviour
             EventBus.Publish(new GunEvents.ShotgunUnlockedEvent());
         if (Input.GetKeyDown(KeyCode.Alpha3))
             EventBus.Publish(new GunEvents.RifleUnlockedEvent());
+        */
     }
 
     private void ToggleHolster()

@@ -314,7 +314,7 @@ MonoBehaviour:
   guard_mode: 0
   max_health: 2
   stagger_duration: 2
-  knockback_distance: 3
+  knockback_distance: 0.5
   point_a: {fileID: 0}
   point_b: {fileID: 0}
   patrol_speed: 1.5
@@ -562,7 +562,7 @@ MonoBehaviour:
     m_Bits: 128
   wall_mask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 33024
 --- !u!114 &5905701795597713951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,7 +580,7 @@ MonoBehaviour:
   segments: 40
   obstruction_mask:
     serializedVersion: 2
-    m_Bits: 384
+    m_Bits: 33152
   default_mat: {fileID: 2100000, guid: c01767f96f2d0bd4981efb40353cecb3, type: 2}
   flashlight_mat: {fileID: 2100000, guid: 80407a039379ac446bb1b9121a3e988b, type: 2}
   chase_mat: {fileID: 2100000, guid: e1991011242a7fb4da508197a89677de, type: 2}
