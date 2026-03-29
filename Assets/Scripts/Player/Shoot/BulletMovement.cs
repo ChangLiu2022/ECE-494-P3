@@ -46,17 +46,20 @@ public class BulletMovement : MonoBehaviour
 
         float stepDistance = speed * Time.fixedDeltaTime;
 
-        if (!Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, stepDistance))
+        // bullet before was hitting colliders and breaking stuff
+        if (!Physics.Raycast(transform.position, 
+            transform.forward, 
+            out RaycastHit hit, 
+            stepDistance, 
+            Physics.DefaultRaycastLayers, 
+            QueryTriggerInteraction.Ignore))
         {
             rb.MovePosition(transform.position + transform.forward * stepDistance);
             return;
         }
 
-        rb.MovePosition(transform.position + transform.forward * stepDistance);
-
         if (hit.collider.CompareTag("Body"))
         {
-            Debug.Log("Player was shot! Game Over.");
             EventBus.Publish(new GameEvents.GameOverEvent());
             Destroy(gameObject);
             return;
@@ -70,14 +73,10 @@ public class BulletMovement : MonoBehaviour
                 Destroy(blood.gameObject, 20f);
             }
             hit.collider.GetComponentInParent<GuardController>().TakeDamage(bullet_collider);
+            Destroy(gameObject);
             return;
         }
 
-        if (!hit.collider.CompareTag("Floor"))
-        {
-            Debug.Log("Bullet destroyed by: " + hit.collider.gameObject.name);
-            Destroy(gameObject);
-        }
-        
+        Destroy(gameObject);
     }
 }

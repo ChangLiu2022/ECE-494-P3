@@ -17,12 +17,7 @@ public partial class GuardController
         // increment the amount of time the guard has
         // seen the player, used to give a moment before they
         // shoot, almost like they're lining up the shot
-        if (can_see_player == true)
-            sight_timer += Time.fixedDeltaTime;
-
-        // reset if lost sight of player
-        else
-            sight_timer = 0f;
+        sight_timer += Time.fixedDeltaTime;
 
         // only shoot if we have seen the player for the delay time
         if (sight_timer < sight_delay)
@@ -64,10 +59,12 @@ public partial class GuardController
     {
         Vector3 knockback_dir = bullet.transform.forward;
 
+        // destroy the bullet here so we don't have to worry about double hit
         Destroy(bullet.gameObject);
 
         current_health--;
 
+        // guard died
         if (current_health <= 0)
         {
             Destroy(gameObject);
@@ -76,10 +73,10 @@ public partial class GuardController
 
         // still alive, stagger so the player can escape
         if (is_staggered == false)
-            // pass the knockback_direction and investigation direction to be
-            // the opposite to where the bullet was traveling. this way the
-            // guard investigates where the bullet came from
-            StartCoroutine(StaggerRoutine(knockback_dir, -knockback_dir));
+            // pass the knockback_direction and player_last_position
+            // so this is where the guard will investigate
+            StartCoroutine(StaggerRoutine
+                (knockback_dir, player_last_position));
     }
 
 
@@ -90,63 +87,43 @@ public partial class GuardController
 
 
     private IEnumerator StaggerRoutine
-        (Vector3 knockback_dir, Vector3 investigate_dir)
+        (Vector3 knockback_dir, Vector3 investigate_position)
     {
         is_staggered = true;
 
-        CancelSearchAndReturn();
+        // cancel any out retoutines
+        CancelAllRoutines();
 
+        // no longer can see, knocked out
         is_spotting = false;
 
-        guard.ResetPath();
+        // disable agent so we can move freely
+        guard.enabled = false;
 
-        sight_loss_direction = investigate_dir;
+        // the last direction we have of the player
+        sight_loss_direction = 
+            (investigate_position - transform.position).normalized;
 
-        // ----- TODO: make it so the guard can maybe navigate in the -----
-        //       actual player's direction, not its assumed
+        Vector3 start_pos = transform.position;
+        Vector3 end_pos = start_pos + knockback_dir * knockback_distance;
+        float knockback_time = 0f;
+        float knockback_duration = 0.15f;
 
-        // we want to overshoot where the bullet came from to keep
-        // looking in that direction, assuming the player ran away
-        // in that direction too.
-        player_last_position =
-            transform.position + investigate_dir * (overshoot_distance * 2f);
-
-
-        Vector3 knockback_start = transform.position;
-        Vector3 raw_target = 
-            transform.position + knockback_dir * knockback_distance;
-        Vector3 knockback_end = knockback_start;
-
-        if (NavMesh.SamplePosition(raw_target, out NavMeshHit nav_hit,
-            knockback_distance + 0.5f, NavMesh.AllAreas))
+        while (knockback_time < knockback_duration)
         {
-            knockback_end = nav_hit.position;
-        }
+            knockback_time += Time.deltaTime;
 
-        float knockback_elapsed = 0f;
-        float knockback_duration = 0.12f;
+            float percentage_done = knockback_time / knockback_duration;
 
-        while (knockback_elapsed < knockback_duration)
-        {
-            knockback_elapsed += Time.deltaTime;
-
-            float t = Mathf.Clamp01(knockback_elapsed / knockback_duration);
-            guard.Warp(Vector3.Lerp(knockback_start, knockback_end, t));
+            transform.position = 
+                Vector3.Lerp(start_pos, end_pos, percentage_done);
 
             yield return null;
         }
 
-        guard.Warp(knockback_end);
-        
-
-        // NEW!!! -- apply knockback
-        /*
-        if (TryGetNavPoint(transform.position, knockback_dir,
-            knockback_distance, 0.3f, out Vector3 knockback_end))
-        {
-            yield return MoveWithTimeout(knockback_end, 0.12f);
-        }
-        */
+        // turn back on the agent
+        guard.enabled = true;
+        guard.SetDestination(transform.position);
 
         yield return new WaitForSeconds(stagger_duration);
 
@@ -156,13 +133,14 @@ public partial class GuardController
         current_chase_bar = chase_bar_max;
 
         // if the player is not visible after being staggered
-        if (!can_see_player)
+        if (can_see_player == false)
             // investigate the last known area
             is_investigating = true;
 
         // guard is set to be lethal mode because they were shot
         TierUp(GuardTier.Tier4);
     }
+
 
     // weapon draw delay, guard is tier 4 but can't shoot until complete
     private IEnumerator DrawWeaponRoutine()
