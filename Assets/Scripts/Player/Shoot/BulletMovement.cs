@@ -66,7 +66,11 @@ public class BulletMovement : MonoBehaviour
             return;
         }
 
-        Debug.Log("Bullet destroyed by: " + hit.collider.gameObject.name);
-        Destroy(gameObject);
+        if (!hit.collider.CompareTag("Floor"))
+        {
+            Debug.Log("Bullet destroyed by: " + hit.collider.gameObject.name);
+            Destroy(gameObject);
+        }
+        
     }
 }

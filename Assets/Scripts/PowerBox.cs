@@ -16,7 +16,7 @@ public class PowerBox : MonoBehaviour
     
     void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
+        player = GameObject.FindWithTag("Body").transform;
         switchPivot.localEulerAngles = new Vector3(upAngle, 0, 0);
     }
 

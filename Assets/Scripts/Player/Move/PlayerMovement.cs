@@ -5,6 +5,8 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 8f;
+
+    [SerializeField] private float sprintMultiplier = 2f;
     [SerializeField] private float acceleration = 50f;
     [SerializeField] private float deceleration = 50f;
 
@@ -43,7 +45,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateVelocity(Vector3 input)
     {
+        
         Vector3 target = input * moveSpeed;
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            target *= sprintMultiplier;
+        }
         float rate = (input.sqrMagnitude > 0.01f) ? acceleration : deceleration;
         velocity = Vector3.MoveTowards(velocity, target, rate * Time.deltaTime);
         velocity.y = 0f;

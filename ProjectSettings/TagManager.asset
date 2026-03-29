@@ -12,6 +12,7 @@ TagManager:
   - Floor
   - PlayerCar
   - Body
+  - PistolAmmo
   layers:
   - Default
   - TransparentFX
