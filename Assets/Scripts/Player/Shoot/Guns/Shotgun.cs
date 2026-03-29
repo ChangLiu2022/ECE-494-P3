@@ -11,6 +11,8 @@ public class Shotgun : MonoBehaviour
     [SerializeField] private int pelletCount = 5;
     [SerializeField] private float spreadAngle = 30f;
 
+    [SerializeField] private LayerMask wallLayer;
+
     private float _nextFireTime;
 
     // TODO add shothun bullets to inventory
@@ -19,6 +21,11 @@ public class Shotgun : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && Time.time >= _nextFireTime && ammo != 0)
         {
+            if (Physics.CheckSphere(firePoint.position, 0.1f, wallLayer))
+            {
+                Debug.Log("FirePoint is inside a wall, skipping shot");
+                return;
+            }
             if (ammo > 0) ammo--;
             _nextFireTime = Time.time + fireRate;
 
@@ -52,7 +59,12 @@ public class Shotgun : MonoBehaviour
             }
 
             // publish gunshot event for guards to hear, and push player pos
-            EventBus.Publish(new GunshotEvent { player_position = pos });
+            EventBus.Publish(new NoiseWaveEvent
+            {
+                origin = pos,
+                radius = 15f,
+                is_gunshot = true
+            });
         }
     }
 }

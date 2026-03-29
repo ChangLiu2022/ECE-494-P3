@@ -12,6 +12,8 @@ TagManager:
   - Floor
   - PlayerCar
   - Body
+  - PistolAmmo
+  - Vent
   layers:
   - Default
   - TransparentFX
@@ -28,7 +30,7 @@ TagManager:
   - Vent
   - Bridge
   - Laser
-  - 
+  - Door
   - 
   - 
   - 

@@ -9,6 +9,8 @@ public class Rifle : MonoBehaviour
     [SerializeField] private float fireRate = 0.1f;
     [SerializeField] private int ammo = -1;
 
+    [SerializeField] private LayerMask wallLayer;
+
     private float _nextFireTime;
 
     private void Update()
@@ -17,6 +19,11 @@ public class Rifle : MonoBehaviour
 
         if (Input.GetMouseButton(0) && Time.time >= _nextFireTime && ammo != 0)
         {
+            if (Physics.CheckSphere(firePoint.position, 0.1f, wallLayer))
+            {
+                Debug.Log("FirePoint is inside a wall, skipping shot");
+                return;
+            }
             if (ammo > 0) ammo--;
             _nextFireTime = Time.time + fireRate;
 
@@ -41,7 +48,12 @@ public class Rifle : MonoBehaviour
             }
 
             // publish gunshot event for guards to hear, and push player pos
-            EventBus.Publish(new GunshotEvent { player_position = pos });
+            EventBus.Publish(new NoiseWaveEvent
+            {
+                origin = pos,
+                radius = 10f,
+                is_gunshot = true
+            });
         }
     }
 }

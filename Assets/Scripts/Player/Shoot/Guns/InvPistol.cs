@@ -9,6 +9,8 @@ public class InvPistol : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private float fireRate = 0.3f;
 
+    [SerializeField] private LayerMask wallLayer;
+    
     private float _nextFireTime;
     private HasInventory inv;
 
@@ -36,6 +38,12 @@ public class InvPistol : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && Time.time >= _nextFireTime)
         {
+            if (Physics.CheckSphere(firePoint.position, 0.1f, wallLayer))
+            {
+                Debug.Log("FirePoint is inside a wall, skipping shot");
+                return;
+            }
+            
             if (inv != null && inv.BulletCount <= 0)
             {
                 EventBus.Publish(new FailedToFireEvent()); // to trigger HUD flashing
@@ -68,7 +76,12 @@ public class InvPistol : MonoBehaviour
             }
 
             // publish gunshot event for guards to hear, and push player pos
-            EventBus.Publish(new GunshotEvent { player_position = pos });
+            EventBus.Publish(new NoiseWaveEvent
+            {
+                origin = pos,
+                radius = 5f,
+                is_gunshot = true
+            });
         }
     }
 }

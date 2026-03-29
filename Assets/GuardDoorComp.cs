@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GuardDoorComp : MonoBehaviour
 {
+    /*
     [SerializeField] private GuardDoors door;
 
     private int guardsInTrigger = 0;
@@ -32,4 +31,5 @@ public class GuardDoorComp : MonoBehaviour
             }
         }
     }
+    */
 }
