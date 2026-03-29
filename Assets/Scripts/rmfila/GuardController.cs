@@ -185,6 +185,9 @@ public partial class GuardController : MonoBehaviour
 
     // how long we have been investigating for
     private float investigate_timer = 0f;
+    
+    // Blood particles
+    [SerializeField] private ParticleSystem bloodEffectPrefab;
 
 
     // called by GuardVisionCone every detection tick
