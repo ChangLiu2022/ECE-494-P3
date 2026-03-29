@@ -60,6 +60,10 @@ public partial class GuardController
         Vector3 knockback_dir = bullet.transform.forward;
 
         // destroy the bullet here so we don't have to worry about double hit
+       
+        
+        
+        
         Destroy(bullet.gameObject);
 
         current_health--;
@@ -77,6 +81,13 @@ public partial class GuardController
             // so this is where the guard will investigate
             StartCoroutine(StaggerRoutine
                 (knockback_dir, player_last_position));
+        
+        
+        if (bloodEffectPrefab != null)
+        {
+            bloodEffectPrefab.transform.rotation = Quaternion.LookRotation(knockback_dir, Vector3.up);
+            bloodEffectPrefab.Play();
+        }
     }
 
 
