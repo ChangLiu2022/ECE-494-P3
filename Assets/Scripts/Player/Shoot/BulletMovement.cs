@@ -5,7 +5,9 @@ public class BulletMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 20f;
     [SerializeField] private float lifetime = 30f;
-
+    
+    [SerializeField] private ParticleSystem bloodEffectPrefab;
+    
     private Collider bullet_collider;
     private float aliveTime = 0f;
     private Rigidbody rb;
@@ -44,17 +46,20 @@ public class BulletMovement : MonoBehaviour
 
         float stepDistance = speed * Time.fixedDeltaTime;
 
-        if (!Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, stepDistance))
+        // bullet before was hitting colliders and breaking stuff
+        if (!Physics.Raycast(transform.position, 
+            transform.forward, 
+            out RaycastHit hit, 
+            stepDistance, 
+            Physics.DefaultRaycastLayers, 
+            QueryTriggerInteraction.Ignore))
         {
             rb.MovePosition(transform.position + transform.forward * stepDistance);
             return;
         }
 
-        rb.MovePosition(transform.position + transform.forward * stepDistance);
-
         if (hit.collider.CompareTag("Body"))
         {
-            Debug.Log("Player was shot! Game Over.");
             EventBus.Publish(new GameEvents.GameOverEvent());
             Destroy(gameObject);
             return;
@@ -62,11 +67,16 @@ public class BulletMovement : MonoBehaviour
 
         if (hit.collider.CompareTag("Enemy"))
         {
+            if (bloodEffectPrefab != null)
+            {
+                ParticleSystem blood = Instantiate(bloodEffectPrefab, hit.point, Quaternion.LookRotation(transform.forward, Vector3.up));
+                Destroy(blood.gameObject, 20f);
+            }
             hit.collider.GetComponentInParent<GuardController>().TakeDamage(bullet_collider);
+            Destroy(gameObject);
             return;
         }
 
-        Debug.Log("Bullet destroyed by: " + hit.collider.gameObject.name);
         Destroy(gameObject);
     }
 }

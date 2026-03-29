@@ -140,7 +140,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2895997036805336084}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 0, z: -0.7}
+  m_LocalPosition: {x: 0, y: 0, z: -0.378}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -270,8 +270,8 @@ GameObject:
   - component: {fileID: 4567596791369377958}
   - component: {fileID: 6921848108613476988}
   - component: {fileID: 6650408569263145874}
-  - component: {fileID: 8059752126526752325}
   - component: {fileID: 1595233470680574436}
+  - component: {fileID: 4662782214274533411}
   m_Layer: 6
   m_Name: Guard
   m_TagString: Enemy
@@ -313,30 +313,32 @@ MonoBehaviour:
   guns_out: 0
   guard_mode: 0
   max_health: 2
-  stagger_duration: 1
-  knockback_distance: 0.5
+  stagger_duration: 2
+  knockback_distance: 3
   point_a: {fileID: 0}
   point_b: {fileID: 0}
-  patrol_speed: 1
+  patrol_speed: 1.5
   pause_duration: 1.5
-  erratic_speed: 3
-  chase_bar_max: 6
-  chase_bar_decay: 3
-  chase_bar_fill_rate: 5
-  proximity_exponent: 2
-  turn_speed: 150
-  overshoot_distance: 1.5
-  pursuit_distance: 5
-  pursuit_window: 3
+  erratic_speed: 4.5
+  chase_bar_max: 4
+  chase_bar_decay: 1.5
+  chase_bar_fill_rate: 3
+  proximity_exponent: 4
+  turn_speed: 180
+  overshoot_distance: 2.5
+  pursuit_window: 1
+  investigate_timeout: 10
   wall_mask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 4352
+  door_mask:
+    serializedVersion: 2
+    m_Bits: 32768
   bullet_prefab: {fileID: 95569608102249964, guid: 59c833da2ebe39d44b6c27b2e01a03de,
     type: 3}
   fire_point: {fileID: 619472383794619858}
   fire_rate: 1
-  shoot_range: 5
-  gunshot_alert_radius: 10
+  shoot_range: 10
   sight_delay: 0.5
   weapon_draw_time: 1
   guards_sprite_renderer: {fileID: 430198159726640723}
@@ -344,6 +346,7 @@ MonoBehaviour:
     type: 3}
   lethal_guard_sprite: {fileID: 21300000, guid: cb9edd1b489bc440fbd45a8af4af3b01,
     type: 3}
+  noise_wave_expand_speed: 8
 --- !u!195 &6650408569263145874
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -353,40 +356,19 @@ NavMeshAgent:
   m_GameObject: {fileID: 4163402457160643360}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.6
+  m_Radius: 0.3
   m_Speed: 3
-  m_Acceleration: 15
+  m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 0
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.1
+  m_Height: 0.00001
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!135 &8059752126526752325
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4163402457160643360}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.6
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1595233470680574436
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -414,6 +396,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!136 &4662782214274533411
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4163402457160643360}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.4
+  m_Height: 1.25
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0.3}
 --- !u!1 &4626972210577983946
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,8 +575,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 910ccf6dfde6bed46b83245fe4aa4af4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  default_detect_radius: 5
-  default_view_angle: 45
+  default_detect_radius: 6
+  default_view_angle: 35
   segments: 40
   obstruction_mask:
     serializedVersion: 2
@@ -655,7 +660,7 @@ Transform:
   m_GameObject: {fileID: 8340877250937552364}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0.322}
   m_LocalScale: {x: 0.2, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

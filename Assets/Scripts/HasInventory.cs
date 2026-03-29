@@ -16,7 +16,7 @@ public class HasInventory : MonoBehaviour
     private void Awake()
     {
         exit = GameObject.FindGameObjectWithTag("EXIT");
-        exit.SetActive(false);
+        if(exit != null) exit.SetActive(false);
     }
 
     // to add/remove bullets manually
@@ -55,6 +55,13 @@ public class HasInventory : MonoBehaviour
         {
             EventBus.Publish(new WinEvent());
         }
+        
+        else if (other.CompareTag("PistolAmmo"))
+        {
+            bullets = 6;
+            other.gameObject.SetActive(false);
+            EventBus.Publish(new AmmoChangedEvent());
+        }
     }
 }
 public static class GunEvents
@@ -65,4 +72,20 @@ public static class GunEvents
 
     // used to tell HUD to update its ammo count
     public struct AmmoChangedEvent { }
+
+    public struct PistolUnlockedEvent { }
+
+    public struct ShotgunUnlockedEvent { }
+    
+    public struct RifleUnlockedEvent { }
+
+    public struct WeaponChangedEvent
+    {
+        public string new_weapon;
+
+        public WeaponChangedEvent(string newWeapon)
+        {
+            new_weapon = newWeapon;
+        }
+    }
 }
