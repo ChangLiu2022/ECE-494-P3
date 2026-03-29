@@ -149,6 +149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 30
   lifetime: 5
+  bloodEffectPrefab: {fileID: 2404753244540369716, guid: c7492b01e245e4574b653793de9c8832,
+    type: 3}
 --- !u!96 &1676106952379951149
 TrailRenderer:
   serializedVersion: 3
