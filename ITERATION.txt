@@ -1,6 +1,37 @@
-1) One thing we struggled with during our last milestone was player guidance. 
+1) One thing we struggled with during our last milestone was player guidance. We had a lot
+of features that weren't introduced such as the lights system, which made 
+it difficult for some players to engage with all of them in a natural way (i.e., without us
+backseat gaming for them). We decided to begin to address this by adding a "tutorial" heist
+before the main one. We wanted the relevant information to be relayed to the player in a way
+that didn't feel forced, so we re-used our original map and tried to make the objectives
+clear by highlighting them with a pre-gameplay cutscene. This, in conjunction with some on-
+screen directions, allows players to learn how to play our game without having to sit down
+and read a manual for an entire car ride.
 
-1) Some of the biggest feedback we got during playtesting was that we lacked novelty, which we addressed by adding
-a new portion of gameplay (the driving), updating our guard implementation (vision cone cut off, levels of alertness,
-lethality, and more), and honing in on our theming among other features. This makes it so that our gameplay is more
-unique within our selected genre, and allows players to engage with it in new ways.
+2) We iterated on our guards quite a bit as well. One major change is that guards can now open doors- previously they couldn't, which trivialized the gameplay quite a bit. They are also
+listening for the sounds of gunshots now too, and we included a way for players to see that
+and understand those interactions. Some minor changes include a stagger effect when a guard
+gets shot (since no guard that just got shot would be able to immediately whip out their
+gun to retaliate), a detection meter that makes it so players aren't immediately chased after,
+and improved roaming among others. 
+
+3) Our p3_milestone did include driving, but it was barely playable and not at all enjoyable
+for the player. This week, we spent time changing the core mechanic from a pitting-based to
+instead be roadblock-based with police cars launching spikes along the player's path to stop 
+them based on a heat index (more shooting -> more obstacles). We also incorporated the segment of gameplay more naturally into the game loop by having the player teleport to a mocked bank exterior, making the transition from heist to getaway feel cleaner than walking into a parking lot where the bank interior can still be seen (and driven into).
+
+4) During this week's playtest, we were asking players what they thought about player movement,
+and across the board there was interest in some kind of sprint mechanic. We agreed that player
+movement needed to have more options, but we decided to make it so that sprinting generated
+noise that alerts guards, giving players the choice between being silent/slow and loud/fast.
+
+5) The UI was iterated on in the form of moving the visual weapon-related information from a
+static location across the bottom to the dynamic crosshairs. This makes it so players are 
+just about always looking at the information they need most, and also frees up the edges
+to make the game feel less cramped. We also updated our main menu screen, added a map feature
+via "M" (although we feel it isn't as useful anymore given the initial cutscene). That brings
+up the feedback that we could benefit from a planning phase, a common part of heist movies,
+and our first attempt at resolving that issue was to include said brief cutscene. We felt
+that this provided enough information to our player while still making the game somewhat
+difficult. That, in conjunction with the map, provides our player with enough information to
+guide them through the level without making robbing a bank feel like a walk in the park.
