@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static GameEvents;
 
 public class ExitDoorScript : MonoBehaviour
@@ -6,6 +7,7 @@ public class ExitDoorScript : MonoBehaviour
     [SerializeField] private Transform teleport_position;
     [SerializeField] public float interactRange = 1.5f;
     [SerializeField] private CameraFollow cam;
+    [SerializeField] private bool tutorial = false;
 
     private bool can_leave = false;
     private bool has_teleported = false;
@@ -34,8 +36,15 @@ public class ExitDoorScript : MonoBehaviour
         float distance = Vector3.Distance(transform.position, player.position);
         if (distance <= interactRange && Input.GetKeyDown(KeyCode.E))
         {
-            if (can_leave)
+            if (can_leave && tutorial == true)
             {
+                CutsceneManager.did_we_already_watch_this_shit = false;
+                SceneManager.LoadScene("NewMap");
+            }
+
+            if (can_leave && tutorial == false)
+            {
+                has_teleported = true;
                 player.position = teleport_position.position;
                 cam.SetTarget(player);
             }

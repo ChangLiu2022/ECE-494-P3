@@ -47,7 +47,7 @@ public class CutsceneManager : MonoBehaviour
     private Transform cameraTransform;
     private CameraFollow followScript;
 
-    private static bool did_we_already_watch_this_shit = false;
+    public static bool did_we_already_watch_this_shit = false;
 
     private void OnEnable()
     {
