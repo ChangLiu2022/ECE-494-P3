@@ -185,6 +185,9 @@ public partial class GuardController : MonoBehaviour
 
     // how long we have been investigating for
     private float investigate_timer = 0f;
+    
+    // Blood particles
+    [SerializeField] private ParticleSystem bloodEffectPrefab;
 
 
     // called by GuardVisionCone every detection tick
@@ -250,7 +253,7 @@ public partial class GuardController : MonoBehaviour
 
         // do not let patrolling, static, or static search guards open doors
         return 
-            current_tier >= GuardTier.Tier3 || 
+            current_tier >= GuardTier.Tier1 || 
             is_investigating || 
             is_returning;
     }
