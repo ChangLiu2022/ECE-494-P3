@@ -8,6 +8,7 @@ public class ExitDoorScript : MonoBehaviour
     [SerializeField] private CameraFollow cam;
 
     private bool can_leave = false;
+    private bool has_teleported = false;
     private Transform player;
 
     private void OnEnable()
@@ -22,11 +23,14 @@ public class ExitDoorScript : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindWithTag("Body").transform;
+        player = GameObject.FindWithTag("Player").transform;
     }
 
     void Update()
     {
+        if (has_teleported) 
+            return;
+
         float distance = Vector3.Distance(transform.position, player.position);
         if (distance <= interactRange && Input.GetKeyDown(KeyCode.E))
         {
