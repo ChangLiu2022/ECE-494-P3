@@ -253,7 +253,7 @@ public partial class GuardController : MonoBehaviour
 
         // do not let patrolling, static, or static search guards open doors
         return 
-            current_tier >= GuardTier.Tier3 || 
+            current_tier >= GuardTier.Tier1 || 
             is_investigating || 
             is_returning;
     }

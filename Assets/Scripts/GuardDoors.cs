@@ -90,8 +90,7 @@ public class GuardDoors : MonoBehaviour
         yield return new WaitForSeconds(guard_open_delay);
 
         // open the door if its not open already
-        if (isOpen == false)
-            OpenDoor(guard);
+        OpenDoor(guard);
 
         guard_opening = false;
     }
