@@ -46,6 +46,13 @@ public partial class GuardController
 
         if (!is_staggered)
             StartCoroutine(StaggerRoutine(knockback_dir, player_last_position));
+        
+        
+        if (bloodEffectPrefab != null)
+        {
+            bloodEffectPrefab.transform.rotation = Quaternion.LookRotation(knockback_dir, Vector3.up);
+            bloodEffectPrefab.Play();
+        }
     }
 
     private void EndGame()

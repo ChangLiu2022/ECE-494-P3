@@ -51,7 +51,7 @@ public class HUDController : MonoBehaviour
     // saves the checklistText gameObject
     private void Start()
     {
-        UnfreezeGame();
+        EventBus.Publish(new GameUnfreezeEvent());
         if (gameover_panel != null)
             gameover_panel.SetActive(false);
 
@@ -108,12 +108,12 @@ public class HUDController : MonoBehaviour
     {
         if (is_paused)
         {
-            UnfreezeGame();
+            EventBus.Publish(new GameUnfreezeEvent());
             escapePanel.SetActive(false);
         }
         else
         {
-            FreezeGame();
+            EventBus.Publish(new GameFreezeEvent());
             escapePanel.SetActive(true);
         }
 
@@ -161,7 +161,7 @@ public class HUDController : MonoBehaviour
 
     private void OnWinEvent(WinEvent e)
     {
-        FreezeGame();
+        EventBus.Publish(new GameFreezeEvent());
         can_pause = false;
         gameover_panel.SetActive(true);
         gameover_text.text = "<b>Game Over! \n\n You Win!</b>";
@@ -247,24 +247,6 @@ public class HUDController : MonoBehaviour
         Destroy(tempIcon);
 
         isFlashing = false;
-    }
-
-    private void FreezeGame()
-    {
-        Time.timeScale = 0f;
-        crosshair.SetActive(false);
-        Cursor.visible = true;
-        if (gun != null) gun.enabled = false;
-        if (player != null) player.enabled = false;
-    }
-
-    private void UnfreezeGame()
-    {
-        Time.timeScale = 1f;
-        crosshair.SetActive(true);
-        Cursor.visible = false;
-        if (gun != null) gun.enabled = true;
-        if (player != null) player.enabled = true;
     }
 
     public void ShowControlsPanel()

@@ -1,0 +1,32 @@
+1) Some of the biggest feedback we got during playtesting was that we lacked novelty, which we addressed by adding
+a new portion of gameplay (the driving), updating our guard implementation (vision cone cut off, levels of alertness,
+lethality, and more), and honing in on our theming among other features. This makes it so that our gameplay is more
+unique within our selected genre, and allows players to engage with it in new ways.
+
+2) A very concrete piece of feedback we received was that our doors should open both ways since our previous implementation
+impeded player movement significantly. We now have doors that open away from the player regardless of direction, and they
+have a slightly larger opening radius to allow for easier movement.
+
+3) During playtesting, we were told that our controls window was unnecessary due to most controls being intuitive. We fixed
+this by removing the panel entirely and adding in-game text with instructions that appear when the player approaches 
+interactable objects. This makes it so that players receive the information they need when they need it, as opposed to
+dumping a lot on them at the start of the game. We then decided to add the controls information back to the game
+as an option in our pause menu, allowing players who have maybe taken a break from the game remind themselves what
+controls they need in order to play.
+
+4) A lot of players during our playtesting did not understand that they had limited ammo, and if they did they often found
+themselves running out of ammo without realizing it. To remedy this, we moved our ammo HUD to the bottom-center instead of
+off to the side, then changed the text to sprites so that the player gets a visual portrayal of their resources.
+
+5) Another piece of big-picture feedback we received was that players wanted more options in regards to how they could
+move around the map. We fixed this by creating a more complicated map and adding a lights system that disables a laser
+"protecting" the gold. On top of that, we added a vent system that allows players to move around the map without being
+detected, but without disabling the lights, there's nothing the player can do about the laser. This makes it so that players
+need to choose between extending their journey to turn off the lights and brute forcing their way through the guards.
+
+6) We also were told our gold_spike lacked juice (rightfully so), so we made a few changes to increase the output per
+player input. The most prominent visual change was the addition of sprites, and even though there's no animation
+yet, they inform the player of their goal (robbing the bank and evading the cops) while looking good. The light system
+also changes the aesthetics by dimming the lights and making the laser flicker out. One final addition worth noting
+is that when players trip the laser, the entire screen flashes red and blue, indicating that the guards are alerted
+to the player's positions.

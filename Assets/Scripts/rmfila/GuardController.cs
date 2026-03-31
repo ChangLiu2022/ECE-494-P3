@@ -176,6 +176,9 @@ public partial class GuardController : MonoBehaviour
     private Vector3 chase_stuck_check_pos;
     private const float CHASE_STUCK_THRESHOLD = 4f;
 
+    // Blood particles
+    [SerializeField] private ParticleSystem bloodEffectPrefab;
+
     // called by GuardVisionCone every detection tick
     public void SpottedPlayer(bool value, float distance)
     {

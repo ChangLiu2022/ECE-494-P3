@@ -5,7 +5,9 @@ public class BulletMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 20f;
     [SerializeField] private float lifetime = 30f;
-
+    
+    [SerializeField] private ParticleSystem bloodEffectPrefab;
+    
     private Collider bullet_collider;
     private float aliveTime = 0f;
     private Rigidbody rb;
@@ -65,9 +67,8 @@ public class BulletMovement : MonoBehaviour
 
         if (hit.collider.CompareTag("Enemy"))
         {
+            
             hit.collider.GetComponentInParent<GuardController>().TakeDamage(bullet_collider);
-            Destroy(gameObject);
-            return;
         }
 
         Destroy(gameObject);
