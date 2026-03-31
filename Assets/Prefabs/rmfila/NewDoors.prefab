@@ -116,6 +116,7 @@ GameObject:
   - component: {fileID: 7918979390345602087}
   - component: {fileID: 7317370812749974377}
   - component: {fileID: 644221064380075017}
+  - component: {fileID: 7351824790215145294}
   m_Layer: 15
   m_Name: NewDoors
   m_TagString: Wall
@@ -152,16 +153,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4f3cdc444550948b4c6c8ca467a52b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactRange: 0.75
   swingAngle: 90
   swingSpeed: 3
-  doorCollider: {fileID: 4895298086260136331}
-  guard_detect_range: 2
-  guard_open_delay: 0.4
+  doorCollider: {fileID: 644221064380075017}
+  interactRange: 0.75
+  guard_detect_range: 1
+  guard_open_delay: 0.25
+  swing_buffer: 0.35
   guard_layer:
     serializedVersion: 2
     m_Bits: 64
   sound_blocker: {fileID: 6450803907698247082}
+  door_obstacle: {fileID: 7351824790215145294}
 --- !u!65 &644221064380075017
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -183,6 +186,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.42, y: 1, z: 1.52}
   m_Center: {x: 0.025, y: 0, z: -0.75}
+--- !u!208 &7351824790215145294
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4562495650212646058}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.11, y: 0.5, z: 0.76}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.025, y: 0, z: -0.75}
+  m_TimeToStationary: 0.1
 --- !u!1 &4567358412562977437
 GameObject:
   m_ObjectHideFlags: 0
