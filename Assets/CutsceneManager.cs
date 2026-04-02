@@ -47,10 +47,19 @@ public class CutsceneManager : MonoBehaviour
     private Transform cameraTransform;
     private CameraFollow followScript;
 
+    public static bool did_we_already_watch_this_shit = false;
+
     private void OnEnable()
     {
         EventBus.Subscribe<CutsceneEvent>(OnCutsceneEvent);
-        if(mainCamera != null) cameraTransform = mainCamera.transform;
+
+        if (did_we_already_watch_this_shit == true)
+            return;
+
+        else
+            did_we_already_watch_this_shit = true;
+
+        if (mainCamera != null) cameraTransform = mainCamera.transform;
         if(mainCamera != null) followScript = mainCamera.GetComponent<CameraFollow>();
         StartCoroutine(PublishCutsceneNextFrame());
     }

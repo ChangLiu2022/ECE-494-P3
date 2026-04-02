@@ -48,7 +48,7 @@ public class HasInventory : MonoBehaviour
         {
             other.gameObject.SetActive(false); // 1) deactivate the game object ("pick it up")
             EventBus.Publish(new GoldEvent()); // 4) publish the GoldEvent() to tell the HUD to update the gold count
-            exit.SetActive(true);
+            if(exit != null) exit.SetActive(true);
         }
 
         else if (other.CompareTag("EXIT"))

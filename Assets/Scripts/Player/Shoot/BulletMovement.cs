@@ -67,14 +67,8 @@ public class BulletMovement : MonoBehaviour
 
         if (hit.collider.CompareTag("Enemy"))
         {
-            if (bloodEffectPrefab != null)
-            {
-                ParticleSystem blood = Instantiate(bloodEffectPrefab, hit.point, Quaternion.LookRotation(transform.forward, Vector3.up));
-                Destroy(blood.gameObject, 20f);
-            }
+            
             hit.collider.GetComponentInParent<GuardController>().TakeDamage(bullet_collider);
-            Destroy(gameObject);
-            return;
         }
 
         Destroy(gameObject);
