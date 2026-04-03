@@ -67,8 +67,11 @@ public class BulletMovement : MonoBehaviour
 
         if (hit.collider.CompareTag("Enemy"))
         {
-            
-            hit.collider.GetComponentInParent<GuardController>().TakeDamage(bullet_collider);
+            var guard = hit.collider.GetComponentInParent<GuardController>();
+            if (guard != null) guard.TakeDamage(bullet_collider);
+
+            var dummy = hit.collider.GetComponentInParent<TrainingDummy>();
+            if (dummy != null) dummy.TakeDamage(bullet_collider);
         }
 
         Destroy(gameObject);
