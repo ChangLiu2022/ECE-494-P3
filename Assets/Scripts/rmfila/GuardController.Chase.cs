@@ -1,277 +1,270 @@
+using System.Collections;
 using UnityEngine;
 
 public partial class GuardController
 {
-    private void HandleSpotting()
-    {
-        // FIX: only call ResetPath once when spotting begins, not every single frame.
-        // the original called it every FixedUpdate which interrupted returning/searching guards.
-        if (!spotting_reset_done)
-        {
-            if (!is_searching && !is_returning && static_search_routine == null)
-                guard.ResetPath();
-            spotting_reset_done = true;
-        }
-
-        // always face the player when spotting
-        FaceTarget(player.position);
-
-        if (can_see_player && player != null)
-        {
-            UpdatePlayerTracking();
-
-            float normalized_proximity = 1f - Mathf.Clamp01(sight_distance / max_detect_radius);
-            float fill_multiplier = 1f + proximity_exponent *
-                (normalized_proximity * normalized_proximity);
-
-            current_chase_bar = Mathf.Min(
-                current_chase_bar + chase_bar_fill_rate * fill_multiplier * Time.fixedDeltaTime,
-                chase_bar_max);
-
-            if (current_chase_bar >= chase_bar_max)
-            {
-                is_spotting = false;
-                spotting_reset_done = false;
-                if (guns_out)
-                    TierUp(GuardTier.Tier4);
-                else
-                    TierUp(GuardTier.Tier3);
-            }
-        }
-        else
-        {
-            current_chase_bar = Mathf.Max(current_chase_bar - chase_bar_decay * Time.fixedDeltaTime, 0f);
-            if (current_chase_bar <= 0f)
-            {
-                is_spotting = false;
-                spotting_reset_done = false;
-                if (active_routine == null)
-                    static_search_routine = StartCoroutine(ResumeIdleRoutine());
-            }
-        }
-    }
-
+    // guard moves to the player's last position and faces the player when
+    // they can see them. the guard can lose interest in the player
+    // if they somehow make it super far away
     private void ChasePlayer()
     {
-        if (can_see_player)
-        {
-            SetGuardDestination(player.position);
-            // reset stuck timer whenever we have vision - guard is actively pursuing
-            chase_stuck_timer = 0f;
-            chase_stuck_check_pos = transform.position;
-        }
-        else
-        {
-            SetGuardDestination(player_last_position);
-
-            // FIX: stuck detection.
-            // if the guard hasn't moved 0.5 units in CHASE_STUCK_THRESHOLD seconds,
-            // they are blocked by geometry and will never reach the destination.
-            // start searching instead of looping forever.
-            if (Vector3.Distance(transform.position, chase_stuck_check_pos) > 0.5f)
-            {
-                chase_stuck_timer = 0f;
-                chase_stuck_check_pos = transform.position;
-            }
-            else
-            {
-                chase_stuck_timer += Time.fixedDeltaTime;
-                if (chase_stuck_timer >= CHASE_STUCK_THRESHOLD && active_routine == null)
-                {
-                    chase_stuck_timer = 0f;
-                    sight_loss_direction = transform.forward;
-                    active_routine = StartCoroutine(SearchAndReturnRoutine());
-                    return;
-                }
-            }
-        }
-
-        FaceChaseDirection(player.position, player_last_position);
-
-        // reached last known position with no sight - begin search
-        if (!can_see_player && sight_loss_timer <= 0f &&
-            HasReachedDestination() && active_routine == null)
-        {
-            chase_stuck_timer = 0f;
-            active_routine = StartCoroutine(SearchAndReturnRoutine());
-        }
-    }
-
-    private void UpdateChaseTracking()
-    {
-        if (can_see_player && player != null)
-        {
-            sight_loss_timer = pursuit_window;
-            UpdatePlayerTracking();
-            current_chase_bar = chase_bar_max;
-            had_sight_last_frame = true;
-            return;
-        }
-
-        // FIX: removed the player_estimated_speed prediction that existed here.
-        // that was the root cause of guards running to random spots.
-        // on first detection, player_previous_position was from Start() (spawn point),
-        // making estimated speed wildly wrong and launching the guard off the map.
-        // the overshoot in SearchAndReturnRoutine already handles the
-        // "chase around the corner" behavior - we don't need prediction too.
-
-        // capture the sight loss position on the frame we lose sight
-        if (had_sight_last_frame)
-        {
-            actual_sight_loss_position = player_last_position;
-            sight_loss_direction = (player_last_position - transform.position).sqrMagnitude > 0.01f
-                ? (player_last_position - transform.position).normalized
-                : player_last_direction;
-        }
-
-        had_sight_last_frame = false;
-
-        if (sight_loss_timer > 0f)
-            sight_loss_timer -= Time.fixedDeltaTime;
-    }
-
-    private void UpdatePlayerTracking()
-    {
-        player_last_position = player.position;
-        Vector3 difference = player.position - player_previous_position;
-        // only update direction if movement is meaningful
-        if (difference.sqrMagnitude > 0.0001f)
-            player_last_direction = difference.normalized;
-        player_previous_position = player.position;
-    }
-
-    // can only move up, ErraticDrop is the way to downgrade
-    private void TierUp(GuardTier tier)
-    {
-        if (tier <= current_tier)
-            return;
-
-        current_tier = tier;
-        current_chase_bar = chase_bar_max;
-        sight_loss_timer = pursuit_window;
-
-        // FIX: reset player tracking so the new chase starts with accurate direction data
-        if (player != null)
-        {
-            player_previous_position = player.position;
-            player_last_position = player.position;
-        }
-
-        if (tier >= GuardTier.Tier3)
-            CancelAllRoutines();
-
-        if (static_search_routine != null)
-        {
-            StopCoroutine(static_search_routine);
-            static_search_routine = null;
-        }
-
-        if (tier == GuardTier.Tier4)
-        {
-            guns_out = true;
-            if (!is_drawing_weapon)
-                StartCoroutine(DrawWeaponRoutine());
-        }
-
-        ApplySpeed();
-    }
-
-    private void ErraticDrop()
-    {
-        current_tier = GuardTier.Tier2;
-        current_chase_bar = 0f;
-        ApplySpeed();
-
-        if (guard_mode != GuardMode.Patrol)
-        {
-            if (static_search_routine != null)
-                StopCoroutine(static_search_routine);
-            static_search_routine = StartCoroutine(StaticScanRoutine());
-        }
-
-        EventBus.Publish(new GameEvents.ErraticAlertEvent());
-    }
-
-    private void ApplySpeed()
-    {
-        if (current_tier == GuardTier.Tier1)
-            guard.speed = patrol_speed;
-        else
-            guard.speed = erratic_speed;
-    }
-
-    private void SetGuardDestination(Vector3 target)
-    {
-        if (Vector3.Distance(target, current_destination) > 0.2f)
-        {
-            guard.SetDestination(target);
-            current_destination = target;
-        }
-    }
-
-    private void FaceChaseDirection(Vector3 target_if_visible, Vector3 target_if_not)
-    {
-        if (can_see_player && player != null)
-            FaceTarget(target_if_visible);
-        else if (guard.velocity.sqrMagnitude > 0.01f)
-            FaceMovementDirection();
-        else
-            FaceTarget(target_if_not);
-    }
-
-    private void Investigate()
-    {
         SetGuardDestination(player_last_position);
-        FaceChaseDirection(player.position, player_last_position);
 
-        investigate_timer += Time.deltaTime;
+        if (can_see_player && player != null) 
+            FaceTarget(player.position);
 
-        bool reached = HasReachedDestination() &&
-            Vector3.Distance(current_destination, player_last_position) <= 0.5f;
+        else if (guard.velocity.sqrMagnitude > 0.01f) 
+            FaceMovementDirection();
 
-        if ((reached || investigate_timer >= investigate_timeout) && active_routine == null)
+        else FaceTarget(player_last_position);
+
+        if (HasReachedDestination() == true && active_routine == null
+            && chase_timer >= min_chase_duration)
         {
-            is_investigating = false;
-            investigate_timer = 0f;
-
-            if (sight_loss_direction.sqrMagnitude < 0.01f)
-                sight_loss_direction = player_last_direction.sqrMagnitude > 0.01f
-                    ? player_last_direction
-                    : transform.forward;
-
-            active_routine = StartCoroutine(SearchAndReturnRoutine());
+            if (player != null && Vector3.Distance(
+                transform.position, player.position) > give_up_distance)
+            {
+                active_routine = StartCoroutine(ReturnToStartRoutine());
+            }
         }
     }
 
-    private void Patrol()
+
+    // this is what is called when the player is somehow able to run
+    // far enough away. legit should not run, but I already had the code
+    // from when guards were smarter, so its staying
+    private IEnumerator ReturnToStartRoutine()
     {
-        if (target_point == null)
-            return;
+        stuck_timer = 0f;
+        is_returning = true;
+        is_alerted = false;
+        can_see_player = false;
 
-        if (is_paused)
+        guard.SetDestination(start_position);
+
+        float timer = 0f;
+
+        // keep walking home until either the return timeout time is reached
+        // or we actually make it to the starting position
+        while (timer < return_timeout && HasReachedDestination() == false)
         {
-            FaceTarget(target_point.position);
-            pause_time -= Time.fixedDeltaTime;
-            Vector3 to_target = (target_point.position - transform.position).normalized;
-            bool facing_target = Quaternion.Angle(
-                transform.rotation, YawFromDirection(to_target)) < 1f;
+            timer += Time.deltaTime;
+            FaceMovementDirection();
+            yield return null;
+        }
 
-            if (pause_time <= 0f && facing_target)
+        // once we get back to the starting position, reset the path
+        // and reset the rotation
+        guard.ResetPath();
+        transform.rotation = start_rotation;
+
+        is_returning = false;
+
+        // go back to patrolling if guard was a patrol guard
+        if (guard_mode == GuardMode.Patrol
+            && point_a != null && point_b != null)
+        {
+            target_point = point_a;
+            active_routine = StartCoroutine(PatrolRoutine());
+        }
+
+        else
+        {
+            if (guard_mode == GuardMode.StaticSearch)
+                static_scan_routine = StartCoroutine(StaticScanRoutine());
+
+            active_routine = null;
+        }
+    }
+
+
+    // static search guards turn based on openness. this means
+    // guards will rotate where ever there is more open space
+    // and less walls that conflict with vision.
+    private IEnumerator StaticScanRoutine()
+    {
+        float start_direction = start_rotation.eulerAngles.y;
+        float opposite_direction = start_direction + 180f;
+
+        while (true)
+        {
+            // to the right of the guard's starting direction
+            // get the "score" it got for how open it is
+            float right_open = 
+                MeasureOpenness(
+                    Quaternion.Euler(
+                        0f, 
+                        start_direction + 90f, 
+                        0f) * Vector3.forward
+                );
+
+            // to the left of the guard's starting direction
+            // get the "score" it got for how open it is
+            float left_open = 
+                MeasureOpenness(
+                    Quaternion.Euler(
+                        0f, 
+                        start_direction - 90f, 
+                        0f) * Vector3.forward
+                );
+
+            // what sign to apply to the direction we will want
+            // positive means to the right, negative means to the left
+            float target_sign;
+
+            // the the right is more open or equal in openness to the left
+            // rotate to the right
+            if (right_open >= left_open)
+                target_sign = 1f;
+
+            // otherwise the left direction is more open, so rotate
+            // to the left
+            else
+                target_sign = -1f;
+
+            // start by rotating to the opposite of where we are facing
+            // in the target direction we calculated 
+            yield return RotateToAngle(opposite_direction, target_sign);
+
+            // pause in direction we are facing to make guard hold and angle
+            yield return new WaitForSeconds(pause_duration);
+
+            // now scan again for which rotation would face more space
+            // but now with the guard facing the opposite_direction
+            float right_open_opposite =
+                MeasureOpenness(
+                    Quaternion.Euler(
+                        0f, 
+                        opposite_direction + 90f, 
+                        0f) * Vector3.forward
+                );
+
+            float left_open_opposite = 
+                MeasureOpenness(
+                    Quaternion.Euler(
+                        0f, 
+                        opposite_direction - 90f, 
+                        0f) * Vector3.forward
+                );
+
+            float target_sign_opposite;
+
+            if (right_open_opposite >= left_open_opposite)
+                target_sign_opposite = 1f;
+
+            else
+                target_sign_opposite = -1f;
+
+            yield return RotateToAngle(start_direction, target_sign_opposite);
+
+            yield return new WaitForSeconds(pause_duration);
+        }
+    }
+
+
+    // patrol guard walks between point_a and point_b, rotating toward
+    // the next target using openness-based direction when turning,
+    // just like the static search guard does when scanning
+    private IEnumerator PatrolRoutine()
+    {
+        while (true)
+        {
+            // move toward the current target point at patrol speed
+            guard.speed = patrol_speed;
+            SetGuardDestination(target_point.position);
+
+            // keep facing movement direction until we arrive
+            while (HasReachedDestination() == false)
             {
-                is_paused = false;
-                guard.SetDestination(target_point.position);
+                FaceMovementDirection();
+                yield return null;
             }
-            return;
-        }
 
-        FaceMovementDirection();
-
-        if (HasReachedDestination())
-        {
-            is_paused = true;
-            pause_time = pause_duration;
+            // reached the target, reset path and switch to the other point
             guard.ResetPath();
-            target_point = (target_point == point_a) ? point_b : point_a;
+
+            if (target_point == point_a)
+                target_point = point_b;
+
+            else
+                target_point = point_a;
+
+            // measure openness left and right to decide
+            // which direction to rotate toward the next target
+            float right_open = MeasureOpenness(
+                Quaternion.Euler(0f, 90f, 0f) * transform.forward
+            );
+
+            float left_open = MeasureOpenness(
+                Quaternion.Euler(0f, -90f, 0f) * transform.forward
+            );
+
+            float sign;
+            if (right_open >= left_open)
+                sign = 1f;
+
+            else
+                sign = -1f;
+
+            // get the angle to the next target point
+            float target_direction = RotationFromDirection(
+                (target_point.position - transform.position).normalized
+            ).eulerAngles.y;    
+
+            // rotate toward the next target using openness direction
+            yield return RotateToAngle(target_direction, sign);
+
+            // pause before walking again
+            yield return new WaitForSeconds(pause_duration);
         }
+    }
+
+
+    // rotate the guard to the target direction, rotating based on the sign
+    private IEnumerator RotateToAngle(float target_direction, float sign)
+    {
+        // get the distance in angle to rotate to get the guard to the target
+        float delta_angle = 
+            Mathf.DeltaAngle(transform.eulerAngles.y, target_direction);
+
+        // how much of the angle we need to travel
+        // based on the signs direction
+        float remaining_angle = sign * delta_angle;
+
+        // if remaining_angle is negative, meaning the most open rotation
+        // is to the left, we add 360 degrees to it to get the positive
+        // equivalent to the rotation, wraps around to 360
+        if (remaining_angle < 0f)
+            remaining_angle += 360f;
+
+        // loop until the remaining_angle is covered
+        while (remaining_angle > 1f)
+        {
+            // get the step increment to rotate per
+            // loop on a frame-by-frame basis
+            // either the amount we can turn this frame, or if the
+            // remaining angle is less than the amount we can turn this frame
+            float step = 
+                Mathf.Min(turn_speed * Time.deltaTime, remaining_angle);
+
+            // rotate the guard on a frame-by-frame basis
+            // by the step multiplied by the sign
+            transform.rotation = Quaternion.Euler(
+                0f, 
+                transform.eulerAngles.y + sign * step, 
+                0f
+            );
+
+            // decrement the remaining angle the guard has to rotate
+            // by the step applied this frame
+            remaining_angle -= step;
+
+            yield return null;
+        }
+
+        // set the guard to be its final target direction to 
+        // ensure the angle the guard is facing is correct
+        transform.rotation = 
+            Quaternion.Euler(0f, target_direction, 0f);
     }
 }

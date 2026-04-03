@@ -14,13 +14,13 @@ public class GuardDoors : MonoBehaviour
 
     [Header("Guard Interaction")]
     [SerializeField] private float guard_detect_range = 0.6f;
-    [Tooltip("Delay before door begins swinging. Guard is frozen this entire time.")]
+    [Tooltip("Delay before door begins swinging. " +
+        "Guard is frozen this entire time.")]
     [SerializeField] private float guard_open_delay = 0.25f;
-    [Tooltip("Extra buffer after door starts opening so guard doesn't clip through.")]
+    [Tooltip("Extra buffer after door starts opening " +
+        "so guard doesn't clip through.")]
     [SerializeField] private float swing_buffer = 0.35f;
     [SerializeField] private LayerMask guard_layer;
-    [Tooltip("Seconds before a non-returning guard's door auto-closes. Set 0 to disable.")]
-    [SerializeField] private float auto_close_delay = 8f;
 
     [Header("Sound Blocking")]
     [SerializeField] private Collider sound_blocker;
@@ -33,79 +33,114 @@ public class GuardDoors : MonoBehaviour
     private bool guard_opening = false;
     private float closedAngle;
     private float targetAngle;
-    private GuardController last_guard_opener = null;
-    private bool watching_for_close = false;
-    private float poll_timer = 0f;
-    private const float POLL_INTERVAL = 0.1f;
-    private Coroutine auto_close_routine = null;
+    private float timer = 0f;
+
 
     void Start()
     {
         closedAngle = transform.localEulerAngles.y;
         targetAngle = closedAngle;
-        if (door_obstacle != null)
-            door_obstacle.enabled = false;
     }
+
 
     void Update()
     {
         if (player == null)
         {
             GameObject body = GameObject.FindWithTag("Body");
-            if (body != null) player = body.transform;
+
+            if (body != null) 
+                player = body.transform;
         }
 
         if (player != null)
         {
+            // get the distance from the player to the doors closest point
             Vector3 closest = doorCollider.ClosestPoint(player.position);
-            if (Vector3.Distance(closest, player.position) <= interactRange &&
-                Input.GetKeyDown(KeyCode.E))
+
+            // if the player is close enough and presses E, open/close doors
+            if (Vector3.Distance(closest, player.position) <= interactRange 
+                && Input.GetKeyDown(KeyCode.E))
             {
-                if (isOpen) CloseDoor();
-                else OpenDoor(player);
+                // doors already open and pressed E, close it
+                if (isOpen == true) 
+                    CloseDoor();
+
+                // door already closed and pressed E, open it
+                else 
+                    OpenDoor(player);
             }
         }
 
-        if (!isOpen && !guard_opening)
+        // if the doors are closed and a guard isnt in the process of
+        // opening it, check for nearby guards on a fixed update
+        // stops doors from checking for guards every frame -- performance
+        if (isOpen == false && guard_opening == false)
         {
-            poll_timer += Time.deltaTime;
-            if (poll_timer >= POLL_INTERVAL)
+            timer += Time.deltaTime;
+
+            if (timer >= 0.1f)
             {
-                poll_timer = 0f;
+                timer = 0f;
                 CheckForGuard();
             }
         }
 
         float currentY = transform.localEulerAngles.y;
-        float newY = Mathf.LerpAngle(currentY, targetAngle, Time.deltaTime * swingSpeed);
+
+        float newY = Mathf.LerpAngle(
+            currentY, 
+            targetAngle, 
+            Time.deltaTime * swingSpeed
+        );
+
+        // swing the door open
         transform.localEulerAngles = new Vector3(0f, newY, 0f);
     }
 
+
     private void CheckForGuard()
     {
-        Collider[] nearby = Physics.OverlapSphere(transform.position, guard_detect_range, guard_layer);
+        // check for guards in a small radius around the door
+        Collider[] nearby = Physics.OverlapSphere(
+            transform.position, 
+            guard_detect_range, 
+            guard_layer
+        );
+
+        // loop over all detected colliders in the sphere
+        // and check if they have a guard controller component
         foreach (Collider col in nearby)
         {
-            GuardController gc = col.GetComponentInParent<GuardController>();
-            if (gc != null && gc.IsDoorEligible())
+            GuardController guard = 
+                col.GetComponentInParent<GuardController>();
+
+            // if found a guard controller and guard is able to open the door
+            if (guard != null && guard.IsDoorEligible())
             {
-                StartCoroutine(GuardOpenRoutine(gc));
+                // open the door and pause the guard's nav while it opens
+                StartCoroutine(GuardOpenRoutine(guard));
                 return;
             }
         }
     }
 
-    private IEnumerator GuardOpenRoutine(GuardController gc)
+
+    private IEnumerator GuardOpenRoutine(GuardController guard)
     {
         guard_opening = true;
+
+        // allows timing to be timed for each part, stopping the guard
+        // when they get to the door, and stopping the guard while the
+        // door is swinging open so they don't clip through it
         float total_pause = guard_open_delay + swing_buffer;
-        gc.PauseNavigation(total_pause);
+        guard.PauseNavigation(total_pause);
 
         yield return new WaitForSeconds(guard_open_delay);
 
-        if (!isOpen)
+        if (isOpen == false)
         {
-            OpenDoor(gc.transform);
+            OpenDoor(guard.transform);
         }
 
         guard_opening = false;
@@ -113,21 +148,56 @@ public class GuardDoors : MonoBehaviour
 
     public void OpenDoor(Transform opener)
     {
-        if (isOpen) return;
+        if (isOpen == true) 
+            return;
+
+        // which side of the door the opener is on, determines which way the
+        // door swings open
         Vector3 localPos = transform.InverseTransformPoint(opener.position);
-        float direction = localPos.x > 0 ? 1f : -1f;
+
+        float direction;
+
+        // if the opener is on the right side the targetAngle will be
+        // positive meaning the swingAngle is added to the closed angle
+        if (localPos.x > 0)
+        {
+            direction = 1f;
+        }
+
+        // otherwise, the opener is on the left, targetAngle is negative,
+        // meaning swingAngle is subtracted from the closed angle
+        else
+        {
+            direction = -1f;
+        }
+
         targetAngle = closedAngle + swingAngle * direction;
+
         isOpen = true;
-        if (sound_blocker != null) sound_blocker.enabled = false;
-        if (door_obstacle != null) door_obstacle.enabled = true;
+
+        // door opened, no longer block sound
+        if (sound_blocker != null) 
+            sound_blocker.enabled = false;
+
+        // door opened, now an obstacle
+        if (door_obstacle != null) 
+            door_obstacle.enabled = true;
     }
 
     public void CloseDoor()
     {
-        if (!isOpen) return;
+        if (isOpen == false) 
+            return;
+
+        // go to closed angle
         targetAngle = closedAngle;
+
         isOpen = false;
-        if (sound_blocker != null) sound_blocker.enabled = true;
-        if (door_obstacle != null) door_obstacle.enabled = false;
+
+        if (sound_blocker != null) 
+            sound_blocker.enabled = true;
+
+        if (door_obstacle != null) 
+            door_obstacle.enabled = false;
     }
 }

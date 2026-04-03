@@ -1,3 +1,6 @@
+// OLD SYSTEM FOR WHEN GUARDS WERE SMARTER
+
+/*
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -303,3 +306,4 @@ public partial class GuardController
         }
     }
 }
+*/
