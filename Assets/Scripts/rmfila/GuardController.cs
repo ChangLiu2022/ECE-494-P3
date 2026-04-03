@@ -1,261 +1,253 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using static GameEvents;
 
-
-public enum GuardTier
-{
-    // default calm state. once left, never returns here
-    Tier1 = 1,
-    // permanently alert, erratic patrol. lowest possible after any chase
-    Tier2 = 2,
-    // actively chasing, nonlethal
-    Tier3 = 3,
-    // actively chasing, lethal (heard gunshot)
-    Tier4 = 4
-}
-
-
-public enum GuardMode
-{
-    Static,
-    Patrol,
-    StaticSearch
+// different type of guards
+// static search guards differ from static
+// in that they scan 180 degrees back and forth
+// at their starting position.
+public enum GuardMode 
+{ 
+    Static, 
+    Patrol, 
+    StaticSearch 
 }
 
 
 public partial class GuardController : MonoBehaviour
 {
-    public GuardTier current_tier = GuardTier.Tier1;
-    // whether or not to be lethal
+    // determines if guard has sight of the player
+    // or the palyer is in the guard's vision cone
+    public bool can_see_player = false;
+    // determines if guard is alerted or not
+    public bool is_alerted = false;
+    // determines if guard has weapon drawn or not
     public bool guns_out = false;
 
+    // main routine logic for patrol, chase, etc partial classes require it
+    public Coroutine active_routine = null;
+
+    public Transform player;
+    public NavMeshAgent guard;
+
     [Header("Guard Mode")]
-    [Tooltip("Static = stands still. Patrol = walks between " +
-    "point_a and point_b. StaticSearch = stands still but " +
-    "scans back and forth.")]
     [SerializeField] private GuardMode guard_mode = GuardMode.Static;
 
     [Header("Health")]
-    [SerializeField] private int max_health = 2;
-    [SerializeField] private float stagger_duration = 2f;
-    [SerializeField] private float knockback_distance = 3f;
+    [SerializeField] private int max_health = 5;
 
-    [Header("Patrol Settings")]
-    [Tooltip("Patrol guard's starting point.")]
+    [Header("Patrol")]
     [SerializeField] private Transform point_a;
-    [Tooltip("Patrol guard's ending point.")]
     [SerializeField] private Transform point_b;
     [SerializeField] private float patrol_speed = 1.5f;
+    [Tooltip("How long the guard pauses at its target " +
+        "point before moving to the next target.")]
     [SerializeField] private float pause_duration = 1.5f;
 
-    [Header("Chase Settings")]
-    [SerializeField] private float erratic_speed = 4.5f;
-
-    [Header("Chase Bar")]
-    [Tooltip("Time in seconds the bar takes to fill at max range.")]
-    [SerializeField] private float chase_bar_max = 4f;
-    [Tooltip("How fast the bar drains when player leaves sight.")]
-    [SerializeField] private float chase_bar_decay = 1.5f;
-    [Tooltip("Base fill rate per second when player is at the edge of " +
-        "the vision cone. Exponentially scaled by proximity.")]
-    [SerializeField] private float chase_bar_fill_rate = 3f;
-    [Tooltip("How aggressively proximity speeds up the fill. " +
-        "Higher = more punishing at close range.")]
-    [SerializeField] private float proximity_exponent = 4f;
-
-    [Header("Search Settings")]
-    [Tooltip("How fast the guard turns in 1 second.")]
+    [Header("Static")]
     [SerializeField] private float turn_speed = 180f;
-    [Tooltip("How far the guard runs past the last know " +
-        "location of the player")]
-    [SerializeField] private float overshoot_distance = 2.5f;
-    [Tooltip("How long the guard will still know where the" +
-        " player is after losing sight of them.")]
-    [SerializeField] private float pursuit_window = 1f;
-    [Tooltip("How long the guard will search the player's last " +
-        "known area.")]
-    [SerializeField] private float investigate_timeout = 10f;
 
-    [Header("Shooting Settings")]
-    [Tooltip("Layers that block the guard from shooting.")]
+    [Header("Chase")]
+    [SerializeField] private float chase_speed = 3.5f;
+    [Tooltip("How far the player has to travel to make " +
+        "the guard go back to its starting position")]
+    [SerializeField] private float give_up_distance = 15f;
+    [SerializeField] private float min_chase_duration = 4f;
+
+    [Header("Shooting")]
     [SerializeField] private LayerMask wall_mask;
     [SerializeField] private LayerMask door_mask;
     [SerializeField] private GameObject bullet_prefab;
     [SerializeField] private Transform fire_point;
     [SerializeField] private float fire_rate = 1f;
-    [Tooltip("How far the guard can shoot the player from.")]
-    [SerializeField] private float shoot_range = 10f;
-    [Tooltip("Delay before the guard can fire after first spotting " +
-        "the player in a chase. Gives the player a window to react.")]
+    [Tooltip("The max range the guard's can shoot within.")]
+    [SerializeField] private float shoot_range = 5f;
+    [Tooltip("How long the guard's take to react to the player and shoot.")]
     [SerializeField] private float sight_delay = 0.5f;
-    [Tooltip("Time it takes for the guard to draw their weapon " +
-        "after escalating to tier 4.")]
+    [Tooltip("How long the guard's take to draw " +
+        "their gun to shoot the player.")]
     [SerializeField] private float weapon_draw_time = 1f;
+    [SerializeField] private float knockback_distance = 0.5f;
+    [SerializeField] private float knockback_duration = 0.2f;
+    [Tooltip("How long the guard remains stationary after being shot.")]
+    [SerializeField] private float stagger_duration = 1f;
 
-    [Header("Sprite Settings")]
+    [Header("Juice")]
     [SerializeField] SpriteRenderer guards_sprite_renderer;
     [SerializeField] Sprite nonlethal_guard_sprite;
     [SerializeField] Sprite lethal_guard_sprite;
+    [SerializeField] private ParticleSystem bloodEffectPrefab;
 
-    [Header("Noise Settings")]
-    [Tooltip("Must match expand_speed on your NoiseWave prefab.")]
+    [Header("Noise")]
+    [Tooltip("How long the guard takes to hear a gunshot. " +
+        "Needs to match the exact same as the NoiseWave prefab.")]
     [SerializeField] private float noise_wave_expand_speed = 8f;
 
-    // 0 means guard lost sight of player
-    private float sight_loss_timer = 0f;
-    // to predict how far the guard should travel
-    // when chasing the player's last known visual
-    private float player_estimated_speed = 0f;
+    // determines if the guard is staggered by the player
+    private bool is_staggered = false;
 
     private int current_health;
 
-    private bool is_staggered = false;
+    // determines if the guard is pulling their weapon out
+    // small delay happens
+    private bool is_drawing_weapon = false;
 
-    private bool can_see_player = false;
+    // determines if the door is pausing the guards nav mesh
+    private bool is_waiting_for_door = false;
 
-    // distance to player when visible
-    // used for fill rate scaling
-    private float sight_distance = 0f;
+    // determines if guard lost sight of player and is returning
+    // back to their starting position. This really cannot happen
+    private bool is_returning = false;
 
-    // the detect radius from the vision cone
-    private float max_detect_radius;
-    private float current_chase_bar = 0f;
+    // determines if the guard gives the player a graceperiod
+    // on direct contact with un unaware guard
+    private bool is_catching = false;
 
-    // true when the guard sees the player but the bar isn't full yet
-    // guard freezes in place and tracks during this phase
-    private bool is_spotting = false;
-
-    // start position of the guard to return to
+    // starting position and rotation of the guard
     private Vector3 start_position;
-    // start rotation of the guard to return to
     private Quaternion start_rotation;
-    // player last position and direction to try 
-    // and investigate intelligently when guard
-    // loses visual
-    private Vector3 player_last_position;
-    private Vector3 player_last_direction;
-    // players position last frame for direction calculation
-    private Vector3 player_previous_position;
-    // normalized movement direction for search phase to overshoot
-    private Vector3 last_chase_velocity;
 
-    // the patrol guard's point a and b
+    // the position the guard will be actively chasing of the player
+    public Vector3 player_last_position;
+
+    // the target destination for a patrol guard
     private Transform target_point;
 
-    private Transform player;
-    private NavMeshAgent guard;
-
-    // use to toggle the gun on and off.
+    // the guards weapon to activate and deactivate shooting capabilities
     private GameObject guard_weapon;
-    // the guards vision cone mesh
-    private VisionConeMesh vision_cone_mesh;
 
-    // patrol pause
-    private bool is_paused = false;
-    private float pause_time = 0f;
-    // used when the guard is returning to its
-    // start position after a chase or something
-    // this stops the guard from getting stuck somewhere
-    // and never doing anything else
-    private float return_timeout = 30f;
-    // where we want the guard to go when chasing of some sorts
+    // used to cache the in route destination when the route is paused
     private Vector3 current_destination;
 
-    // if true, guard walks to player's last known position
-    // stands there for a second, the runs search or return
-    private bool is_investigating = false;
-    private bool is_searching = false;
-    private bool is_returning = false;
-    private Coroutine active_routine = null;
-    private Coroutine static_search_routine = null;
+    // safety that ensures guards won't chase nothing forever
+    private const float return_timeout = 15f;
 
-    // grace period so bumping a t1 guard isn't instant game over
-    private bool is_catching = false;
-    // next_fire_time < fire_rate == do not fire
+    // how long the guard has chased
+    private float chase_timer = 0f;
+
     private float next_fire_time = 0f;
-    // sight_timer < sight_delay == do not shoot the player yet
+
+    // how long the guard has been spotting the player. determines
+    // when they can shoot after seeing player for first time
     private float sight_timer = 0f;
-    private bool is_drawing_weapon = false;
-    // used to determine if we lost sight this frame
-    private bool had_sight_last_frame = false;
-    // direction player was heading when guard lost sight
-    // used for investigation
-    private Vector3 sight_loss_direction;
 
-    // how long we have been investigating for
-    private float investigate_timer = 0f;
-    
-    // Blood particles
-    [SerializeField] private ParticleSystem bloodEffectPrefab;
+    // used to get a guard unstuck in chasing
+    private Vector3 stuck_check_position;
+    private float stuck_timer = 0f;
+    private const float stuck_check_interval = 2.5f;
+    private const float stuck_move_threshold = 0.4f;
 
 
-    // called by GuardVisionCone every detection tick
-    // distance is how far the player is from the guard (0 when not visible)
-    public void SpottedPlayer(bool value, float distance)
+    // used to determine if these corotuines are running
+    private Coroutine static_scan_routine = null;
+    private Coroutine draw_weapon_routine = null;
+    private Coroutine stagger_routine = null;
+
+
+    // determines if we can see the player
+    // if so, update its last position it saw
+    public void SpottedPlayer(bool can_see)
     {
-        can_see_player = value;
-        sight_distance = distance;
+        can_see_player = can_see;
 
-        // dont need to run if we cannot see the player
-        if (can_see_player == false)
-            return;
-
-        // guard spotted player while investigating
-        // switch to normal vision based chase
-        if (is_investigating)
+        if (can_see_player == true)
         {
-            is_investigating = false;
+            if (player != null) 
+                player_last_position = player.position;
 
-            if (player != null)
-            {
-                player_previous_position = player.position;
-                player_estimated_speed = 0f;
-                player_last_direction = (player.position - transform.position).normalized;
-            }
-        }
-
-        CancelAllRoutines();
-
-        // if already chasing (bar was full), keep the tier and keep
-        // updating last known position
-        if (current_tier >= GuardTier.Tier3)
-        {
-            if (guns_out)
-                TierUp(GuardTier.Tier4);
-
-            return;
-        }
-
-        // not chasing yet - enter the spotting/freeze phase
-        // the bar will fill in FixedUpdate
-        if (is_spotting == false)
-        {
-            is_spotting = true;
-            guard.ResetPath();
+            if (is_alerted == false) 
+                Alert();
         }
     }
 
-
-    public float GetChaseBarRatio()
+    // updates the player's last known position, sets the guards speed to
+    // chase, and draws the guards weapon. this primes the guard for chasing
+    public void Alert()
     {
-        if (chase_bar_max > 0f)
-            return current_chase_bar / chase_bar_max;
+        chase_timer = 0f;
 
-        return 0f;
+        stuck_timer = 0f;
+        stuck_check_position = transform.position;
+
+        is_alerted = true;
+
+        // only cancel the active chase routine or static scan routine
+        if (active_routine != null) 
+        { 
+            StopCoroutine(active_routine); 
+            active_routine = null; 
+        }
+
+        if (static_scan_routine != null) 
+        { 
+            StopCoroutine(static_scan_routine); 
+            static_scan_routine = null; 
+        }
+
+        // cancelled any return routine
+        is_returning = false;
+
+        guard.speed = chase_speed;
+
+        if (player != null) 
+            player_last_position = player.position;
+
+        if (guns_out == false && is_drawing_weapon == false) 
+            draw_weapon_routine = StartCoroutine(DrawWeaponRoutine());
     }
 
 
+    // determines if guard is able to open door
     public bool IsDoorEligible()
     {
-        if (is_staggered) 
+        // cannot open door if staggered
+        if (is_staggered == true) 
             return false;
 
-        // do not let patrolling, static, or static search guards open doors
-        return 
-            current_tier >= GuardTier.Tier1 || 
-            is_investigating || 
-            is_returning;
+        // returns true if guard has moved significantly,
+        // is alert, or is returning
+        return is_alerted == true || is_returning == true;
+    }
+
+
+    // pauses the guard's nav for a duration
+    public void PauseNavigation(float duration)
+    {
+        // door is pausing the guards movement currently
+        if (is_waiting_for_door == true) 
+            return;
+
+        // guards movement isnt already paused, so pause it
+        StartCoroutine(PauseNavigationRoutine(duration));
+    }
+
+
+    private IEnumerator PauseNavigationRoutine(float duration)
+    {
+        // actively pausing the guard's movement
+        is_waiting_for_door = true;
+
+        // save the current destination the guard was in to return to
+        // after unpausing
+        Vector3 saved = current_destination;
+
+        // actually pause the guard's navmesh agent
+        guard.isStopped = true;
+
+        // pause the guard for the duration specified
+        yield return new WaitForSeconds(duration);
+
+        // unpause the guard's navmesh agent
+        guard.isStopped = false;
+
+        // set the guard to the saved destination,
+        // unless staggered in the process
+        if (is_staggered == false) 
+            SetGuardDestination(saved);
+
+        // guard is no longer being paused by the door
+        is_waiting_for_door = false;
     }
 
 
@@ -263,7 +255,6 @@ public partial class GuardController : MonoBehaviour
     {
         EventBus.Subscribe<AlertEvent>(OnAlertEvent);
         EventBus.Subscribe<NoiseWaveEvent>(OnNoiseWaveEvent);
-        EventBus.Subscribe<ErraticAlertEvent>(OnErraticAlertEvent);
     }
 
 
@@ -271,149 +262,228 @@ public partial class GuardController : MonoBehaviour
     {
         EventBus.Unsubscribe<AlertEvent>(OnAlertEvent);
         EventBus.Unsubscribe<NoiseWaveEvent>(OnNoiseWaveEvent);
-        EventBus.Unsubscribe<ErraticAlertEvent>(OnErraticAlertEvent);
-    }
-
-
-    private void Awake()
-    {
-        guard = GetComponentInChildren<NavMeshAgent>();
-        guard.updateRotation = false;
-        guard.updateUpAxis = false;
     }
 
 
     private void Start()
     {
+        guard = GetComponentInChildren<NavMeshAgent>();
+
+        // we manually update the navmesh agent's rotation
+        guard.updateRotation = false;
+        // tell the navmesh agent to not auto align the character
+        // since we manually adjust the rotation, we don't want the
+        // agent to intefere with my set orientation
+        guard.updateUpAxis = false;
+
+        // how far away the guard stops from the player
+        guard.stoppingDistance = 1f;
+
         current_health = max_health;
+
         start_position = transform.position;
         start_rotation = transform.rotation;
 
-        // agents will avoid one another and no longer collide/
-        // fight over the same position of alert
+        // assign a guard a value for its priority so they don't collide
+        // or intefere with other guards
         guard.avoidancePriority = Random.Range(1, 99);
 
-        // firepoint is the "muzzle" of the gun
         guard_weapon = fire_point.parent.gameObject;
+        // disable the gun be default
         guard_weapon.SetActive(false);
+        // set the guards default starting sprite be be non_lethal
         guards_sprite_renderer.sprite = nonlethal_guard_sprite;
 
-        vision_cone_mesh = GetComponentInChildren<VisionConeMesh>();
+        // where the player is being rendered
+        GameObject player_obj = GameObject.FindWithTag("Body");
 
-        if (vision_cone_mesh != null)
-            max_detect_radius = vision_cone_mesh.GetDetectRadius();
-
-        // player's body is a child of the player root, but the child
-        // has the sphere collider
-        GameObject player_object = GameObject.FindWithTag("Body");
-
-        if (player_object != null)
+        if (player_obj != null)
         {
-            player = player_object.transform;
-            player_previous_position = player.position;
+            player = player_obj.transform;
+            player_last_position = player.position;
         }
 
-        // set the guard in motion to point_a to begin patrol
-        if (guard_mode == GuardMode.Patrol &&
-            point_a != null && point_b != null)
+        if (guard_mode == GuardMode.Patrol
+            && point_a != null && point_b != null)
         {
             target_point = point_a;
-            guard.speed = patrol_speed;
-            guard.SetDestination(target_point.position);
+            active_routine = StartCoroutine(PatrolRoutine());
         }
 
         if (guard_mode == GuardMode.StaticSearch)
-            static_search_routine = StartCoroutine(StaticScanRoutine());
+            static_scan_routine = StartCoroutine(StaticScanRoutine());
     }
-
 
     private void FixedUpdate()
     {
-        // staggered? do nothing
-        if (is_staggered)
+        // staggered or returning back to start, do nothing
+        if (is_staggered == true || is_returning == true)
             return;
 
-        // can see the player but chase bar isnt full?
-        if (is_spotting)
+        // not alerted, patrol is handled by its coroutine
+        if (is_alerted == false)
+            return;
+
+        stuck_timer += Time.fixedDeltaTime;
+
+        if (stuck_timer >= stuck_check_interval)
         {
-            // let this handle tracking the player
-            HandleSpotting();
-            return;
-        }
+            stuck_timer = 0f;
 
-        // searching or returning from a search? do nothing
-        if (is_searching || is_returning)
-            return;
-
-        if (current_tier <= GuardTier.Tier2)
-        {
-            // keep patrolling between point a and b if on patrol mode
-            if (guard_mode == GuardMode.Patrol)
-                Patrol();
-
-            // otherwise, just do what you were doing
-            return;
-        }
-
-        // lethal/nonlethal chasing
-        if (current_tier >= GuardTier.Tier3)
-        {
-            // lost sight of player
-            if (is_investigating)
+            if (Vector3.Distance(
+                transform.position, 
+                stuck_check_position) < stuck_move_threshold)
             {
-                Investigate();
-                // attempt to shoot at the player if possible
-                ShootAtPlayer();
-                return;
+                // guard hasn't moved enough, resync navmesh and force repath
+                guard.Warp(transform.position);
+                guard.SetDestination(player_last_position);
+                current_destination = player_last_position;
             }
 
-            // update the bar for if player is seen or not
-            UpdateChaseTracking();
-            // chase player if possible
-            ChasePlayer();
-            ShootAtPlayer();
+            stuck_check_position = transform.position;
+        }
+
+        // update the last known player position every frame
+        // this gives the guards up to date positions of the player to chase
+        if (player != null) 
+            player_last_position = player.position;
+
+        if (is_alerted)
+            chase_timer += Time.fixedDeltaTime;
+
+        ChasePlayer();
+        ShootAtPlayer();
+    }
+
+
+    // face the current direction the guard is moving smoothly
+    public void FaceMovementDirection()
+    {
+        if (guard.velocity.sqrMagnitude <= 0.01f) 
+            return;
+
+        SmoothRotateTo(RotationFromDirection(guard.velocity.normalized));
+    }
+
+
+    // smoothly rotates to the target the guard is chasing
+    public void FaceTarget(Vector3 world_position)
+    {
+        SmoothRotateTo(
+            RotationFromDirection(
+                (world_position - transform.position).normalized
+            )
+        );
+    }
+
+
+    // smoothly rotate two target input rotation
+    private void SmoothRotateTo(Quaternion target)
+    {
+        transform.rotation = 
+            Quaternion.RotateTowards(
+                transform.rotation, 
+                target, 
+                turn_speed * Time.fixedDeltaTime
+            );
+    }
+
+
+    // converts a direction to a rotation in only the Y axis
+    private Quaternion RotationFromDirection(Vector3 direction)
+    {
+        return 
+            Quaternion.Euler(
+                0f, 
+                Mathf.Atan2(
+                    direction.x, 
+                    direction.z
+                ) * Mathf.Rad2Deg, 
+                0f
+            );
+    }
+
+
+    // determines if the guard has reached its set destination
+    public bool HasReachedDestination()
+    {
+        if (guard.pathStatus == NavMeshPathStatus.PathPartial) 
+            return false;
+
+        // return true is no path is pending and
+        // which in range of stopping distance
+        return 
+            guard.pathPending == false 
+            && guard.remainingDistance <= guard.stoppingDistance;
+    }
+
+
+    // sets the guards destination and saves the current destination
+    // for recovering later
+    public void SetGuardDestination(Vector3 target)
+    {
+        // checks if the target destination is a siginificant enough
+        // change in distance from where we are currently heading
+        if (Vector3.Distance(target, current_destination) > 0.2f)
+        {
+            guard.SetDestination(target);
+            current_destination = target;
         }
     }
 
 
-    private void FaceMovementDirection()
+    // measures the total distance collected from multiple rays
+    // casting from a given direction. This is used to determine which
+    // direction has more "open space" than the other. open space is
+    // determined by the distance a ray can shoot out without colliding
+    // with the wall_mask.
+    private float MeasureOpenness(Vector3 cast_direction)
     {
-        // needs to be a significant enough change in movement
-        if (guard.velocity.sqrMagnitude <= 0.01f)
-            return;
+        float spread = 60f;
+        int ray_count = 3;
+        float ray_length = 10f;
 
-        // pans the guard to face the right way
-        SmoothRotateTo(YawFromDirection(guard.velocity.normalized));
-    }
+        float total = 0f;
 
+        // loops for all rays and cast them across
+        // the spread angle equally. similar to vision cone
+        for (int i = 0; i < ray_count; i++)
+        {
+            // converts the loop progress into a percentage of completion
+            // so i=0 -> 0.0, i=1 -> 0.5, i=2 -> 1.0
+            float angle_progress = i / (float)(ray_count - 1);
 
-    private void FaceTarget(Vector3 world_position)
-    {
-        // pans the guard to face the target position
-        // used for spotting and investigating
-        Vector3 direction = (world_position - transform.position).normalized;
-        SmoothRotateTo(YawFromDirection(direction));
-    }
+            // map the progress to an actual angle
+            // so if we have 60 degrees, i=0 -> -30, i=1 -> 0, i=2 -> 30
+            float spread_offset_in_degrees = 
+                Mathf.Lerp(-spread / 2f, spread / 2f, angle_progress);
 
+            // get the rays direction at the angle offset calculated
+            // creates the fan shape
+            Vector3 direction = Quaternion.Euler(
+                0f, 
+                spread_offset_in_degrees, 
+                0f
+            ) * cast_direction.normalized;
 
-    private void SmoothRotateTo(Quaternion target)
-    {
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            target,
-            turn_speed * Time.fixedDeltaTime);
-    }
+            // cast the ray out and record how far the hit distance is
+            if (Physics.Raycast(
+                transform.position,
+                direction,
+                out RaycastHit hit,
+                ray_length, 
+                wall_mask) == true)
+            {
+                total += hit.distance;
+            }
 
+            // or record the ray's max length if it hit nothing
+            else 
+               total += ray_length;
+        }
 
-    private Quaternion YawFromDirection(Vector3 direction)
-    {
-        // gets the angle in degrees from a direction vector, then converts
-        // it to a quaternion. used for all facing of the guard
-        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        return Quaternion.Euler(0f, angle, 0f);
+        // this returns the average length across rays higher value
+        // means more open and the direction we want to rotate
+        return total / ray_count;
     }
 }
-
-
-// credits
-// https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Mathf.Atan2.html

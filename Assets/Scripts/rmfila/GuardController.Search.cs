@@ -1,3 +1,6 @@
+// OLD SYSTEM FOR WHEN GUARDS WERE SMARTER
+
+/*
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -60,8 +63,8 @@ public partial class GuardController
         {
             // get a new point on the navmesh to walk to based
             // on the overshoot distance and sight_loss_direction
-            if (TryGetNavPoint(player_last_position, sight_loss_direction,
-                overshoot_distance, 0.5f, out Vector3 overshoot))
+            if (TryGetNavPathPoint(sight_loss_direction, 
+                overshoot_distance, out Vector3 overshoot))
             {
                 // stop a bunch of guards from getting stuck
                 // while searching with timeout
@@ -83,8 +86,8 @@ public partial class GuardController
             // get a new overshoot point further from out current position,
             // in the same direction, but slightly less far than the original
             // overshoot distance. Purely aesthetic choice here
-            if (TryGetNavPoint(transform.position, sight_loss_direction, 
-                overshoot_distance * 0.6f, 0.3f, out Vector3 further))
+            if (TryGetNavPathPoint(sight_loss_direction, 
+                overshoot_distance * 0.6f, out Vector3 further))
             {
                 yield return MoveWithTimeout(further, 3f);
             }
@@ -120,14 +123,14 @@ public partial class GuardController
     // static guards scan back and forth after dropping to tier 2
     private IEnumerator StaticScanRoutine()
     {
-        Quaternion look_right = start_rotation * 
-            Quaternion.Euler(0f, 180f, 0f);
+        Quaternion look_left = start_rotation * Quaternion.Euler(0f, -180f, 0f);
+        Quaternion look_right = start_rotation * Quaternion.Euler(0f, 0, 0f);
 
         while (true)
         {
-            yield return RotateTowards(look_right, 1.5f);
+            yield return RotateTowards(look_left, 1.5f);
             yield return new WaitForSeconds(pause_duration);
-            yield return RotateTowards(start_rotation, 1.5f);
+            yield return RotateTowards(look_right, 1.5f);
             yield return new WaitForSeconds(pause_duration);
         }
     }
@@ -193,15 +196,27 @@ public partial class GuardController
         guard.SetDestination(destination);
 
         float timeout_time = 0f;
+        float stuck_timer = 0f;
+        Vector3 last_pos = transform.position;
 
-        // wait until we have actuall arrived to the desintation
-        // to move on
         while (timeout_time < timeout && !HasReachedDestination())
         {
             timeout_time += Time.deltaTime;
-            // until we reach the dest, keep updating the facing
-            // direction of guard to be correct
             FaceMovementDirection();
+
+            // if guard hasn't moved 0.1 units in 1.5s, consider arrived.
+            // handles guards blocked by closed doors or geometry.
+            if (Vector3.Distance(transform.position, last_pos) > 0.1f)
+            {
+                last_pos = transform.position;
+                stuck_timer = 0f;
+            }
+            else
+            {
+                stuck_timer += Time.deltaTime;
+                if (stuck_timer >= 1.5f) break;
+            }
+
             yield return null;
         }
 
@@ -209,42 +224,51 @@ public partial class GuardController
     }
 
 
-    private bool TryGetNavPoint(Vector3 origin, 
-        Vector3 direction,
-        float distance, 
-        float pullback, 
-        out Vector3 result)
+    // Routes the overshoot point along the actual NavMesh path rather than a
+    // straight line. This means the guard naturally rounds corners to check
+    // where the player fled, instead of walking into a wall and stopping.
+    private bool TryGetNavPathPoint(Vector3 direction, float distance, out Vector3 result)
     {
-        // this is the raw point we are going to be traveling to when
-        // the guard loses sight of the player.
-        // This is the "ideal" destination
-        Vector3 raw = origin + direction * distance;
-        Vector3 point;
+        // project a far target in the pursuit direction, then let NavMesh route to it
+        Vector3 far_target = transform.position + direction * (distance * 3f);
 
-        // Raycast to find if the ideal overshoot point is in a way
-        if (NavMesh.Raycast
-            (origin, raw, out NavMeshHit edge_hit, NavMesh.AllAreas))
-        {             
-            // if we get an edge hit, pull the distance of where the ray
-            // hit back by 0.5f, stop guard from getting stuuck
-            point = edge_hit.position - direction * pullback;
-        }
-
-        else
-            // otherwise, the idea spot is ideal
-            point = raw;
-
-        // safety net to ensure that the position
-        // we got is a valid position
-        if (NavMesh.SamplePosition
-            (point, out NavMeshHit hit, distance, NavMesh.AllAreas))
+        // snap the far target to the navmesh surface
+        if (!NavMesh.SamplePosition(far_target, out NavMeshHit far_hit, distance * 3f, NavMesh.AllAreas))
         {
-            result = hit.position;
-            return true;
+            result = Vector3.zero;
+            return false;
         }
 
-        result = Vector3.zero;
-        return false;
+        NavMeshPath path = new NavMeshPath();
+
+        if (!NavMesh.CalculatePath(transform.position, far_hit.position, NavMesh.AllAreas, path)
+            || path.status == NavMeshPathStatus.PathInvalid
+            || path.corners.Length < 2)
+        {
+            result = Vector3.zero;
+            return false;
+        }
+
+        // walk the path corners until we've accumulated ~distance worth of travel
+        // this gives a point that is 'distance' units away along the real walkable path
+        float accumulated = 0f;
+        for (int i = 1; i < path.corners.Length; i++)
+        {
+            float seg = Vector3.Distance(path.corners[i - 1], path.corners[i]);
+
+            if (accumulated + seg >= distance)
+            {
+                float t = (distance - accumulated) / seg;
+                result = Vector3.Lerp(path.corners[i - 1], path.corners[i], t);
+                return true;
+            }
+
+            accumulated += seg;
+        }
+
+        // path ended before reaching distance — use the final corner
+        result = path.corners[path.corners.Length - 1];
+        return true;
     }
 
 
@@ -282,3 +306,4 @@ public partial class GuardController
         }
     }
 }
+*/

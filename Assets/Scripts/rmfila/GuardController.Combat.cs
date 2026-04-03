@@ -1,173 +1,181 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
-
 
 public partial class GuardController
 {
     private void ShootAtPlayer()
     {
-        // only shoot when tier 4, weapon drawn, and player visible
-        if (current_tier < GuardTier.Tier4 || is_drawing_weapon ||
-            can_see_player == false || player == null)
-        {
+        // cant shoot when staggered
+        if (is_staggered == true)
             return;
-        }
 
-        // increment the amount of time the guard has
-        // seen the player, used to give a moment before they
-        // shoot, almost like they're lining up the shot
+        // is currently drawing their gun out or cannot see player
+        // then the guard cannot shoot at player
+        if (guns_out == false || is_drawing_weapon == true ||
+            can_see_player == false || player == null)
+            return;
+
+        // can see player or has their gun out, increment sight_timer
+        // regulating how long it takes till the guard can shoot the player
+        // after drawing their gun
         sight_timer += Time.fixedDeltaTime;
 
-        // only shoot if we have seen the player for the delay time
+        // cannot shoot until the sight_timer exceeds the sight_delay
         if (sight_timer < sight_delay)
             return;
 
-        // if distance between guard and player is too far, do not shoot
+        // make sure the shot is within range for the guard
         if (Vector3.Distance
             (transform.position, player.position) > shoot_range)
-        {
             return;
-        }
 
-        // fire rate limit
+        // make sure the guard's firerate is still being taken into account
         if (Time.time < next_fire_time)
             return;
 
-        // add the fire_rate to the current time for next time we can fire
         next_fire_time = Time.time + fire_rate;
 
+        // get the direcciton the shot needs to travel
         Vector3 direction = 
             (player.position - fire_point.position).normalized;
 
-        Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
-
-        // bullet is instantiated going in the direction of the player
-        GameObject bullet_obj =
-            Instantiate(bullet_prefab, fire_point.position, rotation);
+        // create a bullet object in that direction
+        GameObject bullet_obj = Instantiate(
+            bullet_prefab, 
+            fire_point.position, 
+            Quaternion.LookRotation(direction, Vector3.forward));
 
         BulletMovement bullet = bullet_obj.GetComponent<BulletMovement>();
 
-        if (bullet != null)
+        if (bullet != null) 
             bullet.Initialize(gameObject);
     }
 
 
-    // handles bullet impact
-    // damage, knockback, stagger
-    public void TakeDamage(Collider bullet)
+    public void TakeDamage(Collider bullet_col)
     {
-        Vector3 knockback_dir = bullet.transform.forward;
+        // knockback in the direction the bullet was traveling
+        Vector3 knockback_direction = bullet_col.transform.forward;
 
-        // destroy the bullet here so we don't have to worry about double hit
-       
-        
-        
-        
-        Destroy(bullet.gameObject);
+        Destroy(bullet_col.gameObject);
 
         current_health--;
 
-        // guard died
-        if (current_health <= 0)
-        {
-            Destroy(gameObject);
+        // if health is 0 or below, destroy the guard prefab
+        if (current_health <= 0) 
+        { 
+            Destroy(gameObject); 
             return;
         }
 
-        // still alive, stagger so the player can escape
-        if (is_staggered == false)
-            // pass the knockback_direction and player_last_position
-            // so this is where the guard will investigate
-            StartCoroutine(StaggerRoutine
-                (knockback_dir, player_last_position));
-        
-        
         if (bloodEffectPrefab != null)
         {
-            bloodEffectPrefab.transform.rotation = Quaternion.LookRotation(knockback_dir, Vector3.up);
+            bloodEffectPrefab.transform.rotation = Quaternion.LookRotation(
+                knockback_direction, 
+                Vector3.forward
+                );
+
             bloodEffectPrefab.Play();
         }
+
+        // if staggered already, stagger again
+        if (stagger_routine != null) 
+            StopCoroutine(stagger_routine);
+
+        stagger_routine = 
+            StartCoroutine(StaggerRoutine(knockback_direction));
     }
 
 
-    private void EndGame()
-    {
-        EventBus.Publish(new GameEvents.GameOverEvent());
-    }
-
-
-    private IEnumerator StaggerRoutine
-        (Vector3 knockback_dir, Vector3 investigate_position)
+    private IEnumerator StaggerRoutine(Vector3 knockback_direction)
     {
         is_staggered = true;
 
-        // cancel any out retoutines
-        CancelAllRoutines();
-
-        // no longer can see, knocked out
-        is_spotting = false;
-
-        // disable agent so we can move freely
-        guard.enabled = false;
-
-        // the last direction we have of the player
-        sight_loss_direction = 
-            (investigate_position - transform.position).normalized;
-
-        Vector3 start_pos = transform.position;
-        Vector3 end_pos = start_pos + knockback_dir * knockback_distance;
-        float knockback_time = 0f;
-        float knockback_duration = 0.15f;
-
-        while (knockback_time < knockback_duration)
+        // if in the process of drawing weapon while shot,
+        // cancel the routine
+        if (draw_weapon_routine != null)
         {
-            knockback_time += Time.deltaTime;
+            StopCoroutine(draw_weapon_routine);
+            draw_weapon_routine = null;
+            is_drawing_weapon = false;
+        }
 
-            float percentage_done = knockback_time / knockback_duration;
+        // actively doing some other routine besides stagger
+        // do the same thing, cancel it
+        if (active_routine != null) 
+        { 
+            StopCoroutine(active_routine); 
+            active_routine = null; 
+        }
+
+        // no longer returning, routine was canceled
+        is_returning = false;
+
+        // tell the guard to stop
+        guard.isStopped = true;
+        guard.ResetPath();
+        // we need to manually lerp the guard's transform.position
+        // so untieing the nav meshes override
+        guard.updatePosition = false;
+
+        Vector3 start_position = transform.position;
+
+        Vector3 target_position = 
+            start_position + knockback_direction * knockback_distance;
+
+        float timer = 0f;
+        // lerp based on the ratio of the timer/knockback_duration
+        // while the timer is less than kb_dur
+        while (timer < knockback_duration)
+        {
+            timer += Time.deltaTime;
 
             transform.position = 
-                Vector3.Lerp(start_pos, end_pos, percentage_done);
+                Vector3.Lerp(
+                    start_position, 
+                    target_position, 
+                    timer / knockback_duration
+                );
 
             yield return null;
         }
 
-        // turn back on the agent
-        guard.enabled = true;
-        guard.SetDestination(transform.position);
+        // let the nav mesh update the position
+        guard.updatePosition = true;
+        // warp the guard in place after knockback is done
+        // this is just to ensure the guard is correctly
+        // placed back to the navmesh properly
+        guard.Warp(transform.position);
+        guard.isStopped = false;
 
+        // wait for the stagger duration
         yield return new WaitForSeconds(stagger_duration);
 
         is_staggered = false;
+        sight_timer = 0f;
+        next_fire_time = 0f;
 
-        // reset the chase bar after stagger
-        current_chase_bar = chase_bar_max;
-
-        // if the player is not visible after being staggered
-        if (can_see_player == false)
-            // investigate the last known area
-            is_investigating = true;
-
-        // guard is set to be lethal mode because they were shot
-        TierUp(GuardTier.Tier4);
+        Alert();
     }
 
-
-    // weapon draw delay, guard is tier 4 but can't shoot until complete
     private IEnumerator DrawWeaponRoutine()
     {
         is_drawing_weapon = true;
 
         yield return new WaitForSeconds(weapon_draw_time);
 
-        if (guard_weapon != null)
-        {
-            // after wait time, set the gun to be active
-            guard_weapon.SetActive(true);
-            // update the sprite
-            guards_sprite_renderer.sprite = lethal_guard_sprite;
-        }
+        // enables guns after draw time is done
+        guns_out = true;
 
+        // enable the weapon capabilities
+        if (guard_weapon != null) 
+            guard_weapon.SetActive(true);
+
+        // change guard sprite to lethal
+        guards_sprite_renderer.sprite = lethal_guard_sprite;
         is_drawing_weapon = false;
     }
+
+
+    private void EndGame() => EventBus.Publish(new GameEvents.GameOverEvent());
 }
