@@ -1,347 +1,186 @@
+using System.Collections;
 using UnityEngine;
-
 
 public partial class GuardController
 {
-    // handles the freeze-and-fill phase before a chase begins
-    private void HandleSpotting()
-    {
-        // only reset path if not in active routine
-        // (searching, returning, OR already in erratic scan)
-        if (is_searching == false && 
-            is_returning == false && 
-            static_search_routine == null)
-        {
-            guard.ResetPath();
-        }
-
-        // always face the player when spotting them
-        // it looks like the guard is going "hmmm what is that"
-        FaceTarget(player.position);
-
-        // player is in sight/in vision cone
-        // fill the bar and cache the player's
-        // position and direction for the chase 
-        if (can_see_player == true && player != null)
-        {
-            // save the latest information of the player
-            UpdatePlayerTracking();
-
-            // fill rate scales exponentially with proximity.
-            // at max range multiplier is 1, closest range its 1 + exponent
-            float normalized_proximity = 1f - Mathf.Clamp01(
-                sight_distance / max_detect_radius);
-
-            float fill_multiplier = 1f + proximity_exponent *
-                (normalized_proximity * normalized_proximity);
-
-            // update the chase bar
-            current_chase_bar = Mathf.Min(current_chase_bar + 
-                chase_bar_fill_rate * fill_multiplier * Time.fixedDeltaTime,
-                chase_bar_max);
-
-            // check if the bar is full
-            // no longer spotting but activating a chase
-            if (current_chase_bar >= chase_bar_max)
-            {
-                is_spotting = false;
-
-                if (guns_out)
-                    TierUp(GuardTier.Tier4);
-
-                else
-                    TierUp(GuardTier.Tier3);
-            }
-        }
-
-        // player left the cone, decay the bar back to zero
-        // no longer spotting, but returning to normal,
-        else
-        {
-            current_chase_bar = Mathf.Max(current_chase_bar - 
-                chase_bar_decay * Time.fixedDeltaTime, 0f);
-
-            if (current_chase_bar <= 0f)
-            {
-                is_spotting = false;
-
-                // go back to whatever you were doing before spotting the
-                // player
-                if (active_routine == null)
-                {
-                    static_search_routine = StartCoroutine(ResumeIdleRoutine());
-                }
-            }
-        }
-    }
-
-
-    // moves guard towards last known position
+    // guard moves to the player's last position and faces the player when
+    // they can see them. the guard can lose interest in the player
+    // if they somehow make it super far away
     private void ChasePlayer()
     {
-        // if can see player, always chase directly
-        if (can_see_player)
-            SetGuardDestination(player.position);
-
-        // otherwise, chase to the predicted position, if not there already
-        else
-            SetGuardDestination(player_last_position);
-
-        FaceChaseDirection(player.position, player_last_position);
-
-        // reached last known position with no sight, begin search.
-        // don't start until the pursuit window has closed
-        if (can_see_player == false && sight_loss_timer <= 0f &&
-            HasReachedDestination() && active_routine == null)
-        {
-            active_routine = StartCoroutine(SearchAndReturnRoutine());
-        }
-    }
-
-
-    // tracks position + direction while guard has sight, freezes on loss
-    // player_last_position only updates here if the guard can see the player
-    private void UpdateChaseTracking()
-    {
-        if (can_see_player && player != null)
-        {
-            // save the latest information of the player to
-            // use when we lose sight reset timer to full
-            sight_loss_timer = pursuit_window;
-            UpdatePlayerTracking();
-
-            current_chase_bar = chase_bar_max;
-            return;
-        }
-
-        // lost sight, keep predicting where the player went.
-        // player_last_position moves forward each frame so the guard
-        // chases a moving predicted target instead of freezing at the corner
-        if (sight_loss_timer > 0f)
-        {
-            // decrement timer on sight loss
-            sight_loss_timer -= Time.fixedDeltaTime;
-
-            // while timer is active, keep pushing the player's
-            // last_position so the guard chases a moving predicted
-            // point rather than freezing at a corner where sight was loss
-            if (player_estimated_speed > 0.1f)
-                player_last_position += player_last_direction *
-                    player_estimated_speed * Time.fixedDeltaTime;
-        }
-
-        // capture the point to later use for the point to overshoot
-        if (had_sight_last_frame && can_see_player == false)
-            sight_loss_direction =
-                (player_last_position - transform.position).normalized;
-
-        had_sight_last_frame = can_see_player;
-    }
-
-
-    private void UpdatePlayerTracking()
-    {
-        // when able to see the player, cache its last known poistion
-        // and direction
-        player_last_position = player.position;
-
-        // calculates where the player is now and where they were last
-        // frame
-        Vector3 difference = player.position - player_previous_position;
-
-        // only update the direction if the change is substantial enough
-        if (difference.sqrMagnitude > 0.01f)
-        {
-            player_last_direction = difference.normalized;
-            // calculate speed for pursuit prediction on sight loss
-            player_estimated_speed = difference.magnitude / Time.fixedDeltaTime;
-        }
-
-        player_previous_position = player.position;
-    }
-
-
-    // can only move up, ErraticDrop is the way to downgrade
-    private void TierUp(GuardTier tier)
-    {
-        // cannot downgrade
-        if (tier <= current_tier)
-            return;
-
-        // tier up, set chase bar to full so guard chases player
-        // and reset the sight loss timer so they dont lose the player
-        // right away after tiering up
-        current_tier = tier;
-        current_chase_bar = chase_bar_max;
-        sight_loss_timer = pursuit_window;
-
-        // if we are running a static search rotuine, stop it
-        if (static_search_routine != null)
-        {
-            StopCoroutine(static_search_routine);
-            static_search_routine = null;
-        }
-
-        // if we heard a gunshot or were shot and are going to tier 4
-        // draw weapon after a delay, and increase speed/aggression
-        if (tier == GuardTier.Tier4)
-        {
-            guns_out = true;
-
-            if (is_drawing_weapon == false)
-                StartCoroutine(DrawWeaponRoutine());
-        }
-
-        ApplySpeed();
-    }
-
-
-    // this is how we downgrade, only ever going down to tier 2 erratic mode
-    private void ErraticDrop()
-    {
-        // if we called it, it means we are only going to tier 2
-        current_tier = GuardTier.Tier2;
-        // reset chase bar, we arent chasing anymore because this is called
-        // after everything
-        current_chase_bar = 0f;
-        // since we set current_tier to Tier2, the guard will switch to 
-        // erratic speed always. Once we leave tier 1 patrol speed, we never
-        // go back to that slow of a speed again.
-        ApplySpeed();
-
-        if (guard_mode != GuardMode.Patrol)
-        {
-            if (static_search_routine != null)
-                StopCoroutine(static_search_routine);
-
-            // static and static search guards now pan back and forth in
-            // their starting locations after returning from a chase
-            static_search_routine = StartCoroutine(StaticScanRoutine());
-        }
-
-        // alert every other guard in the building to go erratic
-        // this is essentially like a walky talky system. Like hey, I for
-        // sure just saw some thief, so everyone be on alert, we lost visual
-        EventBus.Publish(new GameEvents.ErraticAlertEvent());
-    }
-
-
-    private void ApplySpeed()
-    {
-        // only on start is this applied
-        if (current_tier == GuardTier.Tier1)
-            guard.speed = patrol_speed;
-
-        // after any chase occurs, we never go back
-        // to patrol speed, except for SearchAndReturn
-        else
-            guard.speed = erratic_speed;
-    }
-
-
-    private void SetGuardDestination(Vector3 target)
-    {
-        if (Vector3.Distance(target, current_destination) > 0.2f)
-        {
-            guard.SetDestination(target);
-            current_destination = target;
-        }
-    }
-
-
-    private void FaceChaseDirection(Vector3 target_if_visible, Vector3 target_if_not)
-    {
-        if (can_see_player && player != null)
-            FaceTarget(target_if_visible);
-
-        else if (guard.velocity.sqrMagnitude > 0.01f)
-            FaceMovementDirection();
-
-        else
-            FaceTarget(target_if_not);
-    }
-
-
-    // walks to the player's last known position
-    // and trys to spot where they last were
-    private void Investigate()
-    {
-        // walk to last known player position
         SetGuardDestination(player_last_position);
 
-        // look at the player if visible, or where the player went
-        FaceChaseDirection(player.position, player_last_position);
+        if (can_see_player && player != null) 
+            FaceTarget(player.position);
 
-        // count how long we've been investigating for
-        investigate_timer += Time.deltaTime;
+        else if (guard.velocity.sqrMagnitude > 0.01f) 
+            FaceMovementDirection();
 
+        else FaceTarget(player_last_position);
 
-        bool reached_actual_target = HasReachedDestination() &&
-            Vector3.Distance
-            (current_destination, player_last_position) <= 0.3f;
-
-        // stop investigating if we've reached the spot, or we
-        // investigated for too long
-        if ((reached_actual_target || investigate_timer >=
-            investigate_timeout) && active_routine == null)
+        if (HasReachedDestination() == true && active_routine == null
+            && chase_timer >= min_chase_duration)
         {
-            is_investigating = false;
-
-            // figure ouut what way we are facing when we lost the player
-            if (sight_loss_direction.sqrMagnitude < 0.01f)
+            if (player != null && Vector3.Distance(
+                transform.position, player.position) > give_up_distance)
             {
-                if (last_chase_velocity.sqrMagnitude > 0.01f)
-                    sight_loss_direction = last_chase_velocity;
-
-                else
-                    sight_loss_direction = transform.forward;
+                active_routine = StartCoroutine(ReturnToStartRoutine());
             }
-
-            // start searching for them based on that direction
-            active_routine = StartCoroutine(SearchAndReturnRoutine());
         }
     }
 
 
-    private void Patrol()
+    // this is what is called when the player is somehow able to run
+    // far enough away. legit should not run, but I already had the code
+    // from when guards were smarter, so its staying
+    private IEnumerator ReturnToStartRoutine()
     {
-        // do not have a target, dont do anything,
-        // something is wrong here, shouldnt be patrol w/o target
-        if (target_point == null)
-            return;
+        stuck_timer = 0f;
+        is_returning = true;
+        is_alerted = false;
+        can_see_player = false;
 
-        // take a moment to turn around and face the other target point to start moving
-        if (is_paused)
+        guard.SetDestination(start_position);
+
+        float timer = 0f;
+
+        // keep walking home until either the return timeout time is reached
+        // or we actually make it to the starting position
+        while (timer < return_timeout && HasReachedDestination() == false)
         {
-            FaceTarget(target_point.position);
-            pause_time -= Time.fixedDeltaTime;
-
-            Vector3 to_target =
-                (target_point.position - transform.position).normalized;
-
-            bool facing_target =
-                Quaternion.Angle(transform.rotation,
-                YawFromDirection(to_target)) < 1f;
-
-            // check to make our pause time is up, and 
-            // we are facing the next target point before moving on
-            if (pause_time <= 0f && facing_target)
-            {
-                is_paused = false;
-                guard.SetDestination(target_point.position);
-            }
-
-            return;
+            timer += Time.deltaTime;
+            FaceMovementDirection();
+            yield return null;
         }
 
-        // face the direction we are moving
-        FaceMovementDirection();
+        // once we get back to the starting position, reset the path
+        // and reset the rotation
+        guard.ResetPath();
+        transform.rotation = start_rotation;
 
-        // once we hit out destination, pause, and swap targets
-        if (HasReachedDestination())
+        is_returning = false;
+
+        // go back to patrolling if guard was a patrol guard
+        if (guard_mode == GuardMode.Patrol
+            && point_a != null && point_b != null)
         {
-            is_paused = true;
-            pause_time = pause_duration;
+            target_point = point_a;
+            active_routine = StartCoroutine(PatrolRoutine());
+        }
+
+        else
+        {
+            if (guard_mode == GuardMode.StaticSearch)
+                static_scan_routine = StartCoroutine(StaticScanRoutine());
+
+            active_routine = null;
+        }
+    }
+
+
+    // static search guards turn based on openness. this means
+    // guards will rotate where ever there is more open space
+    // and less walls that conflict with vision.
+    private IEnumerator StaticScanRoutine()
+    {
+        float start_direction = start_rotation.eulerAngles.y;
+        float opposite_direction = start_direction + 180f;
+
+        while (true)
+        {
+            // to the right of the guard's starting direction
+            // get the "score" it got for how open it is
+            float right_open = 
+                MeasureOpenness(
+                    Quaternion.Euler(
+                        0f, 
+                        start_direction + 90f, 
+                        0f) * Vector3.forward
+                );
+
+            // to the left of the guard's starting direction
+            // get the "score" it got for how open it is
+            float left_open = 
+                MeasureOpenness(
+                    Quaternion.Euler(
+                        0f, 
+                        start_direction - 90f, 
+                        0f) * Vector3.forward
+                );
+
+            // what sign to apply to the direction we will want
+            // positive means to the right, negative means to the left
+            float target_sign;
+
+            // the the right is more open or equal in openness to the left
+            // rotate to the right
+            if (right_open >= left_open)
+                target_sign = 1f;
+
+            // otherwise the left direction is more open, so rotate
+            // to the left
+            else
+                target_sign = -1f;
+
+            // start by rotating to the opposite of where we are facing
+            // in the target direction we calculated 
+            yield return RotateToAngle(opposite_direction, target_sign);
+
+            // pause in direction we are facing to make guard hold and angle
+            yield return new WaitForSeconds(pause_duration);
+
+            // now scan again for which rotation would face more space
+            // but now with the guard facing the opposite_direction
+            float right_open_opposite =
+                MeasureOpenness(
+                    Quaternion.Euler(
+                        0f, 
+                        opposite_direction + 90f, 
+                        0f) * Vector3.forward
+                );
+
+            float left_open_opposite = 
+                MeasureOpenness(
+                    Quaternion.Euler(
+                        0f, 
+                        opposite_direction - 90f, 
+                        0f) * Vector3.forward
+                );
+
+            float target_sign_opposite;
+
+            if (right_open_opposite >= left_open_opposite)
+                target_sign_opposite = 1f;
+
+            else
+                target_sign_opposite = -1f;
+
+            yield return RotateToAngle(start_direction, target_sign_opposite);
+
+            yield return new WaitForSeconds(pause_duration);
+        }
+    }
+
+
+    // patrol guard walks between point_a and point_b, rotating toward
+    // the next target using openness-based direction when turning,
+    // just like the static search guard does when scanning
+    private IEnumerator PatrolRoutine()
+    {
+        while (true)
+        {
+            // move toward the current target point at patrol speed
+            guard.speed = patrol_speed;
+            SetGuardDestination(target_point.position);
+
+            // keep facing movement direction until we arrive
+            while (HasReachedDestination() == false)
+            {
+                FaceMovementDirection();
+                yield return null;
+            }
+
+            // reached the target, reset path and switch to the other point
             guard.ResetPath();
 
             if (target_point == point_a)
@@ -349,6 +188,83 @@ public partial class GuardController
 
             else
                 target_point = point_a;
+
+            // measure openness left and right to decide
+            // which direction to rotate toward the next target
+            float right_open = MeasureOpenness(
+                Quaternion.Euler(0f, 90f, 0f) * transform.forward
+            );
+
+            float left_open = MeasureOpenness(
+                Quaternion.Euler(0f, -90f, 0f) * transform.forward
+            );
+
+            float sign;
+            if (right_open >= left_open)
+                sign = 1f;
+
+            else
+                sign = -1f;
+
+            // get the angle to the next target point
+            float target_direction = RotationFromDirection(
+                (target_point.position - transform.position).normalized
+            ).eulerAngles.y;    
+
+            // rotate toward the next target using openness direction
+            yield return RotateToAngle(target_direction, sign);
+
+            // pause before walking again
+            yield return new WaitForSeconds(pause_duration);
         }
+    }
+
+
+    // rotate the guard to the target direction, rotating based on the sign
+    private IEnumerator RotateToAngle(float target_direction, float sign)
+    {
+        // get the distance in angle to rotate to get the guard to the target
+        float delta_angle = 
+            Mathf.DeltaAngle(transform.eulerAngles.y, target_direction);
+
+        // how much of the angle we need to travel
+        // based on the signs direction
+        float remaining_angle = sign * delta_angle;
+
+        // if remaining_angle is negative, meaning the most open rotation
+        // is to the left, we add 360 degrees to it to get the positive
+        // equivalent to the rotation, wraps around to 360
+        if (remaining_angle < 0f)
+            remaining_angle += 360f;
+
+        // loop until the remaining_angle is covered
+        while (remaining_angle > 1f)
+        {
+            // get the step increment to rotate per
+            // loop on a frame-by-frame basis
+            // either the amount we can turn this frame, or if the
+            // remaining angle is less than the amount we can turn this frame
+            float step = 
+                Mathf.Min(turn_speed * Time.deltaTime, remaining_angle);
+
+            // rotate the guard on a frame-by-frame basis
+            // by the step multiplied by the sign
+            transform.rotation = Quaternion.Euler(
+                0f, 
+                transform.eulerAngles.y + sign * step, 
+                0f
+            );
+
+            // decrement the remaining angle the guard has to rotate
+            // by the step applied this frame
+            remaining_angle -= step;
+
+            yield return null;
+        }
+
+        // set the guard to be its final target direction to 
+        // ensure the angle the guard is facing is correct
+        transform.rotation = 
+            Quaternion.Euler(0f, target_direction, 0f);
     }
 }
