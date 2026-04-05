@@ -30,6 +30,7 @@ public class LaserSpawner : MonoBehaviour
         Vector2 end = GetRandomOffscreenPoint();
 
         GameObject obj = Instantiate(laserPrefab, canvasRect);
+        obj.transform.SetAsFirstSibling();
         obj.GetComponent<Laser>().Init(start, end, duration, holdTime);
     }
 
