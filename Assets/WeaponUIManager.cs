@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,41 +18,29 @@ public class WeaponUIManager : MonoBehaviour
     [SerializeField] private Sprite drawnSprite;
 
     [Header("Weapon UI Image")]
-    [SerializeField] private Image weaponUIImage; // UI Image for active weapon
+    [SerializeField] private Image weaponUIImage;
     [SerializeField] private Sprite pistolSprite;
     [SerializeField] private Sprite shotgunSprite;
     [SerializeField] private Sprite rifleSprite;
 
-    // Player sprite renderer
     private SpriteRenderer playerSpriteRenderer;
 
     private string[] weapons = { "Pistol", "Shotgun", "Rifle" };
-    private int currentIndex = -1; // -1 = none selected
+    private int currentIndex = -1;
 
-    // Unlock state
     private bool pistolUnlocked = true;
     private bool shotgunUnlocked = false;
     private bool rifleUnlocked = false;
     private bool isHolstered = false;
 
-    private void OnEnable()
+    private void Start()
     {
+        // Subscribe once at start - subscriptions persist even if this component is disabled/enabled
         EventBus.Subscribe<GunEvents.WeaponChangedEvent>(OnWeaponChanged);
         EventBus.Subscribe<GunEvents.PistolUnlockedEvent>(OnPistolUnlocked);
         EventBus.Subscribe<GunEvents.ShotgunUnlockedEvent>(OnShotgunUnlocked);
         EventBus.Subscribe<GunEvents.RifleUnlockedEvent>(OnRifleUnlocked);
-    }
 
-    private void OnDisable()
-    {
-        EventBus.Unsubscribe<GunEvents.WeaponChangedEvent>(OnWeaponChanged);
-        EventBus.Unsubscribe<GunEvents.PistolUnlockedEvent>(OnPistolUnlocked);
-        EventBus.Unsubscribe<GunEvents.ShotgunUnlockedEvent>(OnShotgunUnlocked);
-        EventBus.Unsubscribe<GunEvents.RifleUnlockedEvent>(OnRifleUnlocked);
-    }
-
-    private void Start()
-    {
         GameObject player = GameObject.Find("Body");
         if (player != null)
             playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
@@ -62,11 +49,9 @@ public class WeaponUIManager : MonoBehaviour
         {
             if (SafehouseState.gun_collected)
             {
-                // returning player — gun is owned but holstered in the safehouse
                 currentIndex = 0;
                 isHolstered = true;
             }
-            // currentIndex stays -1, hands sprite shows via UpdatePlayerSprite logic
             DisableAllWeapons();
         }
         else
@@ -81,68 +66,13 @@ public class WeaponUIManager : MonoBehaviour
         UpdateAmmoDisplay();
     }
 
-
-    private void Update()
+    private void OnDestroy()
     {
-       // if (Input.GetKeyDown(KeyCode.Q))
-       //     TrySwapWeapon();
-
-        // if (Input.GetKeyDown(KeyCode.Space))
-        //     ToggleHolster();
-        /*
-        // Cheat codes for unlocking
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            EventBus.Publish(new GunEvents.PistolUnlockedEvent());
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-            EventBus.Publish(new GunEvents.ShotgunUnlockedEvent());
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-            EventBus.Publish(new GunEvents.RifleUnlockedEvent());
-        */
-    }
-
-    private void ToggleHolster()
-    {
-        isHolstered = !isHolstered;
-
-        if (isHolstered)
-        {
-            DisableAllWeapons();
-        }
-        else if (currentIndex >= 0)
-        {
-            ActivateWeaponByIndex(currentIndex);
-        }
-
-        UpdateWeaponUI();
-        UpdatePlayerSprite();
-        UpdateAmmoDisplay();
-    }
-
-    private void TrySwapWeapon()
-    {
-        List<int> available = new List<int>();
-        if (pistolUnlocked) available.Add(0);
-        if (shotgunUnlocked) available.Add(1);
-        if (rifleUnlocked) available.Add(2);
-
-        if (available.Count == 0)
-        {
-            EventBus.Publish(new GunEvents.WeaponChangedEvent("None"));
-            return;
-        }
-
-        int nextIndex = currentIndex;
-        do
-        {
-            nextIndex = (nextIndex + 1) % weapons.Length;
-        } while (!available.Contains(nextIndex));
-
-        currentIndex = nextIndex;
-
-        if (!isHolstered)
-            EventBus.Publish(new GunEvents.WeaponChangedEvent(weapons[currentIndex]));
-
-        UpdateWeaponUI();
+        // Clean up subscriptions when component is destroyed
+        EventBus.Unsubscribe<GunEvents.WeaponChangedEvent>(OnWeaponChanged);
+        EventBus.Unsubscribe<GunEvents.PistolUnlockedEvent>(OnPistolUnlocked);
+        EventBus.Unsubscribe<GunEvents.ShotgunUnlockedEvent>(OnShotgunUnlocked);
+        EventBus.Unsubscribe<GunEvents.RifleUnlockedEvent>(OnRifleUnlocked);
     }
 
     private void OnWeaponChanged(GunEvents.WeaponChangedEvent evt)
@@ -192,22 +122,20 @@ public class WeaponUIManager : MonoBehaviour
 
     private void UpdateWeaponUI()
     {
-        if (weaponUIImage == null)
-            return;
+        if (weaponUIImage == null) return;
 
-        Sprite activeSprite = null;
-
-        switch (currentIndex)
+        Sprite activeSprite = currentIndex switch
         {
-            case 0: activeSprite = pistolSprite; break;
-            case 1: activeSprite = shotgunSprite; break;
-            case 2: activeSprite = rifleSprite; break;
-        }
+            0 => pistolSprite,
+            1 => shotgunSprite,
+            2 => rifleSprite,
+            _ => null
+        };
 
         if (activeSprite == null)
         {
             weaponUIImage.sprite = null;
-            weaponUIImage.color = new Color(1, 1, 1, 0); // hide if no sprite
+            weaponUIImage.color = new Color(1, 1, 1, 0);
             return;
         }
 
@@ -240,14 +168,12 @@ public class WeaponUIManager : MonoBehaviour
     private void UpdateAmmoDisplay()
     {
         if (ammoDisplay == null) return;
-
         ammoDisplay.SetActive(!isHolstered && currentIndex != -1);
     }
 
     private void UpdatePlayerSprite()
     {
         if (playerSpriteRenderer == null) return;
-
         playerSpriteRenderer.sprite = (isHolstered || currentIndex == -1) ? holsteredSprite : drawnSprite;
     }
 }
