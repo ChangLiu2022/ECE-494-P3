@@ -1582,7 +1582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de35a7e69863a40aa8e651dabf4b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Tutorial
+  sceneName: Safehouse
   musicSource: {fileID: 1121219144}
   blackoutPane: {fileID: 169359998}
   fadeDuration: 2

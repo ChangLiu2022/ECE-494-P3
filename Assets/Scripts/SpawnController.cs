@@ -1,4 +1,3 @@
-using UnityEditor.EventSystems;
 using UnityEngine;
 
 public class SpawnController : MonoBehaviour
