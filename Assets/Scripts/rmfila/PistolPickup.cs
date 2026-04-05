@@ -1,5 +1,6 @@
 using UnityEngine;
 using static GunEvents;
+using static GameEvents;
 
 public class PistolPickup : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class PistolPickup : MonoBehaviour
         {
             SafehouseState.gun_collected = true;
             EventBus.Publish(new WeaponChangedEvent("Pistol"));
+            EventBus.Publish(new FirstHitEvent());
             Destroy(gameObject);
             return;
         }

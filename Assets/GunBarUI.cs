@@ -8,6 +8,13 @@ public class GunBarUI : MonoBehaviour
     public GunBarController gunBar;
     public Image fillImage;
     public Image rootObject;
+    public Image upgrade;
+    public Image downgrade;
+
+    [Header("Sprites")]
+    [SerializeField] Sprite pistol_icon;
+    [SerializeField] Sprite shotgun_icon;
+    [SerializeField] Sprite rifle_icon;
 
     private bool hasActivated = false;
 
@@ -23,17 +30,21 @@ public class GunBarUI : MonoBehaviour
 
     private void Start()
     {
-        Color c = rootObject.color;
-        c.a = 0;
-        rootObject.color = c;
+        upgrade.sprite = shotgun_icon;
+        downgrade.sprite = pistol_icon;
+
+        rootObject.enabled = false;
+        upgrade.enabled = false;
+        downgrade.enabled = false;
     }
 
     void OnFirstHit(FirstHitEvent e)
     {
         hasActivated = true;
-        Color c = rootObject.color;
-        c.a = 1;
-        rootObject.color = c;
+        rootObject.enabled = true;
+        upgrade.enabled = true;
+        downgrade.enabled = true;
+
     }
 
     void Update()

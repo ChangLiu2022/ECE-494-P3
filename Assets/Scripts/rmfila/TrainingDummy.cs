@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static GameEvents;
 
 public class TrainingDummy : MonoBehaviour
 {
@@ -27,6 +27,8 @@ public class TrainingDummy : MonoBehaviour
         Destroy(bullet_col.gameObject);
 
         current_health--;
+        EventBus.Publish(new GuardShotEvent());
+
         if (current_health <= 0) { Destroy(gameObject); return; }
 
         if (blood_effect != null)
