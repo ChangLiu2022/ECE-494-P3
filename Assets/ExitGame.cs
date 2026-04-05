@@ -1,22 +1,11 @@
 using UnityEngine;
+using static GameEvents;
 
 public class ExitGame : MonoBehaviour
 {
-    [SerializeField] private LayerMask vehicleLayer;
-
     private void OnTriggerEnter(Collider other)
     {
-
-        if (!other.CompareTag("PlayerCar") && !other.transform.root.CompareTag("PlayerCar")) return;
-
-        EventBus.Publish(new GameEvents.WinEvent());
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-
-        if (!other.CompareTag("PlayerCar") && !other.transform.root.CompareTag("PlayerCar")) return;
-
-        EventBus.Publish(new GameEvents.WinEvent());
+        if (other.CompareTag("Body"))
+            EventBus.Publish(new WinEvent());
     }
 }

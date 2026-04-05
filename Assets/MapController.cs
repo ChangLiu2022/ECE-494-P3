@@ -4,6 +4,8 @@ using static GameEvents;
 
 public class MapController : MonoBehaviour
 {
+    public static bool is_open = false;
+
     [Header("Map Settings")]
     [SerializeField] private Vector2 hiddenPosition = new Vector2(0, 100); // Off-screen
     [SerializeField] private Vector2 visiblePosition = new Vector2(0, -1030);   // On-screen
@@ -25,11 +27,13 @@ public class MapController : MonoBehaviour
         // Toggle map on M key
         if (Input.GetKeyDown(KeyCode.M))
         {
+            if (HUDController.instance != null && HUDController.instance.IsEscapeOpen)
+                HUDController.instance.ForceCloseEscape();
+
             mapOpen = !mapOpen;
-            if(mapOpen) EventBus.Publish(new GameFreezeEvent());
-            else  {
-                StartCoroutine(DelayedUnfreeze());
-            }
+            is_open = mapOpen;
+            if (mapOpen) EventBus.Publish(new GameFreezeEvent());
+            else StartCoroutine(DelayedUnfreeze());
         }
 
         // Move progress toward target
