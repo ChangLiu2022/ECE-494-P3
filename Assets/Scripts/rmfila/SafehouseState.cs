@@ -5,6 +5,7 @@ public static class SafehouseState
     public static bool completed_tutorial = false;
     public static bool completed_newmap = false;
     public static bool workbench_interacted = false;
+    public static bool gun_bar_activated = false;
 
     public static void Reset()
     {
