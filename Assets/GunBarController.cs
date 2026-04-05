@@ -1,6 +1,7 @@
 using System.Collections;
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static GameEvents;
 using static GunEvents;
 using UnityEngine.SceneManagement;
@@ -53,8 +54,10 @@ public class GunBarController : MonoBehaviour
     private void Start()
     {
         maxSegments = initialSegments;
-        if(SceneManager.GetActiveScene().name != "Safehouse" || SafehouseState.gun_collected) EventBus.Publish(new FirstHitEvent());
+        if (SceneManager.GetActiveScene().name != "Safehouse" || SafehouseState.gun_collected) 
+            EventBus.Publish(new FirstHitEvent());
     }
+
 
     void Update()
     {
