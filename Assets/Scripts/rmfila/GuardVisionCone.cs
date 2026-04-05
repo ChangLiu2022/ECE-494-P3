@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-
 public class GuardVisionCone : MonoBehaviour
 {
     [Header("Detection Settings")]
     [SerializeField] private LayerMask player_mask;
     [SerializeField] private LayerMask wall_mask;
+    [SerializeField] private LayerMask door_mask;
 
     private VisionConeMesh vision_cone;
     private GuardController guard;
@@ -21,12 +21,10 @@ public class GuardVisionCone : MonoBehaviour
     }
 
 
-    // ready to detect player
     private IEnumerator DetectionRoutine()
     {
-        // we do not want this to be running uncontained,
-        // -- unneeded work would be done
-        WaitForSeconds delay = new WaitForSeconds(0.15f);
+        // delay how frequently this runs -- performance
+        WaitForSeconds delay = new WaitForSeconds(0.05f);
 
         while (true)
         {
@@ -36,67 +34,61 @@ public class GuardVisionCone : MonoBehaviour
     }
 
 
-    // cast a physics sphere around the guard and collecct all
-    // colliders on player_mask layer in that sphere.
+    // uses overlap sphere to find player, then  determines if the player
+    // is within the guard's vision cone by checking the angle to the player
+    // and checking if there are any walls or doors in the way, if the player
+    // can be detected, the guard's spotted player function is called true
     private void DetectPlayer()
     {
         float detect_radius = vision_cone.GetDetectRadius();
         float view_angle = vision_cone.GetViewAngle();
 
-        Collider[] range_check =
-            Physics.OverlapSphere(
-                transform.position,
-                detect_radius,
-                player_mask
-            );
+        Collider[] range_check = Physics.OverlapSphere(
+            transform.position, 
+            detect_radius, 
+            player_mask
+        );
 
         if (range_check.Length != 0)
         {
-            // get the target's transform from the
-            // hit collider in the sphere cast
+            // only 1 player, so will always be at index 0
             Transform target = range_check[0].transform;
+            Vector3 direction = (target.position - transform.position).normalized;
 
-            // get the direction to that target, normalized
-            Vector3 direction =
-                (target.position - transform.position).normalized;
-
-            float angle_to_player =
+            float angle_to_player = 
                 Vector3.Angle(transform.forward, direction);
 
-            float dist_to_player =
+            float dist_to_player = 
                 Vector3.Distance(transform.position, target.position);
 
-            float player_radius = 0.5f;
+            float player_radius = 0.6f;
 
-            // this is to run to the nearest edge of the player instead of
-            // the guard trying to run to the center of the player
-            float edge_offset =
+            // the edge offset is the angle between the center of the player
+            // and the edge of the player, this is used to prevent the guard
+            // from only being able to see the center of the player, and
+            // allows them to see the player if they are partially in the
+            // vision cone
+            float edge_offset = 
                 Mathf.Atan2(player_radius, dist_to_player) * Mathf.Rad2Deg;
 
-            // check if the angle to the player's nearest edge is within
-            // our vision cone's view angle / 2 for half the view
+            // if the nearest edge of the player is within the view angle
+            // check if there are any walls or doors in the way, if not
+            // the player is spotted.
             if (angle_to_player - edge_offset < view_angle / 2)
             {
-                float distance =
-                    Vector3.Distance(transform.position, target.position);
-
-                // raycast to see if we hit a wall in the path to the player
-                // meaning that we actually cannot see them.
                 if (Physics.Raycast(
-                    transform.position,
-                    direction,
-                    distance,
-                    wall_mask
-                    ) == false)
+                    transform.position, 
+                    direction, 
+                    dist_to_player,
+                    wall_mask | door_mask) == false)
                 {
-                    // pass the distance so the controller can scale
-                    // chase bar fill rate by proximity
-                    guard.SpottedPlayer(true, dist_to_player);
+                    guard.SpottedPlayer(true);
                     return;
                 }
             }
         }
 
-        guard.SpottedPlayer(false, 0f);
+        // player not in sphere distance, not possible to see
+        guard.SpottedPlayer(false);
     }
 }

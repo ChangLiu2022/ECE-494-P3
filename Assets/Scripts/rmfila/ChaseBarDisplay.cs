@@ -1,3 +1,6 @@
+// OLD SYSTEM FOR WHEN GUARDS WERE SMARTER
+
+/*
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,3 +34,4 @@ public class ChaseBarDisplay : MonoBehaviour
             canvas_group.alpha = 0f;
     }
 }
+*/

@@ -1,7 +1,6 @@
 using UnityEngine;
 using static GameEvents;
 
-
 public class VisionConeMesh : MonoBehaviour
 {
     [Header("Detection Settings")]
@@ -9,7 +8,6 @@ public class VisionConeMesh : MonoBehaviour
     [SerializeField] private float default_detect_radius = 5f;
     [SerializeField] private float default_view_angle = 40f;
     // how 'fine' we want the vision cone to display
-    // mot much gained from going higher
     [SerializeField] private int segments = 20;
     [SerializeField] private LayerMask obstruction_mask;
 
@@ -45,11 +43,13 @@ public class VisionConeMesh : MonoBehaviour
         return view_angle;
     }
 
+
     private void OnEnable()
     {
         EventBus.Subscribe<PowerOffEvent>(OnPowerOffEvent);
         EventBus.Subscribe<PowerOnEvent>(OnPowerOnEvent);
     }
+
 
     private void OnDisable()
     {
@@ -58,18 +58,16 @@ public class VisionConeMesh : MonoBehaviour
     }
 
 
-    private void Awake()
+    private void Start()
     {
         view_angle = default_view_angle;
         detect_radius = default_detect_radius;
-    }
 
-
-    private void Start()
-    {
         mesh = new Mesh();
         controller = GetComponentInParent<GuardController>();
         view_renderer = GetComponent<MeshRenderer>();
+
+        // render an actual mesh
         GetComponent<MeshFilter>().mesh = mesh;
 
         // only need verticies and triangles to compose the mesh
@@ -140,7 +138,7 @@ public class VisionConeMesh : MonoBehaviour
                 world_direction,
                 out RaycastHit hit,
                 detect_radius,
-                obstruction_mask))
+                obstruction_mask) == true)
             {
                 // otherwise detect_distance is stops at the wall
                 // this prevents vision cone going displaying through walls
@@ -159,7 +157,7 @@ public class VisionConeMesh : MonoBehaviour
         if (controller == null)
             return;
 
-        if (controller.current_tier >= GuardTier.Tier3)
+        if (controller.is_alerted)
         {
             view_renderer.material = chase_mat;
             return;
@@ -172,10 +170,8 @@ public class VisionConeMesh : MonoBehaviour
             view_renderer.material = flashlight_mat;
             return;
         }
-        else
-        {
-            view_renderer.material = default_mat;
-        }
+
+        view_renderer.material = default_mat;
     }
 
 
