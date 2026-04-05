@@ -6552,11 +6552,9 @@ MonoBehaviour:
   rifle: {fileID: 1899719186}
   ammoDisplay: {fileID: 0}
   holsteredSprite: {fileID: 21300000, guid: bdcb0a1b982234f47af2bc7b40bc6566, type: 3}
-  drawnSprite: {fileID: 21300000, guid: 384e71ca185df48b89dbb10ed5c12989, type: 3}
-  weaponUIImage: {fileID: 1415730038}
-  pistolSprite: {fileID: 21300000, guid: 1a3ed831295f54ff9910bdddcac061a9, type: 3}
-  shotgunSprite: {fileID: 21300000, guid: b9eaa3f712f564dd3a11f7c8aac276f6, type: 3}
-  rifleSprite: {fileID: 21300000, guid: 28732efe5187f46d5a39a7ddcafceec8, type: 3}
+  pistolSprite: {fileID: 21300000, guid: 384e71ca185df48b89dbb10ed5c12989, type: 3}
+  shotgunSprite: {fileID: 21300000, guid: 512946b501b94496eae25b651d5264b6, type: 3}
+  rifleSprite: {fileID: 21300000, guid: 788ddf6cc3966e84ea1030bf7790dcb7, type: 3}
 --- !u!114 &642753719
 MonoBehaviour:
   m_ObjectHideFlags: 0
