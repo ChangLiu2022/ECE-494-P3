@@ -42,4 +42,19 @@ public class GameEvents
         public float radius;
         public bool is_gunshot;
     }
+
+    public struct EnemyHitEvent { }
+
+    public struct UpgradeInputEvent { }
+
+    public struct UpgradeActivatedEvent
+    {
+        public int tierIndex;
+    }
+
+    public struct ChargeProgressEvent
+    {
+        public float currentProgress;
+        public int segmentsRequired;
+    }
 }
