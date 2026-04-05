@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 4163402457160643360}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.333, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -88,7 +88,7 @@ MonoBehaviour:
   player: {fileID: 0}
   guard: {fileID: 0}
   guard_mode: 0
-  max_health: 5
+  max_health: 1
   point_a: {fileID: 0}
   point_b: {fileID: 0}
   patrol_speed: 1.5
@@ -547,6 +547,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1167187502621797821, guid: c7492b01e245e4574b653793de9c8832,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167187502621797821, guid: c7492b01e245e4574b653793de9c8832,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167187502621797821, guid: c7492b01e245e4574b653793de9c8832,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167187502621797821, guid: c7492b01e245e4574b653793de9c8832,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -594,6 +609,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404753244540369716, guid: c7492b01e245e4574b653793de9c8832,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404753244540369716, guid: c7492b01e245e4574b653793de9c8832,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404753244540369716, guid: c7492b01e245e4574b653793de9c8832,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404753244540369716, guid: c7492b01e245e4574b653793de9c8832,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404753244540369716, guid: c7492b01e245e4574b653793de9c8832,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4628620424498464183, guid: c7492b01e245e4574b653793de9c8832,
         type: 3}
