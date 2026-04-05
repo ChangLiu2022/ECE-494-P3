@@ -5363,6 +5363,7 @@ GameObject:
   - component: {fileID: 1202485197}
   - component: {fileID: 1202485200}
   - component: {fileID: 1202485201}
+  - component: {fileID: 1202485202}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5505,6 +5506,20 @@ MonoBehaviour:
   vehicleOffset: {x: 0, y: 25, z: 0}
   useSmoothing: 0
   smoothSpeed: 10
+--- !u!114 &1202485202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202485196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a0d5c0814e22c48be645010ec2cf60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseWaveClip: {fileID: 8300000, guid: bb33646c93427f840a7f35a457281c42, type: 3}
+  volume: 1
 --- !u!1 &1219682216
 GameObject:
   m_ObjectHideFlags: 0
@@ -7827,6 +7842,7 @@ MonoBehaviour:
   initialSegments: 10
   decayDelay: 2
   decayRate: 0.1
+  penalty: 0.75
   upgrade: {fileID: 1435399313}
   downgrade: {fileID: 698393424}
   pistol_icon: {fileID: 21300000, guid: 1a3ed831295f54ff9910bdddcac061a9, type: 3}
