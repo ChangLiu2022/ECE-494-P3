@@ -76,12 +76,6 @@ public static class GunEvents
     // used to tell HUD to update its ammo count
     public struct AmmoChangedEvent { }
 
-    public struct PistolUnlockedEvent { }
-
-    public struct ShotgunUnlockedEvent { }
-    
-    public struct RifleUnlockedEvent { }
-
     public struct WeaponChangedEvent
     {
         public string new_weapon;

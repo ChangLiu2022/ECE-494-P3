@@ -17,7 +17,8 @@ public class InformationBoxController : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
 
         canvas_group = GetComponent<CanvasGroup>();
         if (canvas_group == null)
