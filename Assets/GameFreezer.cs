@@ -34,7 +34,11 @@ public class GameFreezer : MonoBehaviour
         Time.timeScale = 1f;
         if (crosshair_canvas != null) crosshair_canvas.SetActive(true);
         Cursor.visible = false;
-        if (weapon_pivot != null) weapon_pivot.SetActive(true);
+        if (weapon_pivot != null)
+        {
+            weapon_pivot.SetActive(true);
+        }
+
         if (player != null) player.enabled = true;
     }
 }

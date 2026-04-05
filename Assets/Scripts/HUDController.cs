@@ -132,11 +132,13 @@ public class HUDController : MonoBehaviour
         {
             EventBus.Publish(new GameUnfreezeEvent());
             escapePanel.SetActive(false);
+            Debug.Log($"ESCAPE CLOSED: timeScale after = {Time.timeScale}");
         }
         else
         {
             EventBus.Publish(new GameFreezeEvent());
             escapePanel.SetActive(true);
+            Debug.Log($"ESCAPE OPEN: timeScale after = {Time.timeScale}");
         }
 
         is_paused = !is_paused;
