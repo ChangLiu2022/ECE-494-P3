@@ -12,7 +12,6 @@ public class HUDController : MonoBehaviour
 
     [Header("Panel Dependencies")]
     [SerializeField] private GameObject escapePanel;
-    [SerializeField] private GameObject controlsPanel;
     //[SerializeField] private TMP_Text ammoDisplay;
     [SerializeField] private Transform ammoContainer;
     [SerializeField] private GameObject ammoPrefab;
@@ -99,8 +98,6 @@ public class HUDController : MonoBehaviour
         {
             Debug.LogError("No GameObject with name 'Player' found in the scene.");
         }
-
-        UpdateAmmoCount(new AmmoChangedEvent());
     }
 
     private bool is_paused = false;
@@ -148,7 +145,6 @@ public class HUDController : MonoBehaviour
     {
         EventBus.Subscribe<AlertEvent>(OnAlertEvent);
         EventBus.Subscribe<GameOverEvent>(OnGameOver);
-        EventBus.Subscribe<AmmoChangedEvent>(UpdateAmmoCount);
         EventBus.Subscribe<FailedToFireEvent>(FlashIndicator);
         EventBus.Subscribe<WinEvent>(OnWinEvent);
     }
@@ -157,7 +153,6 @@ public class HUDController : MonoBehaviour
     {
         EventBus.Unsubscribe<AlertEvent>(OnAlertEvent);
         EventBus.Unsubscribe<GameOverEvent>(OnGameOver);
-        EventBus.Unsubscribe<AmmoChangedEvent>(UpdateAmmoCount);
         EventBus.Unsubscribe<FailedToFireEvent>(FlashIndicator);
         EventBus.Unsubscribe<WinEvent>(OnWinEvent);
     }
@@ -198,31 +193,6 @@ public class HUDController : MonoBehaviour
             "<b>Objectives:" +
             "<s>1) Collect the gold\n" +
             "2) Exit the map</s></b>";
-    }
-
-    // updates the ammo count
-    private void UpdateAmmoCount(AmmoChangedEvent e)
-    {
-        if (inv == null) return;
-        if (ammoContainer == null)
-        {
-            Debug.Log("Ammo container not assigned!"); return;
-        }
-        if(ammoPrefab == null)
-        {
-            Debug.Log("Ammo prefab not assigned!"); return;
-        }
-
-        foreach (var icon in ammoIcons)
-            Destroy(icon);
-
-        ammoIcons.Clear();
-
-        for (int i = 0; i < inv.BulletCount; i++)
-        {
-            GameObject icon = Instantiate(ammoPrefab, ammoContainer);
-            ammoIcons.Add(icon);
-        }
     }
 
     // flashes the ammo count to indicate that the player is out of bullets
@@ -272,18 +242,6 @@ public class HUDController : MonoBehaviour
         Destroy(tempIcon);
 
         isFlashing = false;
-    }
-
-    public void ShowControlsPanel()
-    {
-        controlsPanel.SetActive(true);
-        escapePanel.SetActive(false);
-    }
-
-    public void HideControlsPanel()
-    {
-        controlsPanel.SetActive(false);
-        escapePanel.SetActive(true);
     }
 
     public void Restart()

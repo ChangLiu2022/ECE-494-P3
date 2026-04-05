@@ -140,7 +140,7 @@ public class GuardDoors : MonoBehaviour
 
         if (isOpen == false)
         {
-            OpenDoor(guard.transform);
+            if(guard.transform != null) OpenDoor(guard.transform);
         }
 
         guard_opening = false;

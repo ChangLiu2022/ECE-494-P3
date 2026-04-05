@@ -402,7 +402,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   escapePanel: {fileID: 2008609160}
-  controlsPanel: {fileID: 0}
   ammoContainer: {fileID: 0}
   ammoPrefab: {fileID: 1098982756442196306, guid: 809fdc2767c7e0945999b984ac0e2863,
     type: 3}
@@ -1200,7 +1199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b505cc13da5f844faaa70cdf5f46663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunBar: {fileID: 1899005623}
   fillImage: {fileID: 131644520}
   rootObject: {fileID: 802994311}
   upgrade: {fileID: 1435399313}
@@ -2072,6 +2070,11 @@ PrefabInstance:
       propertyPath: bullets
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 9172226455244093325, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+        type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 1361355997}
     - target: {fileID: 9172226455244093325, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
       propertyPath: cam
@@ -4087,7 +4090,6 @@ GameObject:
   - component: {fileID: 789896326}
   - component: {fileID: 789896325}
   - component: {fileID: 789896324}
-  - component: {fileID: 789896323}
   m_Layer: 5
   m_Name: WeaponsUI
   m_TagString: Untagged
@@ -4114,20 +4116,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 12.038513}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0}
---- !u!114 &789896323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 789896321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80e46a021678fc41b1b90a12c43c43e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offsetX: -30
-  offsetY: -75
 --- !u!114 &789896324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4143,7 +4131,6 @@ MonoBehaviour:
   pistol: {fileID: 641026230}
   shotgun: {fileID: 719366669}
   rifle: {fileID: 716244776}
-  ammoDisplay: {fileID: 0}
   holsteredSprite: {fileID: 21300000, guid: bdcb0a1b982234f47af2bc7b40bc6566, type: 3}
   pistolSprite: {fileID: 21300000, guid: 384e71ca185df48b89dbb10ed5c12989, type: 3}
   shotgunSprite: {fileID: 21300000, guid: 512946b501b94496eae25b651d5264b6, type: 3}
@@ -6301,6 +6288,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327214654}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &1361355997 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 6638549660510828012, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+    type: 3}
+  m_PrefabInstance: {fileID: 420996131}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1371100291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8526,7 +8519,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialSegments: 10
-  decayDelay: 2
+  decayDelay: 4
   decayRate: 0.1
   penalty: 0.75
   upgrade: {fileID: 1435399313}

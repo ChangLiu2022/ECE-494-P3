@@ -62,7 +62,7 @@ public class GunBarController : MonoBehaviour
     void Update()
     {
         // CHEATS
-        if (Input.GetKeyDown(KeyCode.Equals)) EventBus.Publish(new GuardShotEvent());
+        // if (Input.GetKeyDown(KeyCode.Equals)) EventBus.Publish(new GuardShotEvent());
 
         if (!isActive) return;
 
