@@ -960,12 +960,6 @@ MonoBehaviour:
   set_tutorial_complete: 0
   set_newmap_complete: 1
   no_gold_message: You need to collect the gold before leaving!
---- !u!1 &167586549 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5320280268418200802, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
-    type: 3}
-  m_PrefabInstance: {fileID: 2002566375}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &174682478 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 4895298086260136331, guid: ea328deb847333f4a92df0a12b3da39d,
@@ -1392,7 +1386,7 @@ RectTransform:
   m_LocalScale: {x: 4, y: 4, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1394945485}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1601,12 +1595,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 315697705}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &323931930 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3972567426427150607, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
-    type: 3}
-  m_PrefabInstance: {fileID: 2002566375}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &327154699
 GameObject:
   m_ObjectHideFlags: 0
@@ -2467,7 +2455,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2002566388}
   weapon_pivot: {fileID: 1628891862}
-  crosshair_canvas: {fileID: 1449329981}
+  crosshair_canvas: {fileID: 0}
 --- !u!4 &426357185
 Transform:
   m_ObjectHideFlags: 0
@@ -4429,7 +4417,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 2002566375}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 323931930}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9c9d11be07bc0644bf903c2076e5515, type: 3}
@@ -5756,7 +5744,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 184139176}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &851068983
 MonoBehaviour:
@@ -6999,8 +6987,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1719762282}
+  m_Children: []
   m_Father: {fileID: 1764801409}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -8977,7 +8964,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1997454127}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -9573,7 +9560,7 @@ MonoBehaviour:
   gameover_text: {fileID: 955198589}
   player: {fileID: 2002566388}
   gun: {fileID: 674349560}
-  crosshair: {fileID: 1449329981}
+  crosshair: {fileID: 0}
 --- !u!114 &1320194592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9650,11 +9637,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 567989186}
-  - {fileID: 1394945485}
-  - {fileID: 1449329982}
   - {fileID: 1182149369}
   - {fileID: 936704570}
-  - {fileID: 1706261072}
   - {fileID: 1764801409}
   m_Father: {fileID: 1856500223}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9837,7 +9821,7 @@ Transform:
   m_GameObject: {fileID: 1402958390}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -366.91, y: 1.63, z: -284.67}
+  m_LocalPosition: {x: -4.35, y: 1.63, z: 3.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10877,12 +10861,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532278376}
   m_CullTransparentMesh: 1
---- !u!1 &1543965772 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 947213837001477074, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
-    type: 3}
-  m_PrefabInstance: {fileID: 2002566375}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1545539446
 GameObject:
   m_ObjectHideFlags: 0
@@ -11405,9 +11383,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 731145421}
-  m_Father: {fileID: 1945104163}
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11458,7 +11435,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1610252252}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: HUDController, Assembly-CSharp
         m_MethodName: MainMenu
         m_Mode: 1
@@ -13136,7 +13113,6 @@ Transform:
   m_Children:
   - {fileID: 460782424}
   - {fileID: 426357185}
-  - {fileID: 510111027}
   - {fileID: 1744765239}
   - {fileID: 1320194595}
   - {fileID: 1053327061}
@@ -13277,7 +13253,7 @@ RectTransform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1706261072}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -14904,9 +14880,13 @@ SceneRoots:
   - {fileID: 516205644}
   - {fileID: 1402958391}
   - {fileID: 296088795}
-  - {fileID: 516205644}
   - {fileID: 1406231129}
   - {fileID: 2002566375}
   - {fileID: 720675135}
   - {fileID: 1856500223}
   - {fileID: 594883179}
+  - {fileID: 308823823}
+  - {fileID: 851068982}
+  - {fileID: 1235404175}
+  - {fileID: 1577834125}
+  - {fileID: 1868809926}
