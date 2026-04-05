@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static GameEvents;
 
@@ -33,9 +34,12 @@ public class GunBarUI : MonoBehaviour
         upgrade.sprite = shotgun_icon;
         downgrade.sprite = pistol_icon;
 
-        rootObject.enabled = false;
-        upgrade.enabled = false;
-        downgrade.enabled = false;
+        if(SceneManager.GetActiveScene().name == "Safehouse")
+        {
+            rootObject.enabled = false;
+            upgrade.enabled = false;
+            downgrade.enabled = false;
+        }
     }
 
     void OnFirstHit(FirstHitEvent e)
@@ -44,7 +48,6 @@ public class GunBarUI : MonoBehaviour
         rootObject.enabled = true;
         upgrade.enabled = true;
         downgrade.enabled = true;
-
     }
 
     void Update()
