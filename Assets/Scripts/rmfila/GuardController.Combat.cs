@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static GameEvents;
 
 public partial class GuardController
 {
@@ -60,6 +61,7 @@ public partial class GuardController
         Destroy(bullet_col.gameObject);
 
         current_health--;
+        EventBus.Publish(new GuardShotEvent());
 
         // if health is 0 or below, destroy the guard prefab
         if (current_health <= 0) 
