@@ -503,6 +503,23 @@ PrefabInstance:
       propertyPath: guard_mode
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -1225,6 +1242,23 @@ PrefabInstance:
       propertyPath: guard_mode
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -2231,6 +2265,7 @@ GameObject:
   - component: {fileID: 296088793}
   - component: {fileID: 296088792}
   - component: {fileID: 296088791}
+  - component: {fileID: 296088796}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2373,6 +2408,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &296088796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296088790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a0d5c0814e22c48be645010ec2cf60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseWaveClip: {fileID: 8300000, guid: b789658446ece1942adbf4dcab7b769e, type: 3}
+  volume: 0.2
 --- !u!1001 &298650222
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4610,6 +4659,23 @@ PrefabInstance:
       propertyPath: guard_mode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -6108,6 +6174,23 @@ PrefabInstance:
       propertyPath: guard_mode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -6186,6 +6269,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -10318,9 +10418,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
       propertyPath: wall_mask.m_Bits
       value: 37120
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -15513,6 +15630,23 @@ PrefabInstance:
       propertyPath: guard_mode
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -15591,6 +15725,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -18187,6 +18338,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -18712,6 +18880,23 @@ PrefabInstance:
       propertyPath: guard_mode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -20944,6 +21129,23 @@ PrefabInstance:
       propertyPath: guard_mode
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -21600,6 +21802,23 @@ PrefabInstance:
       propertyPath: guard_mode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -21883,6 +22102,23 @@ PrefabInstance:
       propertyPath: guard_mode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
@@ -25215,6 +25451,23 @@ PrefabInstance:
       propertyPath: guard_mode
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: max_health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: lethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
+        type: 3}
+    - target: {fileID: 6921848108613476988, guid: 0582c51a44f45e947914f9713d0e2588,
+        type: 3}
+      propertyPath: nonlethal_guard_sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
+        type: 3}
     - target: {fileID: 8059752126526752325, guid: 0582c51a44f45e947914f9713d0e2588,
         type: 3}
       propertyPath: m_Radius
