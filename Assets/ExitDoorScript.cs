@@ -4,13 +4,13 @@ using static GameEvents;
 
 public class ExitDoorScript : MonoBehaviour
 {
-    [SerializeField] private Transform teleport_position;
     [SerializeField] public float interactRange = 1.5f;
-    [SerializeField] private CameraFollow cam;
-    [SerializeField] private bool tutorial = false;
+    [SerializeField] private string target_scene = "Safehouse";
+    [SerializeField] private bool set_tutorial_complete = false;
+    [SerializeField] private bool set_newmap_complete = false;
+    [SerializeField] private string no_gold_message = "You need to collect the gold before leaving!";
 
     private bool can_leave = false;
-    private bool has_teleported = false;
     private Transform player;
 
     private void OnEnable()
@@ -23,34 +23,29 @@ public class ExitDoorScript : MonoBehaviour
         EventBus.Unsubscribe<GoldEvent>(OnGoldCollected);
     }
 
-    void Start()
+    private void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
     }
 
-    void Update()
+    private void Update()
     {
-        if (has_teleported) 
-            return;
+        if (player == null) return;
 
         float distance = Vector3.Distance(transform.position, player.position);
         if (distance <= interactRange && Input.GetKeyDown(KeyCode.E))
         {
-            if (can_leave && tutorial == true)
+            if (can_leave)
             {
-                CutsceneManager.did_we_already_watch_this_shit = false;
-                SceneManager.LoadScene("NewMap");
-            }
+                if (set_tutorial_complete) SafehouseState.completed_tutorial = true;
+                if (set_newmap_complete) SafehouseState.completed_newmap = true;
 
-            if (can_leave && tutorial == false)
-            {
-                has_teleported = true;
-                player.position = teleport_position.position;
-                cam.SetTarget(player);
+                SceneManager.LoadScene(target_scene);
             }
-
             else
-                Debug.Log("Door locked — gold not collected yet.");
+            {
+                InformationBoxController.instance.Show(no_gold_message);
+            }
         }
     }
 

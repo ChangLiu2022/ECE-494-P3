@@ -1393,7 +1393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de35a7e69863a40aa8e651dabf4b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scene_name: Tutorial
+  scene_name: Safehouse
 --- !u!1 &1760617475
 GameObject:
   m_ObjectHideFlags: 0

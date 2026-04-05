@@ -51,3 +51,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: HalfWall
+    uniqueID: 562835305
+    locked: 0
+  - name: Player
+    uniqueID: 4113579859
+    locked: 0
