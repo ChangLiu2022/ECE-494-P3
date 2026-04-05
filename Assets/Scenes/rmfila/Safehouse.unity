@@ -5518,8 +5518,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a0d5c0814e22c48be645010ec2cf60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noiseWaveClip: {fileID: 8300000, guid: bb33646c93427f840a7f35a457281c42, type: 3}
-  volume: 1
+  noiseWaveClip: {fileID: 8300000, guid: b789658446ece1942adbf4dcab7b769e, type: 3}
+  volume: 0.1
 --- !u!1 &1219682216
 GameObject:
   m_ObjectHideFlags: 0
