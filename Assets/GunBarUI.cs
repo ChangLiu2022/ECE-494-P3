@@ -6,7 +6,7 @@ using static GameEvents;
 
 public class GunBarUI : MonoBehaviour
 {
-    public GunBarController gunBar;
+    private GunBarController gunBar;
     public Image fillImage;
     public Image rootObject;
     public Image upgrade;
@@ -29,19 +29,21 @@ public class GunBarUI : MonoBehaviour
         EventBus.Unsubscribe<FirstHitEvent>(OnFirstHit);
     }
 
-
     private void Start()
     {
+        gunBar = FindObjectOfType<GunBarController>();
+
         upgrade.sprite = shotgun_icon;
         downgrade.sprite = pistol_icon;
 
-        if (SceneManager.GetActiveScene().name == "Safehouse")
+        if (SceneManager.GetActiveScene().name == "Safehouse" && !SafehouseState.gun_collected)
         {
             rootObject.enabled = false;
             upgrade.enabled = false;
             downgrade.enabled = false;
         }
     }
+
 
     void OnFirstHit(FirstHitEvent e)
     {
