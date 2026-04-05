@@ -5868,7 +5868,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noiseWaveClip: {fileID: 8300000, guid: b789658446ece1942adbf4dcab7b769e, type: 3}
-  volume: 0.2
+  volume: 0.1
 --- !u!1 &1219682216
 GameObject:
   m_ObjectHideFlags: 0
