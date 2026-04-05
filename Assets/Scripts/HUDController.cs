@@ -8,6 +8,8 @@ using static GunEvents;
 
 public class HUDController : MonoBehaviour
 {
+    public static HUDController instance;
+
     [Header("Panel Dependencies")]
     [SerializeField] private GameObject escapePanel;
     [SerializeField] private GameObject controlsPanel;
@@ -30,6 +32,7 @@ public class HUDController : MonoBehaviour
     [SerializeField] private GameObject crosshair;
 
     private static bool show_start_screen = true;
+    private bool is_final_win = false;
 
     // used to change the text of the checklist
     private TMP_Text checklistText;
@@ -48,9 +51,22 @@ public class HUDController : MonoBehaviour
     }
 
 
+    public void ForceCloseEscape()
+    {
+        if (!is_paused) return;
+        escapePanel.SetActive(false);
+        is_paused = false;
+    }
+
+
+    public bool IsEscapeOpen => is_paused;
+
+
     // saves the checklistText gameObject
     private void Start()
     {
+        instance = this;
+
         EventBus.Publish(new GameUnfreezeEvent());
         if (gameover_panel != null)
             gameover_panel.SetActive(false);
@@ -92,16 +108,22 @@ public class HUDController : MonoBehaviour
 
     private void Update()
     {
-        if (gameover_panel.activeSelf == true && Input.GetKeyDown(KeyCode.F))
+        if (gameover_panel.activeSelf && Input.GetKeyDown(KeyCode.F))
         {
             Time.timeScale = 1;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            if (is_final_win)
+            {
+                SafehouseState.Reset();
+                SceneManager.LoadScene("Main Menu");
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
 
-        if(Input.GetKeyDown(KeyCode.Escape) && can_pause)
-        {
+        if (Input.GetKeyDown(KeyCode.Escape) && can_pause && !MapController.is_open)
             ShowHideEscapeMenu();
-        }
     }
 
     public void ShowHideEscapeMenu()
@@ -161,6 +183,7 @@ public class HUDController : MonoBehaviour
 
     private void OnWinEvent(WinEvent e)
     {
+        is_final_win = e.is_final_win;
         EventBus.Publish(new GameFreezeEvent());
         can_pause = false;
         gameover_panel.SetActive(true);

@@ -61,7 +61,7 @@ public class LaserController : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = 1f - (elapsed / fadeDuration); // normalized 1->0
             intensity = initialIntensity * t;
-            mat.SetColor("_EmissionColor", Color.red * intensity);
+            mat.SetColor("_EmissionColor", Color.cyan * intensity);
 
             if (Random.value < flickerChance)
             {

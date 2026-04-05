@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class WeaponUIManager : MonoBehaviour
@@ -55,23 +56,39 @@ public class WeaponUIManager : MonoBehaviour
     {
         GameObject player = GameObject.Find("Body");
         if (player != null)
-        {
             playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
+
+        if (SceneManager.GetActiveScene().name == "Safehouse")
+        {
+            if (SafehouseState.gun_collected)
+            {
+                // returning player — gun is owned but holstered in the safehouse
+                currentIndex = 0;
+                isHolstered = true;
+            }
+            // currentIndex stays -1, hands sprite shows via UpdatePlayerSprite logic
+            DisableAllWeapons();
+        }
+        else
+        {
+            currentIndex = 0;
+            isHolstered = false;
+            ActivateWeaponByIndex(0);
         }
 
         UpdateWeaponUI();
-        DisableAllWeapons();
         UpdatePlayerSprite();
         UpdateAmmoDisplay();
     }
 
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-            TrySwapWeapon();
+       // if (Input.GetKeyDown(KeyCode.Q))
+       //     TrySwapWeapon();
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            ToggleHolster();
+        // if (Input.GetKeyDown(KeyCode.Space))
+        //     ToggleHolster();
         /*
         // Cheat codes for unlocking
         if (Input.GetKeyDown(KeyCode.Alpha1))

@@ -15,8 +15,11 @@ public class GameEvents
     public struct GameOverEvent { }
 
     // stop game
-    public struct WinEvent { }
-    
+    public struct WinEvent
+    {
+        public bool is_final_win;
+    }
+
     public struct PowerOffEvent { }
     
     public struct PowerOnEvent { }
