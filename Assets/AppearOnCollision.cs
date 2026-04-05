@@ -25,7 +25,7 @@ public class AppearOnCollision : MonoBehaviour
 
     private void OnAlertEvent(AlertEvent e)
     {
-        shouldAppear = false;
+        //shouldAppear = false;
     }
 
     private void Awake()
