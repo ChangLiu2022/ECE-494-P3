@@ -1,13 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static GameEvents;
 
 public class LightController : MonoBehaviour
 {
-    public Light directionalLight;
+    [Header("Spotlight Parent")]
+    public GameObject spotlightParent;
 
-    
+    void Start()
+    {
+        if (spotlightParent != null) spotlightParent.SetActive(true);
+    }
+
     void OnEnable()
     {
         EventBus.Subscribe<PowerOffEvent>(OnPowerOff);
@@ -22,15 +25,11 @@ public class LightController : MonoBehaviour
 
     void OnPowerOff(PowerOffEvent e)
     {
-        if (directionalLight != null)
-            directionalLight.color = Color.black;
+        if (spotlightParent != null) spotlightParent.SetActive(false);
     }
 
     void OnPowerON(PowerOnEvent e)
     {
-        if (directionalLight != null)
-        {
-            directionalLight.color = Color.white;
-        }
+        if (spotlightParent != null) spotlightParent.SetActive(true);
     }
 }
