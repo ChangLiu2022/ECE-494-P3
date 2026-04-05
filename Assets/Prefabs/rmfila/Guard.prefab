@@ -88,7 +88,7 @@ MonoBehaviour:
   player: {fileID: 0}
   guard: {fileID: 0}
   guard_mode: 0
-  max_health: 5
+  max_health: 1
   point_a: {fileID: 0}
   point_b: {fileID: 0}
   patrol_speed: 1.5
