@@ -34,7 +34,7 @@ public class GunBarUI : MonoBehaviour
         upgrade.sprite = shotgun_icon;
         downgrade.sprite = pistol_icon;
 
-        if(SceneManager.GetActiveScene().name == "Safehouse")
+        if(SceneManager.GetActiveScene().name == "Safehouse" && !SafehouseState.gun_collected)
         {
             rootObject.enabled = false;
             upgrade.enabled = false;

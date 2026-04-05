@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using static GameEvents;
 using static GunEvents;
+using UnityEngine.SceneManagement;
 
 public class GunBarController : MonoBehaviour
 {
@@ -52,6 +53,7 @@ public class GunBarController : MonoBehaviour
     private void Start()
     {
         maxSegments = initialSegments;
+        if(SceneManager.GetActiveScene().name != "Safehouse" || SafehouseState.gun_collected) EventBus.Publish(new FirstHitEvent());
     }
 
     void Update()
@@ -111,7 +113,7 @@ public class GunBarController : MonoBehaviour
             // Step 3: clamp to maxSegments
             nextSegmentIndex = Mathf.Min(nextSegmentIndex, maxSegments);
 
-            // Step 4: convert back to normalized progress (0–1)
+            // Step 4: convert back to normalized progress (0ï¿½1)
             progress = (float)nextSegmentIndex / maxSegments;
             Debug.Log(progress.ToString());
             
