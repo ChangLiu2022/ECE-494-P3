@@ -53,9 +53,12 @@ public class HasInventory : MonoBehaviour
 
         else if (other.CompareTag("EXIT"))
         {
-            EventBus.Publish(new WinEvent());
+            EventBus.Publish(new WinEvent 
+            { 
+                is_final_win = true 
+            });
         }
-        
+
         else if (other.CompareTag("PistolAmmo"))
         {
             bullets = 6;

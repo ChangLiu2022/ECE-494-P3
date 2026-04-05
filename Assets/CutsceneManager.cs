@@ -47,17 +47,15 @@ public class CutsceneManager : MonoBehaviour
     private Transform cameraTransform;
     private CameraFollow followScript;
 
-    public static bool did_we_already_watch_this_shit = false;
+    private static string last_cutscene_scene = "";
 
     private void OnEnable()
     {
         EventBus.Subscribe<CutsceneEvent>(OnCutsceneEvent);
 
-        if (did_we_already_watch_this_shit == true)
-            return;
-
-        else
-            did_we_already_watch_this_shit = true;
+        string current = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        if (last_cutscene_scene == current) return;
+        last_cutscene_scene = current;
 
         if (mainCamera != null) cameraTransform = mainCamera.transform;
         if(mainCamera != null) followScript = mainCamera.GetComponent<CameraFollow>();
