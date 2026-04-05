@@ -9,10 +9,10 @@ public class MenuController : MonoBehaviour
     [SerializeField] string sceneName;
 
     [Header("Fade Settings")]
-    [SerializeField] AudioSource musicSource;
     [SerializeField] Image blackoutPane;
     [SerializeField] float fadeDuration = 1f;
     [SerializeField] AnimationCurve fadeCurve;
+    [SerializeField] AudioSource musicSource;
 
     private bool isLoading = false;
 
@@ -64,6 +64,7 @@ public class MenuController : MonoBehaviour
             float alpha = curveValue;
 
             c.a = alpha;
+
             blackoutPane.color = c;
 
             if (musicSource != null) musicSource.volume = Mathf.Lerp(initialVolume, 0f, curveValue);
