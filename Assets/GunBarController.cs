@@ -20,13 +20,13 @@ public class GunBarController : MonoBehaviour
 
     void OnEnable()
     {
-        EventBus.Subscribe<GuardKilledEvent>(OnGuardKilled);
+        EventBus.Subscribe<GuardShotEvent>(OnGuardKilled);
         EventBus.Subscribe<FirstHitEvent>(OnFirstHit);
     }
 
     void OnDisable()
     {
-        EventBus.Unsubscribe<GuardKilledEvent>(OnGuardKilled);
+        EventBus.Unsubscribe<GuardShotEvent>(OnGuardKilled);
         EventBus.Unsubscribe<FirstHitEvent>(OnFirstHit);
     }
 
