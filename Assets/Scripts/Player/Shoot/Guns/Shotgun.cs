@@ -10,6 +10,7 @@ public class Shotgun : MonoBehaviour
     [SerializeField] private int ammo = -1;
     [SerializeField] private int pelletCount = 5;
     [SerializeField] private float spreadAngle = 30f;
+    [SerializeField] private float noise_range = 20f;
 
     [SerializeField] private LayerMask wallLayer;
 
@@ -62,7 +63,7 @@ public class Shotgun : MonoBehaviour
             EventBus.Publish(new NoiseWaveEvent
             {
                 origin = pos,
-                radius = 15f,
+                radius = noise_range,
                 is_gunshot = true
             });
         }

@@ -1200,7 +1200,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b505cc13da5f844faaa70cdf5f46663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunBar: {fileID: 1899005623}
   fillImage: {fileID: 131644520}
   rootObject: {fileID: 802994311}
   upgrade: {fileID: 1435399313}
@@ -5851,7 +5850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1014193629}
-  offset: {x: 0, y: 10, z: 0}
+  offset: {x: 0, y: 15, z: 0}
   vehicleOffset: {x: 0, y: 25, z: 0}
   useSmoothing: 0
   smoothSpeed: 10

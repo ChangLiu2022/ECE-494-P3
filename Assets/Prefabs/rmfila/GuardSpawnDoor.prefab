@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8865736000296228946}
   - component: {fileID: 2922938043160194069}
   - component: {fileID: 4895298086260136331}
+  - component: {fileID: 3207335330408993956}
   m_Layer: 15
   m_Name: Door Body
   m_TagString: Wall
@@ -28,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 1173812028407642272}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.024999976, y: 0, z: -0.7540002}
-  m_LocalScale: {x: 0.21, y: 1, z: 1.525}
+  m_LocalPosition: {x: 0, y: 0, z: -0.75}
+  m_LocalScale: {x: 0.2, y: 1, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7918979390345602087}
@@ -62,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e0f341b399c267b4da05f592093295f7, type: 2}
+  - {fileID: 2100000, guid: 3caa0d6ab2519874d9ca53d4e0b4912b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -103,8 +104,24 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 1, z: 1}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3207335330408993956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173812028407642272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd592b6f0fdfb11469f0086ee1f26565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guard_only_allowed: 1
+  player_one_way: 0
+  blocked: {fileID: 4895298086260136331}
+  ExitDoorScript: {fileID: 0}
 --- !u!1 &4562495650212646058
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,12 +131,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7918979390345602087}
-  - component: {fileID: 7317370812749974377}
-  - component: {fileID: 644221064380075017}
-  - component: {fileID: 7351824790215145294}
+  - component: {fileID: 3448852761792586554}
+  - component: {fileID: 6678749545131503055}
   m_Layer: 15
-  m_Name: NewDoors
-  m_TagString: Wall
+  m_Name: GuardSpawnDoor
+  m_TagString: GuardSpawnDoor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,7 +149,7 @@ Transform:
   m_GameObject: {fileID: 4562495650212646058}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.415, y: 0, z: -5.796}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -141,7 +157,7 @@ Transform:
   - {fileID: 6929104112836133232}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7317370812749974377
+--- !u!114 &3448852761792586554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,18 +171,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   swingAngle: 90
   swingSpeed: 5
-  doorCollider: {fileID: 644221064380075017}
+  doorCollider: {fileID: 6678749545131503055}
   interactRange: 1
   guard_detect_range: 1.5
-  guard_open_delay: 1
+  guard_open_delay: 0.1
   swing_buffer: 0.4
   guard_layer:
     serializedVersion: 2
     m_Bits: 64
-  sound_blocker: {fileID: 6450803907698247082}
-  door_obstacle: {fileID: 7351824790215145294}
-  guard_only_door: 0
---- !u!65 &644221064380075017
+  sound_blocker: {fileID: 0}
+  door_obstacle: {fileID: 0}
+--- !u!65 &6678749545131503055
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -185,24 +200,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5, y: 1, z: 1.52}
-  m_Center: {x: 0.025, y: 0, z: -0.75}
---- !u!208 &7351824790215145294
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4562495650212646058}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.11, y: 0.5, z: 0.76}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0.025, y: 0, z: -0.75}
-  m_TimeToStationary: 0.1
+  m_Size: {x: 1.52, y: 1, z: 1}
+  m_Center: {x: 0.75, y: 0, z: 0}
 --- !u!1 &4567358412562977437
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,5 +253,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.3, y: 1, z: 1.6}
-  m_Center: {x: 0.025, y: 0, z: -0.75}
+  m_Size: {x: 0.25, y: 1, z: 1.5}
+  m_Center: {x: 0, y: 0, z: -0.75}

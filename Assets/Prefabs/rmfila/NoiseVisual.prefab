@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84ca083a4bbe12342a11a7a847549937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  expand_speed: 10
+  expand_speed: 30
   cell_size: 0.2
   wall_mask:
     serializedVersion: 2
