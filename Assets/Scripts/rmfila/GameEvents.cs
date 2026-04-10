@@ -48,4 +48,9 @@ public class GameEvents
     public struct UpgradeActivatedEvent { }
     public struct DowngradeActivatedEvent { }
 
+
+    public struct TimerExpiredEvent { }
+
+    public struct PlayerEnteredMapEvent { }
+
 }

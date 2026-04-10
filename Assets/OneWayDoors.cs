@@ -72,6 +72,8 @@ public class OneWayDoors : MonoBehaviour
 
             if (ExitDoorScript != null)
                 ExitDoorScript.enabled = true;
+
+            EventBus.Publish(new GameEvents.PlayerEnteredMapEvent());
         }
     }
 }

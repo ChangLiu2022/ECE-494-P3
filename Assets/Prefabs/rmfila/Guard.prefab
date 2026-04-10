@@ -119,7 +119,8 @@ MonoBehaviour:
   lethal_guard_sprite: {fileID: 21300000, guid: cb9edd1b489bc440fbd45a8af4af3b01,
     type: 3}
   bloodEffectPrefab: {fileID: 8329804670842170612}
-  noise_wave_expand_speed: 30
+  noise_wave_expand_speed: 20
+  start_alerted: 0
   player_last_position: {x: 0, y: 0, z: 0}
 --- !u!195 &6650408569263145874
 NavMeshAgent:
