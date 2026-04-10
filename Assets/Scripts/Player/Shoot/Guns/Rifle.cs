@@ -8,6 +8,7 @@ public class Rifle : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private float fireRate = 0.1f;
     [SerializeField] private int ammo = -1;
+    [SerializeField] private float noise_range = 25f;
 
     [SerializeField] private LayerMask wallLayer;
 
@@ -51,7 +52,7 @@ public class Rifle : MonoBehaviour
             EventBus.Publish(new NoiseWaveEvent
             {
                 origin = pos,
-                radius = 10f,
+                radius = noise_range,
                 is_gunshot = true
             });
         }

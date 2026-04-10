@@ -84,6 +84,8 @@ public partial class GuardController : MonoBehaviour
         "Needs to match the exact same as the NoiseWave prefab.")]
     [SerializeField] private float noise_wave_expand_speed = 8f;
 
+    [SerializeField] private bool start_alerted = false;
+
     // determines if the guard is staggered by the player
     private bool is_staggered = false;
 
@@ -312,6 +314,9 @@ public partial class GuardController : MonoBehaviour
 
         if (guard_mode == GuardMode.StaticSearch)
             static_scan_routine = StartCoroutine(StaticScanRoutine());
+
+        if (start_alerted)
+            Alert();
     }
 
     private void FixedUpdate()

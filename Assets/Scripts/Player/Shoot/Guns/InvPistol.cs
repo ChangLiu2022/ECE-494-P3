@@ -8,6 +8,7 @@ public class InvPistol : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
     [SerializeField] private float fireRate = 0.3f;
+    [SerializeField] private float noise_range = 10f;
 
     [SerializeField] private LayerMask wallLayer;
     
@@ -79,7 +80,7 @@ public class InvPistol : MonoBehaviour
             EventBus.Publish(new NoiseWaveEvent
             {
                 origin = pos,
-                radius = 5f,
+                radius = noise_range,
                 is_gunshot = true
             });
         }
