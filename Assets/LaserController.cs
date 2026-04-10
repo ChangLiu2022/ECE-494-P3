@@ -4,6 +4,9 @@ using static GameEvents;
 
 public class LaserController : MonoBehaviour
 {
+    [Header("Timer")]
+    [SerializeField] private HeavyGuardTimer heavyGuardTimer;
+
 
     private void OnEnable()
     {
@@ -27,10 +30,14 @@ public class LaserController : MonoBehaviour
     // alerts guards if the laser is tripped!
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Body"))
+        if (other.CompareTag("Body"))
         {
-            // event now publishes the source of the event
             EventBus.Publish(new AlertEvent { position = transform.position });
+
+            // force the timer to zero + flash + spawn
+            if (heavyGuardTimer != null)
+                heavyGuardTimer.ForceExpire();
+
             Debug.Log("Laser tripped!");
         }
     }
