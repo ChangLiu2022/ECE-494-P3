@@ -7,6 +7,7 @@ public class GameFreezer : MonoBehaviour
     [SerializeField] private PlayerAiming player;
     [SerializeField] private GameObject weapon_pivot;
     [SerializeField] private GameObject crosshair_canvas;
+    [SerializeField] private GameObject map;
 
     private void OnEnable()
     {
@@ -27,6 +28,7 @@ public class GameFreezer : MonoBehaviour
         Cursor.visible = true;
         if (weapon_pivot != null) weapon_pivot.SetActive(false);
         if (player != null) player.enabled = false;
+        if(e.freeze_map && map != null) map.SetActive(false);
     }
 
     private void OnUnfreezeEvent(GameUnfreezeEvent e)
@@ -40,5 +42,6 @@ public class GameFreezer : MonoBehaviour
         }
 
         if (player != null) player.enabled = true;
+        if(e.freeze_map && map != null) map.SetActive(true);
     }
 }

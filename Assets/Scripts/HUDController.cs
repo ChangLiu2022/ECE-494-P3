@@ -66,7 +66,7 @@ public class HUDController : MonoBehaviour
     {
         instance = this;
 
-        EventBus.Publish(new GameUnfreezeEvent());
+        EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true });
         if (gameover_panel != null)
             gameover_panel.SetActive(false);
 
@@ -127,13 +127,13 @@ public class HUDController : MonoBehaviour
     {
         if (is_paused)
         {
-            EventBus.Publish(new GameUnfreezeEvent());
+            EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true });
             escapePanel.SetActive(false);
             Debug.Log($"ESCAPE CLOSED: timeScale after = {Time.timeScale}");
         }
         else
         {
-            EventBus.Publish(new GameFreezeEvent());
+            EventBus.Publish(new GameFreezeEvent() { freeze_map = true });
             escapePanel.SetActive(true);
             Debug.Log($"ESCAPE OPEN: timeScale after = {Time.timeScale}");
         }
@@ -181,7 +181,7 @@ public class HUDController : MonoBehaviour
     private void OnWinEvent(WinEvent e)
     {
         is_final_win = e.is_final_win;
-        EventBus.Publish(new GameFreezeEvent());
+        EventBus.Publish(new GameFreezeEvent() { freeze_map = true });
         can_pause = false;
         gameover_panel.SetActive(true);
         gameover_text.text = "<b>Game Over! \n\n You Win!</b>";

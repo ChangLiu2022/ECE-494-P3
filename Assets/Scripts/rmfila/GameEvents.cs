@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameEvents
@@ -33,8 +34,14 @@ public class GameEvents
 
     public struct VehicleExitEvent { }
 
-    public struct GameFreezeEvent { }
-    public struct GameUnfreezeEvent { }
+    public struct GameFreezeEvent
+    {
+        public bool freeze_map;
+    }
+    public struct GameUnfreezeEvent
+    {
+        public bool freeze_map;
+    }
 
     public struct NoiseWaveEvent
     {

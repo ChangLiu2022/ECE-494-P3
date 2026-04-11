@@ -19,8 +19,8 @@ public class SafehouseExitTrigger : MonoBehaviour
         }
 
         if (!SafehouseState.completed_tutorial)
-            SceneManager.LoadScene(tutorial_scene);
+            FadeManager.Instance.StartTransition(tutorial_scene, null, 2f);
         else
-            SceneManager.LoadScene(newmap_scene);
+            FadeManager.Instance.StartTransition(newmap_scene, null, 2f);
     }
 }

@@ -130,16 +130,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1018114397}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -199,6 +189,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1018114397}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -754,16 +754,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1446713097}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -823,6 +813,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1446713097}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1594,16 +1594,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1884350790}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1668,6 +1658,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1884350790}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4037,16 +4037,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 365937018}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -4106,6 +4096,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 365937018}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4232,16 +4232,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1458351160}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -4302,6 +4292,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1458351160}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4327,16 +4327,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 174682478}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -4396,6 +4386,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 174682478}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5009,6 +5009,7 @@ MonoBehaviour:
   player: {fileID: 2002566388}
   weapon_pivot: {fileID: 1628891862}
   crosshair_canvas: {fileID: 1577379125}
+  map: {fileID: 936704569}
 --- !u!4 &426357185
 Transform:
   m_ObjectHideFlags: 0
@@ -6408,16 +6409,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1044200619}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -6477,6 +6468,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1044200619}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9203,16 +9204,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1933140326}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -9272,6 +9263,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1933140326}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16000,16 +16001,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1134012996}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -16069,6 +16060,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1134012996}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16177,7 +16178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   escapePanel: {fileID: 1764801408}
-  controlsPanel: {fileID: 0}
   ammoContainer: {fileID: 0}
   ammoPrefab: {fileID: 1098982756442196306, guid: 809fdc2767c7e0945999b984ac0e2863,
     type: 3}
@@ -16307,16 +16307,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 40372210}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -16376,6 +16366,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 40372210}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18925,16 +18925,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 676400965}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -18994,6 +18984,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 676400965}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20701,16 +20701,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1321381250}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -20770,6 +20760,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1321381250}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -23115,16 +23115,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720675135}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 292806471}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -23184,6 +23174,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 292806471}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

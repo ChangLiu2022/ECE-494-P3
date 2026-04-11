@@ -37,7 +37,7 @@ public class ExitDoorScript : MonoBehaviour
                 if (set_newmap_complete) 
                     SafehouseState.completed_newmap = true;
 
-                SceneManager.LoadScene(target_scene);
+                FadeManager.Instance.StartTransition(target_scene, null, 1.3f);
             }
 
             else if (oneWayDoor != null && oneWayDoor.GetPlayerExitedOneWay())

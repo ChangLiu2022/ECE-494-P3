@@ -32,7 +32,7 @@ public class MapController : MonoBehaviour
 
             mapOpen = !mapOpen;
             is_open = mapOpen;
-            if (mapOpen) EventBus.Publish(new GameFreezeEvent());
+            if (mapOpen) EventBus.Publish(new GameFreezeEvent() { freeze_map = false });
             else StartCoroutine(DelayedUnfreeze());
         }
 
@@ -47,6 +47,6 @@ public class MapController : MonoBehaviour
     IEnumerator DelayedUnfreeze()
     {
         yield return new WaitForSecondsRealtime((1f / slideSpeed)); // Wait until halfway through the slide
-        EventBus.Publish(new GameUnfreezeEvent());
+        EventBus.Publish(new GameUnfreezeEvent() { freeze_map = false });
     }
 }
