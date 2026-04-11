@@ -7,6 +7,9 @@ using static GameEvents;
 
 public class FadeManager : MonoBehaviour
 {
+    [Header("Background Music Manager")]
+    [SerializeField]AudioSource bgMusicSource;
+
     [Header("Transition Sound Effects")]
     [SerializeField] private AudioClip runningClip;
     [SerializeField] private AudioClip engineClip;
@@ -60,6 +63,7 @@ public class FadeManager : MonoBehaviour
         if (!isLoading)
         {
             isLoading = true;
+            if(musicSource == null) musicSource = bgMusicSource;
             StartCoroutine(Transition(sceneName, musicSource, fadeDuration));
         }
     }
@@ -67,6 +71,8 @@ public class FadeManager : MonoBehaviour
     public IEnumerator FadeToBlack(AudioSource musicSource = null, float fadeDuration = 1f)
     {
         if (img == null) yield break;
+
+        if(musicSource == null) musicSource = bgMusicSource;
 
         EventBus.Publish(new GameFreezeEvent() { freeze_map = true }); // Freeze game during fade out
 
@@ -153,27 +159,23 @@ public class FadeManager : MonoBehaviour
     }
 }
 
-    public IEnumerator FadeFromBlack(float fadeDuration = 1f)
+    public IEnumerator FadeFromBlack(AudioSource musicSource = null, float fadeDuration = 1f)
     {
         if (img == null) yield break;
 
-        if(dog != null) dog.GetComponent<Image>().enabled = false;
-        if(loadText != null) loadText.enabled = false;
+        if (dog != null) dog.GetComponent<Image>().enabled = false;
+        if (loadText != null) loadText.enabled = false;
 
-        EventBus.Publish(new GameFreezeEvent() { freeze_map = true }); // Freeze game during fade in
+        EventBus.Publish(new GameFreezeEvent() { freeze_map = true });
+
+        if (musicSource == null) musicSource = bgMusicSource;
 
         Color c = img.color;
 
-        // Instant case
-        if (fadeDuration <= 0f)
-        {
-            c.a = 0f;
-            img.color = c;
-            yield break;
-        }
-
         float startAlpha = c.a;
         float timer = 0f;
+
+        float startVolume = musicSource != null ? musicSource.volume : 0f;
 
         while (timer < fadeDuration)
         {
@@ -183,18 +185,23 @@ public class FadeManager : MonoBehaviour
             // Smoothstep easing
             t = t * t * (3f - 2f * t);
 
+            // Screen fade
             c.a = Mathf.Lerp(startAlpha, 0f, t);
             img.color = c;
+
+            if (musicSource != null) musicSource.volume = Mathf.Lerp(startVolume, 0.4f, t);
 
             yield return null;
         }
 
-        // Ensure final state
+        // Final state
         c.a = 0f;
         img.color = c;
         img.raycastTarget = false;
 
-        EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true }); // Unfreeze game
+        if (musicSource != null) musicSource.volume = 0.4f;
+
+        EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true });
     }
 
     private IEnumerator Transition(string sceneName, AudioSource musicSource, float fadeDuration)
@@ -208,7 +215,7 @@ public class FadeManager : MonoBehaviour
 
         yield return null;
 
-        yield return StartCoroutine(FadeFromBlack(fadeDuration / 2));
+        yield return StartCoroutine(FadeFromBlack(musicSource, fadeDuration / 2));
 
         isLoading = false;
     }
