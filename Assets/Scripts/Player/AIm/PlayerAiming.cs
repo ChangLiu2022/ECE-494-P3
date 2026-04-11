@@ -5,10 +5,6 @@ public class PlayerAiming : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Camera cam;
-    [SerializeField] private LayerMask groundMask = ~0;
-
-    [Header("Settings")]
-    [SerializeField] private float rotationSmoothing = 0f;
 
 
     public Vector3 AimPoint;

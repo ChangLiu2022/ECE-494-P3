@@ -48,7 +48,8 @@ public class AppearOnCollision : MonoBehaviour
     {
         if (other.CompareTag("Body") && shouldAppear)
         {
-            StartFade(0f); // fade in
+            StartFade(0f); // fade out
+            shouldAppear = false;
         }
     }
 

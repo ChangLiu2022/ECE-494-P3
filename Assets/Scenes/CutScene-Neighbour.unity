@@ -380,16 +380,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a87f9075455e0ad4eafa627be8928317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingGold: 100
-  pitCoinLoss: 10
-  normalFontSize: 40
-  normalColor: {r: 0.5283019, g: 0.4862061, b: 0, a: 1}
-  flashFontSize: 40
-  flashColor: {r: 0.6603774, g: 0, b: 0, a: 1}
-  flashDuration: 0.5
-  flashCount: 3
-  offset: {x: -20, y: -20}
-  size: {x: 200, y: 50}
 --- !u!114 &17717166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,11 +393,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   escapePanel: {fileID: 2008609160}
-  controlsPanel: {fileID: 0}
-  ammoContainer: {fileID: 0}
-  ammoPrefab: {fileID: 1098982756442196306, guid: 809fdc2767c7e0945999b984ac0e2863,
-    type: 3}
-  bounceDuration: 0.15
   gameover_panel: {fileID: 820361669}
   gameover_text: {fileID: 1495307826}
   player: {fileID: 0}
@@ -460,7 +445,7 @@ MonoBehaviour:
   padding: 10
   font: {fileID: 0}
   spriteAsset: {fileID: 11400000, guid: 193e8b82d0f446d489f94b10538b6b2a, type: 2}
-  nextSceneName: first_level
+  nextSceneName: Tutorial
   fadeDuration: 1
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &23418879
@@ -3877,7 +3862,6 @@ MonoBehaviour:
   pistol: {fileID: 0}
   shotgun: {fileID: 0}
   rifle: {fileID: 0}
-  ammoDisplay: {fileID: 0}
   holsteredSprite: {fileID: 21300000, guid: bdcb0a1b982234f47af2bc7b40bc6566, type: 3}
   pistolSprite: {fileID: 21300000, guid: 384e71ca185df48b89dbb10ed5c12989, type: 3}
   shotgunSprite: {fileID: 21300000, guid: 512946b501b94496eae25b651d5264b6, type: 3}

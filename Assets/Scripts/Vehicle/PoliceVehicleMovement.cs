@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PoliceVehicleMovement : MonoBehaviour
 {
+    /*
     [Header("Chase")]
     [SerializeField] private float engineForce = 25f;
     [SerializeField] private float maxSpeed = 18f;
@@ -94,5 +95,5 @@ public class PoliceVehicleMovement : MonoBehaviour
 
         transform.position += _velocity * dt;
     }
-
+    */
 }

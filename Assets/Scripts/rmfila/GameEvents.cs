@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameEvents
@@ -8,7 +9,17 @@ public class GameEvents
         public Vector3 position;
     }
 
-    public struct GoldEvent { }
+    public struct GoldEvent
+    {
+        public int level_number;
+    }
+
+
+   public struct MoneyChangedEvent
+    {
+        public int current_money;
+        public int delta;
+    }
 
     // published when a guard catches the player
     // this is used to call the game over screen and mechanics

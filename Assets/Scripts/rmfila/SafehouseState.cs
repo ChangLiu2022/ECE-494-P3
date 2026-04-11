@@ -14,5 +14,6 @@ public static class SafehouseState
         completed_tutorial = false;
         completed_newmap = false;
         workbench_interacted = false;
+        PlayerWallet.Reset();
     }
 }

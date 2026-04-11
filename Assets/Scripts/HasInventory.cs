@@ -15,6 +15,7 @@ public class HasInventory : MonoBehaviour
 
     private void Awake()
     {
+        PlayerWallet.ResetLevelProgress();
         exit = GameObject.FindGameObjectWithTag("EXIT");
         if(exit != null) exit.SetActive(false);
     }
@@ -43,12 +44,14 @@ public class HasInventory : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // when the player collides with the gold:
-        if(other.CompareTag("Gold"))
+        // when the player collides with the gold
+        if (other.CompareTag("Gold"))
         {
-            other.gameObject.SetActive(false); // 1) deactivate the game object ("pick it up")
-            EventBus.Publish(new GoldEvent()); // 4) publish the GoldEvent() to tell the HUD to update the gold count
-            if(exit != null) exit.SetActive(true);
+            PlayerWallet.ClaimLevelReward();
+            EventBus.Publish(new GoldEvent 
+            { 
+                level_number = PlayerWallet.current_level 
+            });
         }
 
         else if (other.CompareTag("EXIT"))

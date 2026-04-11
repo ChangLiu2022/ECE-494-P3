@@ -29,7 +29,8 @@ public class OneWayDoors : MonoBehaviour
 
     private void Start()
     {
-        blocked.enabled = true;
+        if (blocked != null)
+            blocked.enabled = true;
         player_entered = false;
 
         if (ExitDoorScript != null)
@@ -52,7 +53,8 @@ public class OneWayDoors : MonoBehaviour
             // set the bool to signify the player entered
             player_entered = true;
             // and disable the collider to let them through
-            blocked.enabled = false;
+            if (blocked != null)
+                blocked.enabled = false;
         }
     }
 
@@ -67,7 +69,8 @@ public class OneWayDoors : MonoBehaviour
         else if (player_one_way && coll.CompareTag("Player"))
         {
             player_entered = true;
-            blocked.enabled = true;
+            if (blocked != null)
+                blocked.enabled = true;
             player_exited_one_way = true;
 
             if (ExitDoorScript != null)

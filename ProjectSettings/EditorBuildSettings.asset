@@ -12,12 +12,21 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: ced0917a73ecec5478b84850a19ed905
   - enabled: 1
+    path: Assets/Scenes/CutScene-DogStolen.unity
+    guid: f3c05871fe186654b82700c273dc41ed
+  - enabled: 1
+    path: Assets/Scenes/CutScene-Neighbour.unity
+    guid: 6fabe9def7d896645a94adb5d1bcce92
+  - enabled: 1
     path: Assets/Scenes/rmfila/Safehouse.unity
     guid: 15e6cfca039e77b4ba61d2ba6c5989c5
   - enabled: 1
     path: Assets/Scenes/Tutorial.unity
     guid: ebc2b3a2490ee3e4285d5901e29dfe64
   - enabled: 1
+    path: Assets/Scenes/rmfila/first_level.unity
+    guid: 2aa4a9d3fb111bd41965a138ef016f57
+  - enabled: 0
     path: Assets/Scenes/NewMap.unity
     guid: fcd21112b06f147bcb7c1dc2a940ecc3
   - enabled: 0

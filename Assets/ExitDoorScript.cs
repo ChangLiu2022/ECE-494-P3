@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static GameEvents;
 
 public class ExitDoorScript : MonoBehaviour
 {
@@ -8,47 +7,27 @@ public class ExitDoorScript : MonoBehaviour
     [SerializeField] private string target_scene = "Safehouse";
     [SerializeField] private bool set_tutorial_complete = false;
     [SerializeField] private bool set_newmap_complete = false;
-    [SerializeField] private string 
+    [SerializeField]
+    private string
         no_gold_message = "You need to collect the gold before leaving!";
-
-    private bool can_leave = false;
-
-    private void OnEnable()
-    {
-        EventBus.Subscribe<GoldEvent>(OnGoldCollected);
-    }
-
-    private void OnDisable()
-    {
-        EventBus.Unsubscribe<GoldEvent>(OnGoldCollected);
-    }
 
     private void OnTriggerEnter(Collider coll)
     {
-        if (coll.CompareTag("Player"))
+        if (!coll.CompareTag("Player")) return;
+
+        if (!PlayerWallet.level_reward_claimed)
         {
-            OneWayDoors oneWayDoor = GetComponent<OneWayDoors>();
-
-            if (can_leave)
-            {
-                if (set_tutorial_complete) 
-                    SafehouseState.completed_tutorial = true;
-
-                if (set_newmap_complete) 
-                    SafehouseState.completed_newmap = true;
-
-                SceneManager.LoadScene(target_scene);
-            }
-
-            else if (oneWayDoor != null && oneWayDoor.GetPlayerExitedOneWay())
-            {
-                InformationBoxController.instance.Show(no_gold_message);
-            }
+            InformationBoxController.instance.Show(no_gold_message);
+            return;
         }
-    }
 
-    private void OnGoldCollected(GoldEvent e)
-    {
-        can_leave = true;
+        if (set_tutorial_complete)
+            SafehouseState.completed_tutorial = true;
+
+        if (set_newmap_complete)
+            SafehouseState.completed_newmap = true;
+
+        PlayerWallet.AdvanceLevel();
+        SceneManager.LoadScene(target_scene);
     }
 }

@@ -24,8 +24,8 @@ public class MapController : MonoBehaviour
 
     void Update()
     {
-        // Toggle map on M key
-        if (Input.GetKeyDown(KeyCode.M))
+        // Toggle map on tab key
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (HUDController.instance != null && HUDController.instance.IsEscapeOpen)
                 HUDController.instance.ForceCloseEscape();

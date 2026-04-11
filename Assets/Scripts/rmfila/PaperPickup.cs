@@ -42,7 +42,7 @@ public class PaperPickup : MonoBehaviour
         if (in_range && Input.GetKeyDown(pickup_key))
         {
             SafehouseState.paper_collected = true;
-            InformationBoxController.instance.Show("You picked up the map.");
+            InformationBoxController.instance.Show("Press 'Tab' to view your map.");
             Destroy(gameObject);
             return;
         }

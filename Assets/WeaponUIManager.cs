@@ -8,9 +8,6 @@ public class WeaponUIManager : MonoBehaviour
     [SerializeField] private GameObject shotgun;
     [SerializeField] private GameObject rifle;
 
-    [Header("Weapon UI")]
-    [SerializeField] private GameObject ammoDisplay;
-
     [Header("Player Sprites")]
     [SerializeField] private Sprite holsteredSprite;
 
