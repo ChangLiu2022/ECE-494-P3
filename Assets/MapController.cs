@@ -15,28 +15,11 @@ public class MapController : MonoBehaviour
     private RectTransform mapPanel;
     private bool mapOpen = false;
     private float slideProgress = 0f; // 0 = hidden, 1 = visible
-    private bool isFrozen = false;
-
-    void OnEnable()
-    {
-        EventBus.Subscribe<GameOverEvent>(GameOverEvent);
-    }
-
-    void OnDisable()
-    {
-        EventBus.Unsubscribe<GameOverEvent>(GameOverEvent);
-    }
-
-    void GameOverEvent(GameOverEvent e)
-    {
-        isFrozen = true;
-    }
 
     void Start()
     {
         mapPanel = GetComponent<RectTransform>();
         if (mapPanel != null) mapPanel.anchoredPosition = hiddenPosition;
-        isFrozen = false;
     }
 
     void Update()

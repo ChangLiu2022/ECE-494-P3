@@ -25,6 +25,7 @@ public class FadeManager : MonoBehaviour
     private AudioSource audioSource;
     private GameObject dog;
     private TMP_Text loadText;
+    private float newVolume;
 
     void Awake()
     {
@@ -188,8 +189,8 @@ public class FadeManager : MonoBehaviour
             // Screen fade
             c.a = Mathf.Lerp(startAlpha, 0f, t);
             img.color = c;
-
-            if (musicSource != null) musicSource.volume = Mathf.Lerp(startVolume, 0.4f, t);
+            
+            if (musicSource != null) musicSource.volume = Mathf.Lerp(startVolume, newVolume, t);
 
             yield return null;
         }
@@ -199,13 +200,15 @@ public class FadeManager : MonoBehaviour
         img.color = c;
         img.raycastTarget = false;
 
-        if (musicSource != null) musicSource.volume = 0.4f;
+        if (musicSource != null) musicSource.volume = newVolume;
 
         EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true });
     }
 
     private IEnumerator Transition(string sceneName, AudioSource musicSource, float fadeDuration)
     {
+        newVolume = sceneName == "Safehouse" ? 0.2f : 0.5f;
+
         yield return StartCoroutine(FadeToBlack(musicSource, fadeDuration));
 
         if(audioSource != null && fadeDuration != 1.95f) yield return StartCoroutine(PlayTransitionSounds(sceneName));

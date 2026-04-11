@@ -33,12 +33,12 @@ public class MusicManager : MonoBehaviour
 
     void OnEnable()
     {
-      EventBus.Subscribe<GameOverEvent>(e => StopBGMusic());  
+      EventBus.Subscribe<WinEvent>(e => StopBGMusic());  
     }
 
     void OnDisable()
     {
-        EventBus.Unsubscribe<GameOverEvent>(e => StopBGMusic());
+        EventBus.Unsubscribe<WinEvent>(e => StopBGMusic());
     }
 
     void Start()
