@@ -117,7 +117,6 @@ public class GunBarController : MonoBehaviour
 
             // Step 4: convert back to normalized progress (0–1)
             progress = (float)nextSegmentIndex / maxSegments;
-            Debug.Log(progress.ToString());
             
         }
 
