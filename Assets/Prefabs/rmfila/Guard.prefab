@@ -88,14 +88,14 @@ MonoBehaviour:
   player: {fileID: 0}
   guard: {fileID: 0}
   guard_mode: 0
-  max_health: 1
+  max_health: 5
   point_a: {fileID: 0}
   point_b: {fileID: 0}
   patrol_speed: 1.5
   pause_duration: 1.5
   turn_speed: 180
   chase_speed: 4
-  give_up_distance: 15
+  give_up_distance: 20
   min_chase_duration: 5
   wall_mask:
     serializedVersion: 2
@@ -106,20 +106,21 @@ MonoBehaviour:
   bullet_prefab: {fileID: 95569608102249964, guid: 59c833da2ebe39d44b6c27b2e01a03de,
     type: 3}
   fire_point: {fileID: 619472383794619858}
-  fire_rate: 1
-  shoot_range: 5
-  sight_delay: 0.5
-  weapon_draw_time: 1
-  knockback_distance: 0.5
-  knockback_duration: 0.2
-  stagger_duration: 1
+  fire_rate: 0.5
+  shoot_range: 3
+  sight_delay: 0.75
+  weapon_draw_time: 1.5
+  knockback_distance: 0.2
+  knockback_duration: 0.1
+  stagger_duration: 0
   guards_sprite_renderer: {fileID: 430198159726640723}
   nonlethal_guard_sprite: {fileID: 21300000, guid: 91eae6440b2ed4329a7262c998d0f64f,
     type: 3}
   lethal_guard_sprite: {fileID: 21300000, guid: cb9edd1b489bc440fbd45a8af4af3b01,
     type: 3}
   bloodEffectPrefab: {fileID: 8329804670842170612}
-  noise_wave_expand_speed: 10
+  noise_wave_expand_speed: 20
+  start_alerted: 0
   player_last_position: {x: 0, y: 0, z: 0}
 --- !u!195 &6650408569263145874
 NavMeshAgent:

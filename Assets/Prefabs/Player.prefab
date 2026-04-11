@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 7518937583363464476}
   - component: {fileID: 975920972793711383}
   - component: {fileID: 4851233415881762159}
-  - component: {fileID: 4891786799267753749}
   - component: {fileID: 3886437604790515198}
   - component: {fileID: 5767792589752068574}
   m_Layer: 7
@@ -114,8 +113,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   sprintMultiplier: 2
-  acceleration: 15
-  deceleration: 15
+  acceleration: 50
+  deceleration: 50
 --- !u!114 &9172226455244093325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,23 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd296ba8d9156f04fba14391315cbb56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullets: 6
+  bullets: 2147483647
   exit: {fileID: 0}
---- !u!114 &4891786799267753749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2535166453606446258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abb98d021593e1c43ae1fff7019c53a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vehicleLayer:
-    serializedVersion: 2
-    m_Bits: 2048
 --- !u!114 &3886437604790515198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,7 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {fileID: 8510052184503467877}
   sprint_threshold: 3.5
-  sprint_noise_radius: 2
+  sprint_noise_radius: 1.75
   wave_interval: 0.333
 --- !u!136 &5767792589752068574
 CapsuleCollider:
@@ -255,7 +239,7 @@ Transform:
   m_GameObject: {fileID: 7909408897269097381}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0.257}
+  m_LocalPosition: {x: 0, y: 0, z: 0.257}
   m_LocalScale: {x: 0.2, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -490,7 +474,7 @@ PrefabInstance:
     - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
         type: 3}
       propertyPath: wallLayer.m_Bits
-      value: 256
+      value: 33024
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7318025241653613180, guid: d7c4b3a4f3967ef438052f85c3a7c621, type: 3}
@@ -524,7 +508,7 @@ PrefabInstance:
     - target: {fileID: 930661097910864486, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: wallLayer.m_Bits
-      value: 256
+      value: 33024
       objectReference: {fileID: 0}
     - target: {fileID: 2152604812663788667, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
@@ -667,7 +651,7 @@ PrefabInstance:
     - target: {fileID: 1605972222166964158, guid: c17aa1019bb19ba44a12b662570d8c81,
         type: 3}
       propertyPath: wallLayer.m_Bits
-      value: 256
+      value: 33024
       objectReference: {fileID: 0}
     - target: {fileID: 7907866909217043540, guid: c17aa1019bb19ba44a12b662570d8c81,
         type: 3}

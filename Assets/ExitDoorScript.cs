@@ -8,10 +8,10 @@ public class ExitDoorScript : MonoBehaviour
     [SerializeField] private string target_scene = "Safehouse";
     [SerializeField] private bool set_tutorial_complete = false;
     [SerializeField] private bool set_newmap_complete = false;
-    [SerializeField] private string no_gold_message = "You need to collect the gold before leaving!";
+    [SerializeField] private string 
+        no_gold_message = "You need to collect the gold before leaving!";
 
     private bool can_leave = false;
-    private Transform player;
 
     private void OnEnable()
     {
@@ -23,26 +23,24 @@ public class ExitDoorScript : MonoBehaviour
         EventBus.Unsubscribe<GoldEvent>(OnGoldCollected);
     }
 
-    private void Start()
+    private void OnTriggerEnter(Collider coll)
     {
-        player = GameObject.FindWithTag("Player").transform;
-    }
-
-    private void Update()
-    {
-        if (player == null) return;
-
-        float distance = Vector3.Distance(transform.position, player.position);
-        if (distance <= interactRange && Input.GetKeyDown(KeyCode.E))
+        if (coll.CompareTag("Player"))
         {
+            OneWayDoors oneWayDoor = GetComponent<OneWayDoors>();
+
             if (can_leave)
             {
-                if (set_tutorial_complete) SafehouseState.completed_tutorial = true;
-                if (set_newmap_complete) SafehouseState.completed_newmap = true;
+                if (set_tutorial_complete) 
+                    SafehouseState.completed_tutorial = true;
+
+                if (set_newmap_complete) 
+                    SafehouseState.completed_newmap = true;
 
                 SceneManager.LoadScene(target_scene);
             }
-            else
+
+            else if (oneWayDoor != null && oneWayDoor.GetPlayerExitedOneWay())
             {
                 InformationBoxController.instance.Show(no_gold_message);
             }

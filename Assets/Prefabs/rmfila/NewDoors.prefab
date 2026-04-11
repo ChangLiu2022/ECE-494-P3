@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b87fd1290866e43d6b940ed9b58395bf, type: 2}
+  - {fileID: 2100000, guid: e0f341b399c267b4da05f592093295f7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -158,14 +158,14 @@ MonoBehaviour:
   doorCollider: {fileID: 644221064380075017}
   interactRange: 1
   guard_detect_range: 1.5
-  guard_open_delay: 0.1
+  guard_open_delay: 1
   swing_buffer: 0.4
   guard_layer:
     serializedVersion: 2
     m_Bits: 64
-  door_noise_radius: 5
   sound_blocker: {fileID: 6450803907698247082}
   door_obstacle: {fileID: 7351824790215145294}
+  guard_only_door: 0
 --- !u!65 &644221064380075017
 BoxCollider:
   m_ObjectHideFlags: 0

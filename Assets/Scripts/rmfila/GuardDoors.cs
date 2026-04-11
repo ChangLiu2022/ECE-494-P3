@@ -28,6 +28,8 @@ public class GuardDoors : MonoBehaviour
     [Header("Obstacle")]
     [SerializeField] private NavMeshObstacle door_obstacle;
 
+    [SerializeField] private bool guard_only_door = false;
+
     private Transform player;
     private bool isOpen = false;
     private bool guard_opening = false;
@@ -45,30 +47,33 @@ public class GuardDoors : MonoBehaviour
 
     void Update()
     {
-        if (player == null)
+        if (!guard_only_door)
         {
-            GameObject body = GameObject.FindWithTag("Body");
-
-            if (body != null) 
-                player = body.transform;
-        }
-
-        if (player != null)
-        {
-            // get the distance from the player to the doors closest point
-            Vector3 closest = doorCollider.ClosestPoint(player.position);
-
-            // if the player is close enough and presses E, open/close doors
-            if (Vector3.Distance(closest, player.position) <= interactRange 
-                && Input.GetKeyDown(KeyCode.E))
+            if (player == null)
             {
-                // doors already open and pressed E, close it
-                if (isOpen == true) 
-                    CloseDoor();
+                GameObject body = GameObject.FindWithTag("Body");
 
-                // door already closed and pressed E, open it
-                else 
-                    OpenDoor(player);
+                if (body != null)
+                    player = body.transform;
+            }
+
+            if (player != null)
+            {
+                // get the distance from the player to the doors closest point
+                Vector3 closest = doorCollider.ClosestPoint(player.position);
+
+                // if the player is close enough and presses E, open/close doors
+                if (Vector3.Distance(closest, player.position) <= interactRange
+                    && Input.GetKeyDown(KeyCode.E))
+                {
+                    // doors already open and pressed E, close it
+                    if (isOpen == true)
+                        CloseDoor();
+
+                    // door already closed and pressed E, open it
+                    else
+                        OpenDoor(player);
+                }
             }
         }
 
