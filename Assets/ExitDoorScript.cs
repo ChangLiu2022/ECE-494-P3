@@ -12,9 +12,12 @@ public class ExitDoorScript : MonoBehaviour
     [SerializeField] private string no_gold_message = "You need to collect the gold before leaving!";
     [SerializeField] private float fadeDuration = 1f;
     [SerializeField] private Canvas canvas;
+    private bool exiting = false;
 
     private void OnTriggerEnter(Collider coll)
     {
+        if (exiting) return;
+
         if (!coll.CompareTag("Player")) return;
 
         if (!PlayerWallet.level_reward_claimed)
@@ -23,6 +26,8 @@ public class ExitDoorScript : MonoBehaviour
             return;
         }
 
+        exiting = true;
+
         if (set_tutorial_complete)
             SafehouseState.completed_tutorial = true;
 
@@ -30,6 +35,7 @@ public class ExitDoorScript : MonoBehaviour
             SafehouseState.completed_newmap = true;
 
         PlayerWallet.AdvanceLevel();
+        InformationBoxController.instance.gameObject.SetActive(false);
         StartCoroutine(FadeAndLoadScene(target_scene));
     }
 
