@@ -52,6 +52,7 @@ public class GameEvents
 
     public struct FirstHitEvent { }
     public struct GuardShotEvent { }
+    public struct GuardShootsEvent { }
     public struct UpgradeActivatedEvent { }
     public struct DowngradeActivatedEvent { }
 

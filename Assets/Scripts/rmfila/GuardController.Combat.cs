@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using static GameEvents;
 
@@ -47,6 +48,8 @@ public partial class GuardController
             Quaternion.LookRotation(direction, Vector3.forward));
 
         BulletMovement bullet = bullet_obj.GetComponent<BulletMovement>();
+
+        EventBus.Publish(new GuardShootsEvent());
 
         if (bullet != null) 
             bullet.Initialize(gameObject);

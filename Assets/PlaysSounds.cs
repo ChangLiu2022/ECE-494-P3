@@ -34,6 +34,7 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Subscribe<PowerOffEvent>(OnLightsOff);
         EventBus.Subscribe<GuardShotEvent>(OnGuardShot); 
         EventBus.Subscribe<PlayerSpottedEvent>(OnPlayerSpotted); 
+        EventBus.Subscribe<GuardShootsEvent>(GuardShoots); 
     }
 
     void OnDisable()
@@ -44,6 +45,12 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Unsubscribe<PowerOffEvent>(OnLightsOff);
         EventBus.Unsubscribe<GuardShotEvent>(OnGuardShot); 
         EventBus.Unsubscribe<PlayerSpottedEvent>(OnPlayerSpotted); 
+        EventBus.Unsubscribe<GuardShootsEvent>(GuardShoots); 
+    }
+
+    private void GuardShoots(GuardShootsEvent e)
+    {
+        audioSource.PlayOneShot(noiseWaveClip, volume*0.5f);
     }
 
     private void OnGuardShot(GuardShotEvent e)
