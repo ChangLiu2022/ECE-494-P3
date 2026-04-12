@@ -1,27 +1,32 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static GameEvents;
 using static GunEvents;
-using UnityEngine.SceneManagement;
 
 public class GunBarController : MonoBehaviour
 {
-    [Header("Segments")]
-    [SerializeField] int initialSegments = 2;
 
     public float displayedProgress { get; private set; }
     private float progress = 0f; // TRUE value
 
     [Header("Decay")]
     [SerializeField] float decayDelay = 2f;
+    [SerializeField] float decayDelayAfterUpgrade = 10f; 
     [SerializeField] float decayRate = 0.2f;
     [SerializeField] float penalty = 0.75f;
 
-    [Header("Upgrade/Downgrade Images")]
+    [Header("Upgrade Information")]
     [SerializeField] Image upgrade;
-    [SerializeField] Image downgrade;
+    [SerializeField] TMP_Text next;
+    [SerializeField] TMP_Text maxed;
+
+    [Header("Upgrade Amounts")]
+    [SerializeField] int forShotgun = 10;
+    [SerializeField] int forRifle = 20;
+    [SerializeField]int toMaxRifle = 50;
 
     [Header("Sprites")]
     [SerializeField] Sprite pistol_icon;
@@ -34,10 +39,7 @@ public class GunBarController : MonoBehaviour
 
     private int maxSegments;
     private int upgradeLevel = 0;
-
-    private bool isToasting = false;
-
-    private bool hasBeenMaxLevel = false;
+    private float currentDecayDelay;
 
     void OnEnable()
     {
@@ -53,7 +55,7 @@ public class GunBarController : MonoBehaviour
 
     private void Start()
     {
-        maxSegments = initialSegments;
+        maxSegments = forShotgun;
         if (SceneManager.GetActiveScene().name != "Safehouse" || SafehouseState.gun_collected) 
             EventBus.Publish(new FirstHitEvent());
     }
@@ -63,36 +65,13 @@ public class GunBarController : MonoBehaviour
     {
         // CHEATS
         // if (Input.GetKeyDown(KeyCode.Equals)) EventBus.Publish(new GuardShotEvent());
+        // if (Input.GetKeyDown(KeyCode.Equals)) SafehouseState.gun_bar_mult++;
 
         if (!isActive) return;
 
         HandleDecay();
         UpdateUI();
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TryUpgrade();
-        }
-
-        if(progress == 1f && !isToasting && upgradeLevel != 2)
-        {
-            isToasting = true;
-            InformationBoxController.instance.Show("Press space to upgrade your weapon.");
-            StartCoroutine(WaitFor5Seconds());
-        }
-
-        if (upgradeLevel == 2 && !isToasting && !hasBeenMaxLevel)
-        {
-            hasBeenMaxLevel = true;
-            InformationBoxController.instance.Show("You've reached the max level!");
-        }
-    }
-
-    IEnumerator WaitFor5Seconds()
-    {
-        yield return new WaitForSecondsRealtime(5f);
-        isToasting = false;
-        yield return null;
+        TryUpgrade();
     }
 
     void OnFirstHit(FirstHitEvent e)
@@ -104,25 +83,26 @@ public class GunBarController : MonoBehaviour
     {
         if (!isActive) return;
 
-        if(displayedProgress == 0f) progress = 1f / maxSegments;
+        if (displayedProgress == 0f) progress = SafehouseState.gun_bar_mult / maxSegments;
         else
         {
-            // Step 1: map displayedProgress to segment space
-            float progressInSegments = (displayedProgress * maxSegments) + (1f / maxSegments) * 0.01f;
+            // Step 1: convert to segment space
+            float progressInSeg = displayedProgress * maxSegments;
 
-            // Step 2: ceil to next segment
-            int nextSegmentIndex = Mathf.CeilToInt(progressInSegments);
+            // Step 2: get current segment index
+            int indexToStart = Mathf.FloorToInt(progressInSeg);
+            indexToStart = indexToStart - (indexToStart % (int)SafehouseState.gun_bar_mult);
 
-            // Step 3: clamp to maxSegments
-            nextSegmentIndex = Mathf.Min(nextSegmentIndex, maxSegments);
+            // Step 3: add multiplier and clamp
+            float finalIndex = Mathf.Min(indexToStart + SafehouseState.gun_bar_mult, maxSegments);
 
-            // Step 4: convert back to normalized progress (0�1)
-            progress = (float)nextSegmentIndex / maxSegments;
+            // Step 4: convert back to normalized progress
+            progress = finalIndex / maxSegments;
             Debug.Log(progress.ToString());
-            
         }
 
-        decayTimer = decayDelay;
+        currentDecayDelay = decayDelay;
+        decayTimer = currentDecayDelay;
     }
 
     void HandleDecay()
@@ -174,21 +154,28 @@ public class GunBarController : MonoBehaviour
 
         EventBus.Publish(new UpgradeActivatedEvent());
 
-        progress = 0f;
-        displayedProgress = 0f;
+        progress = 0;
+        displayedProgress = 0;
 
-        maxSegments *= 2;
+        currentDecayDelay = decayDelayAfterUpgrade;
+        decayTimer = currentDecayDelay;
+
         upgradeLevel++;
 
-        upgrade.sprite = rifle_icon;
+        
         if (upgradeLevel == 1)
         {
-            downgrade.sprite = pistol_icon;
+            maxSegments = forRifle;
+            upgrade.sprite = rifle_icon;
             EventBus.Publish(new WeaponChangedEvent("Shotgun"));
         }
         else if (upgradeLevel == 2)
         {
-            downgrade.sprite = shotgun_icon;
+            maxSegments = toMaxRifle;
+            upgrade.enabled = false; // hide upgrade image at max level
+            next.enabled = false;
+            maxed.enabled = true;
+            SafehouseState.reached_rifle = true;
             EventBus.Publish(new WeaponChangedEvent("Rifle"));
         }
     }
@@ -199,7 +186,6 @@ public class GunBarController : MonoBehaviour
 
         EventBus.Publish(new DowngradeActivatedEvent());
 
-        maxSegments /= 2; // revert max segments
         progress = 1f * penalty; // refill bar for the downgraded level
         displayedProgress = 1f * penalty;
 
@@ -207,14 +193,18 @@ public class GunBarController : MonoBehaviour
         
         upgradeLevel--;
 
-        downgrade.sprite = pistol_icon;
         if (upgradeLevel == 1)
         {
+            maxSegments = forRifle;
+            upgrade.enabled = true;
             upgrade.sprite = rifle_icon;
+            next.enabled = true;
+            maxed.enabled = false;
             EventBus.Publish(new WeaponChangedEvent("Shotgun"));
         }
         else if (upgradeLevel == 0)
         {
+            maxSegments = forShotgun;
             upgrade.sprite = shotgun_icon;
             EventBus.Publish(new WeaponChangedEvent("Pistol"));
         }

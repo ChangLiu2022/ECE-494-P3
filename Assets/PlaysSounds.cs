@@ -11,6 +11,8 @@ public class PlaysSounds : MonoBehaviour
     [SerializeField] private AudioClip alarmClip; // Assign in Inspector
     [SerializeField] private AudioClip guardHitClip; // Assign in Inspector
     [SerializeField] private AudioClip playerSpottedClip; // Assign in Inspector
+    [SerializeField] private AudioClip upgradeClip; // Assign in Inspector
+    [SerializeField] private AudioClip downgradeClip; // Assign in Inspector
     [SerializeField] private float volume = 1f;
 
     private AudioSource audioSource;
@@ -35,6 +37,8 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Subscribe<GuardShotEvent>(OnGuardShot); 
         EventBus.Subscribe<PlayerSpottedEvent>(OnPlayerSpotted); 
         EventBus.Subscribe<GuardShootsEvent>(GuardShoots); 
+        EventBus.Subscribe<UpgradeActivatedEvent>(UpgradeActivated); 
+        EventBus.Subscribe<DowngradeActivatedEvent>(DowngradeActivated); 
     }
 
     void OnDisable()
@@ -46,11 +50,13 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Unsubscribe<GuardShotEvent>(OnGuardShot); 
         EventBus.Unsubscribe<PlayerSpottedEvent>(OnPlayerSpotted); 
         EventBus.Unsubscribe<GuardShootsEvent>(GuardShoots); 
+        EventBus.Unsubscribe<UpgradeActivatedEvent>(UpgradeActivated); 
+        EventBus.Unsubscribe<DowngradeActivatedEvent>(DowngradeActivated); 
     }
 
     private void GuardShoots(GuardShootsEvent e)
     {
-        audioSource.PlayOneShot(noiseWaveClip, volume*0.5f);
+        audioSource.PlayOneShot(noiseWaveClip, volume);
     }
 
     private void OnGuardShot(GuardShotEvent e)
@@ -104,5 +110,15 @@ public class PlaysSounds : MonoBehaviour
         {
             audioSource.PlayOneShot(playerSpottedClip, volume);
         }
+    }
+
+    private void UpgradeActivated(UpgradeActivatedEvent e)
+    {
+        if (upgradeClip != null) audioSource.PlayOneShot(upgradeClip, volume*2.5f);
+    }
+
+    private void DowngradeActivated(DowngradeActivatedEvent e)
+    {
+        if (downgradeClip != null) audioSource.PlayOneShot(downgradeClip, volume*2.5f);
     }
 }
