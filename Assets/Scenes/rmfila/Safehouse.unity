@@ -2117,7 +2117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc5e730e30f148eb9d545ec24358cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1014193626}
+  player_aiming: {fileID: 0}
   weapon_pivot: {fileID: 1520151656}
   crosshair_canvas: {fileID: 431973807}
   map: {fileID: 1555345117}
@@ -5858,6 +5858,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noiseWaveClip: {fileID: 8300000, guid: b789658446ece1942adbf4dcab7b769e, type: 3}
+  alarmClip: {fileID: 8300000, guid: b9e6034afb1044d4bb3a268253a18b23, type: 3}
+  guardHitClip: {fileID: 8300000, guid: 7ef79548a47de462e87f287a3db118ae, type: 3}
   volume: 0.1
 --- !u!1 &1219682216
 GameObject:

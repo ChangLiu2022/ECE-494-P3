@@ -2421,6 +2421,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noiseWaveClip: {fileID: 8300000, guid: b789658446ece1942adbf4dcab7b769e, type: 3}
+  alarmClip: {fileID: 8300000, guid: b9e6034afb1044d4bb3a268253a18b23, type: 3}
+  guardHitClip: {fileID: 8300000, guid: 7ef79548a47de462e87f287a3db118ae, type: 3}
+  playerSpottedClip: {fileID: 8300000, guid: 13f781c2fe6f34a9ba69053a623d5f06, type: 3}
   volume: 0.2
 --- !u!1001 &298650222
 PrefabInstance:
@@ -5006,7 +5009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc5e730e30f148eb9d545ec24358cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2002566388}
+  player_aiming: {fileID: 0}
   weapon_pivot: {fileID: 1628891862}
   crosshair_canvas: {fileID: 1577379125}
   map: {fileID: 936704569}

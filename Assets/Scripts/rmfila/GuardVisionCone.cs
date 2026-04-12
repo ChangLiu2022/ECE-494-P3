@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static GameEvents;
 
 public class GuardVisionCone : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class GuardVisionCone : MonoBehaviour
 
     private VisionConeMesh vision_cone;
     private GuardController guard;
+    private bool playerPreviouslySeen = false;
 
 
     private void Start()
@@ -40,6 +42,8 @@ public class GuardVisionCone : MonoBehaviour
     // can be detected, the guard's spotted player function is called true
     private void DetectPlayer()
     {
+        bool playerSeenThisFrame = false;
+
         float detect_radius = vision_cone.GetDetectRadius();
         float view_angle = vision_cone.GetViewAngle();
 
@@ -82,13 +86,22 @@ public class GuardVisionCone : MonoBehaviour
                     dist_to_player,
                     wall_mask | door_mask) == false)
                 {
-                    guard.SpottedPlayer(true);
-                    return;
+                    playerSeenThisFrame = true;
                 }
             }
         }
 
-        // player not in sphere distance, not possible to see
-        guard.SpottedPlayer(false);
+        if (playerSeenThisFrame && !playerPreviouslySeen)
+        {
+            guard.SpottedPlayer(true);
+            EventBus.Publish(new PlayerSpottedEvent());
+        }
+        else if (!playerSeenThisFrame && playerPreviouslySeen)
+        {
+            guard.SpottedPlayer(false);
+            EventBus.Publish(new PlayerLostEvent());
+        }
+
+        playerPreviouslySeen = playerSeenThisFrame;
     }
 }

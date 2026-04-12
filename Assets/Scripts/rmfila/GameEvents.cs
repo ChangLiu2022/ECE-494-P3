@@ -60,4 +60,6 @@ public class GameEvents
 
     public struct PlayerEnteredMapEvent { }
 
+    public struct PlayerSpottedEvent { }
+    public struct PlayerLostEvent { }
 }

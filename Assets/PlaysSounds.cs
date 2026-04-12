@@ -9,6 +9,8 @@ public class PlaysSounds : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioClip noiseWaveClip; // Assign in Inspector
     [SerializeField] private AudioClip alarmClip; // Assign in Inspector
+    [SerializeField] private AudioClip guardHitClip; // Assign in Inspector
+    [SerializeField] private AudioClip playerSpottedClip; // Assign in Inspector
     [SerializeField] private float volume = 1f;
 
     private AudioSource audioSource;
@@ -30,6 +32,8 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Subscribe<NoiseWaveEvent>(OnNoiseWave);
         EventBus.Subscribe<AlertEvent>(OnAlarm);
         EventBus.Subscribe<PowerOffEvent>(OnLightsOff);
+        EventBus.Subscribe<GuardShotEvent>(OnGuardShot); 
+        EventBus.Subscribe<PlayerSpottedEvent>(OnPlayerSpotted); 
     }
 
     void OnDisable()
@@ -38,6 +42,16 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Unsubscribe<NoiseWaveEvent>(OnNoiseWave);
         EventBus.Unsubscribe<AlertEvent>(OnAlarm);
         EventBus.Unsubscribe<PowerOffEvent>(OnLightsOff);
+        EventBus.Unsubscribe<GuardShotEvent>(OnGuardShot); 
+        EventBus.Unsubscribe<PlayerSpottedEvent>(OnPlayerSpotted); 
+    }
+
+    private void OnGuardShot(GuardShotEvent e)
+    {
+        if (guardHitClip != null)
+        {
+            audioSource.PlayOneShot(guardHitClip, volume*2f); // Play guard hit sound at double volume for emphasis
+        }
     }
 
     private void OnNoiseWave(NoiseWaveEvent e)
@@ -75,5 +89,13 @@ public class PlaysSounds : MonoBehaviour
             yield return null; // wait for the next frame
         }
         isPlayingAlarm = false;
+    }
+
+    private void OnPlayerSpotted(PlayerSpottedEvent e)
+    {
+        if (playerSpottedClip != null)
+        {
+            audioSource.PlayOneShot(playerSpottedClip, volume);
+        }
     }
 }
