@@ -118,9 +118,11 @@ public class HUDController : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape) && can_pause && !MapController.is_open)
+        
+        if (Input.GetKeyDown(KeyCode.Escape) && can_pause && !MapController.is_open && !Whiteboard.IsOpen)
+        {
             ShowHideEscapeMenu();
+        }
     }
 
     public void ShowHideEscapeMenu()
