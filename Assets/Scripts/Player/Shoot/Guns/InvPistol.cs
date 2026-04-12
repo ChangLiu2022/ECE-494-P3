@@ -15,24 +15,42 @@ public class InvPistol : MonoBehaviour
     private float _nextFireTime;
     private HasInventory inv;
 
+    private float base_fire_rate;
+    private float effective_fire_rate;
+    private int effective_damage;
+
     // sets the HasInventory component to use for ammo verification
     private void Awake()
     {
+        base_fire_rate = fireRate;
+
         GameObject player = GameObject.Find("Player");
 
         if (player != null)
-        {
             inv = player.GetComponent<HasInventory>();
 
-            if (inv == null)
-            {
-                Debug.LogError("Player found but HasInventory component is missing.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject with name 'Player' found in the scene.");
-        }
+        RefreshStats();
+    }
+
+    private void OnEnable()
+    {
+        EventBus.Subscribe<UpgradePurchasedEvent>(OnUpgrade);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<UpgradePurchasedEvent>(OnUpgrade);
+    }
+
+    private void OnUpgrade(UpgradePurchasedEvent e)
+    {
+        if (e.weapon == GunUpgrades.Weapon.Pistol) RefreshStats();
+    }
+
+    private void RefreshStats()
+    {
+        effective_fire_rate = base_fire_rate / GunUpgrades.GetFireRateMultiplier(GunUpgrades.Weapon.Pistol);
+        effective_damage = Mathf.Max(1, Mathf.RoundToInt(GunUpgrades.GetDamageMultiplier(GunUpgrades.Weapon.Pistol)));
     }
 
     private void Update()
@@ -41,20 +59,18 @@ public class InvPistol : MonoBehaviour
         {
             if (Physics.CheckSphere(firePoint.position, 0.1f, wallLayer))
             {
-                Debug.Log("FirePoint is inside a wall, skipping shot");
                 return;
             }
             
             if (inv != null && inv.BulletCount <= 0)
             {
                 EventBus.Publish(new FailedToFireEvent()); // to trigger HUD flashing
-                Debug.Log("Not enough bullets to fire!");
                 return;
             }
 
             if (inv != null) inv.AddBullets(-1); // update bullet count
 
-            _nextFireTime = Time.time + fireRate;
+            _nextFireTime = Time.time + effective_fire_rate;
 
             Vector3 pos = (firePoint != null) ? firePoint.position : transform.position;
             Quaternion rot = Quaternion.LookRotation(shooting.AimDirection, Vector3.up);
@@ -66,6 +82,7 @@ public class InvPistol : MonoBehaviour
             // set owner tag of the gun
             if (bullet != null)
             {
+                bullet.SetDamage(effective_damage);
                 // pass the Player parent so the bullet ignores all
                 // player colliders (body, pickup triggers, etc.)
                 GameObject player_root = GameObject.Find("Player");

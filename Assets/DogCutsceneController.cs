@@ -6,4 +6,9 @@ public class DogController : MonoBehaviour
     {
         transform.position = target.transform.position;
     }
+
+    public void Rotate()
+    {
+        transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+    }
 }

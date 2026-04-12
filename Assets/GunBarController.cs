@@ -120,7 +120,7 @@ public class GunBarController : MonoBehaviour
             
         }
 
-        decayTimer = decayDelay;
+        decayTimer = decayDelay * GunUpgrades.GetCooldownMultiplier((GunUpgrades.Weapon)upgradeLevel);
     }
 
     void HandleDecay()
@@ -201,8 +201,8 @@ public class GunBarController : MonoBehaviour
         progress = 1f * penalty; // refill bar for the downgraded level
         displayedProgress = 1f * penalty;
 
-        decayTimer = decayDelay;
-        
+        decayTimer = decayDelay * GunUpgrades.GetCooldownMultiplier((GunUpgrades.Weapon)upgradeLevel);
+
         upgradeLevel--;
 
         downgrade.sprite = pistol_icon;

@@ -11,6 +11,12 @@ public class BulletMovement : MonoBehaviour
     private Collider bullet_collider;
     private float aliveTime = 0f;
     private Rigidbody rb;
+    private int damage = 1;
+
+    public void SetDamage(int d) 
+    { 
+        damage = d; 
+    }
 
     public void Initialize(GameObject owner)
     {

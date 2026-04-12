@@ -22,9 +22,7 @@ public class SafehouseLoader : MonoBehaviour
 
         if (workbench != null)
             workbench.enabled = SafehouseState.completed_tutorial
-                                   && !SafehouseState.completed_newmap
                                    && !SafehouseState.workbench_interacted;
-
 
         if (exit_prefab != null)
             exit_prefab.SetActive(SafehouseState.completed_newmap);

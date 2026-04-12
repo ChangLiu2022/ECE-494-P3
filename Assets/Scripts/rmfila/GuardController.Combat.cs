@@ -53,39 +53,35 @@ public partial class GuardController
     }
 
 
-    public void TakeDamage(Collider bullet_col)
+    public void TakeDamage(Collider bullet_col) => TakeDamage(bullet_col, 1);
+
+    public void TakeDamage(Collider bullet_col, int dmg)
     {
-        // knockback in the direction the bullet was traveling
         Vector3 knockback_direction = bullet_col.transform.forward;
 
         Destroy(bullet_col.gameObject);
 
-        current_health--;
+        current_health -= Mathf.Max(1, dmg);
         EventBus.Publish(new GuardShotEvent());
 
-        // if health is 0 or below, destroy the guard prefab
-        if (current_health <= 0) 
-        { 
-            Destroy(gameObject); 
+        if (current_health <= 0)
+        {
+            Destroy(gameObject);
             return;
         }
 
         if (bloodEffectPrefab != null)
         {
             bloodEffectPrefab.transform.rotation = Quaternion.LookRotation(
-                knockback_direction, 
-                Vector3.forward
-                );
-
+                knockback_direction,
+                Vector3.forward);
             bloodEffectPrefab.Play();
         }
 
-        // if staggered already, stagger again
-        if (stagger_routine != null) 
+        if (stagger_routine != null)
             StopCoroutine(stagger_routine);
 
-        stagger_routine = 
-            StartCoroutine(StaggerRoutine(knockback_direction));
+        stagger_routine = StartCoroutine(StaggerRoutine(knockback_direction));
     }
 
 

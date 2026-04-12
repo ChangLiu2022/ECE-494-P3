@@ -14,8 +14,7 @@ public class GameEvents
         public int level_number;
     }
 
-
-   public struct MoneyChangedEvent
+    public struct MoneyChangedEvent
     {
         public int current_money;
         public int delta;
@@ -32,7 +31,7 @@ public class GameEvents
     }
 
     public struct PowerOffEvent { }
-    
+
     public struct PowerOnEvent { }
 
     public struct VehicleEnterEvent
@@ -55,13 +54,22 @@ public class GameEvents
     }
 
     public struct FirstHitEvent { }
-    public struct GuardShotEvent { }
-    public struct UpgradeActivatedEvent { }
-    public struct DowngradeActivatedEvent { }
 
+    public struct GuardShotEvent { }
+
+    public struct UpgradeActivatedEvent { }
+
+    public struct DowngradeActivatedEvent { }
 
     public struct TimerExpiredEvent { }
 
     public struct PlayerEnteredMapEvent { }
 
+    // published by GunUpgrades.TryPurchase so any in scene gun can live refresh
+    public struct UpgradePurchasedEvent
+    {
+        public GunUpgrades.Weapon weapon;
+        public GunUpgrades.Track track;
+        public int new_level;
+    }
 }

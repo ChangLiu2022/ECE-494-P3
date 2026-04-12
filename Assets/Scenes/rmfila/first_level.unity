@@ -18849,6 +18849,8 @@ MonoBehaviour:
   set_tutorial_complete: 0
   set_newmap_complete: 1
   no_gold_message: You need to rescue the dog before leaving!
+  fadeDuration: 1
+  canvas: {fileID: 1320194594}
 --- !u!65 &1165849928
 BoxCollider:
   m_ObjectHideFlags: 0

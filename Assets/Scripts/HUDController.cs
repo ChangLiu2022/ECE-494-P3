@@ -30,6 +30,9 @@ public class HUDController : MonoBehaviour
 
     public void MainMenu()
     {
+        Time.timeScale = 1f;
+        SafehouseState.Reset();
+        EventBus.Clear();
         SceneManager.LoadScene("Main Menu");
     }
 
@@ -89,7 +92,7 @@ public class HUDController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && can_pause && !MapController.is_open)
+        if (Input.GetKeyDown(KeyCode.Escape) && can_pause && !MapController.is_open && !BuyMenuController.IsOpen)
             ShowHideEscapeMenu();
     }
 

@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followRange: 1
-  moveSpeed: 3
+  moveSpeed: 6
   stopDistance: 1.5
   spriteRenderer: {fileID: 444701460571944623}
   idleSprite: {fileID: 21300000, guid: b9eaa3f712f564dd3a11f7c8aac276f6, type: 3}

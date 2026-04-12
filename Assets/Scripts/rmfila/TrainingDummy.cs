@@ -21,12 +21,16 @@ public class TrainingDummy : MonoBehaviour
         body_collider = GetComponent<CapsuleCollider>();
     }
 
-    public void TakeDamage(Collider bullet_col)
+
+    public void TakeDamage(Collider bullet_col) => TakeDamage(bullet_col, 1);
+
+
+    public void TakeDamage(Collider bullet_col, int dmg)
     {
         Vector3 direction = bullet_col.transform.forward;
         Destroy(bullet_col.gameObject);
 
-        current_health--;
+        current_health -= Mathf.Max(1, dmg);
         EventBus.Publish(new GuardShotEvent());
 
         if (current_health <= 0) { Destroy(gameObject); return; }
@@ -41,6 +45,7 @@ public class TrainingDummy : MonoBehaviour
         if (knockback_routine != null) StopCoroutine(knockback_routine);
         knockback_routine = StartCoroutine(KnockbackRoutine(direction));
     }
+
 
     private IEnumerator KnockbackRoutine(Vector3 direction)
     {
