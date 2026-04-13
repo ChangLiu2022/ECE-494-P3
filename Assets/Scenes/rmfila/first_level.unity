@@ -3369,6 +3369,7 @@ MonoBehaviour:
   playerSpottedClip: {fileID: 0}
   upgradeClip: {fileID: 0}
   downgradeClip: {fileID: 0}
+  barkClip: {fileID: 8300000, guid: af62fde3c9bceb140893615771feef7c, type: 3}
   volume: 0.2
 --- !u!1001 &298650222
 PrefabInstance:

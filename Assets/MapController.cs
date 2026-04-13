@@ -25,7 +25,7 @@ public class MapController : MonoBehaviour
     void Update()
     {
         // Toggle map on tab key
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) && SafehouseState.paper_collected)
         {
             if (HUDController.instance != null && HUDController.instance.IsEscapeOpen)
                 HUDController.instance.ForceCloseEscape();

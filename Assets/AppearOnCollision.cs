@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using static GameEvents;
@@ -12,6 +13,10 @@ public class AppearOnCollision : MonoBehaviour
     private TMP_Text text;
     private Coroutine currentFade;
     private bool shouldAppear = true;
+    private int count = 0;
+
+    [SerializeField] private bool is_map = false;
+    [SerializeField] private bool is_gun = false;
 
     private void OnEnable()
     {
@@ -38,8 +43,10 @@ public class AppearOnCollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Body") && shouldAppear)
+        if (other.CompareTag("Body") && shouldAppear)
         {
+            if (is_map && SafehouseState.paper_collected) return;
+            if (is_gun && SafehouseState.gun_collected) return;
             StartFade(1f); // fade in
         }
     }

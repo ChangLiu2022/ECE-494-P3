@@ -13,6 +13,7 @@ public class PlaysSounds : MonoBehaviour
     [SerializeField] private AudioClip playerSpottedClip; // Assign in Inspector
     [SerializeField] private AudioClip upgradeClip; // Assign in Inspector
     [SerializeField] private AudioClip downgradeClip; // Assign in Inspector
+    [SerializeField] private AudioClip barkClip; // Assign in Inspector
     [SerializeField] private float volume = 1f;
 
     private AudioSource audioSource;
@@ -39,6 +40,7 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Subscribe<GuardShootsEvent>(GuardShoots); 
         EventBus.Subscribe<UpgradeActivatedEvent>(UpgradeActivated); 
         EventBus.Subscribe<DowngradeActivatedEvent>(DowngradeActivated); 
+        EventBus.Subscribe<DogGrabbed>(OnDogGrabbed);
     }
 
     void OnDisable()
@@ -51,12 +53,24 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Unsubscribe<PlayerSpottedEvent>(OnPlayerSpotted); 
         EventBus.Unsubscribe<GuardShootsEvent>(GuardShoots); 
         EventBus.Unsubscribe<UpgradeActivatedEvent>(UpgradeActivated); 
-        EventBus.Unsubscribe<DowngradeActivatedEvent>(DowngradeActivated); 
+        EventBus.Unsubscribe<DowngradeActivatedEvent>(DowngradeActivated);
+        EventBus.Unsubscribe<DogGrabbed>(OnDogGrabbed);
+    }
+
+    private void OnDogGrabbed(DogGrabbed e)
+    {
+        if (barkClip != null)
+        {
+            audioSource.PlayOneShot(barkClip, volume);
+        }
     }
 
     private void GuardShoots(GuardShootsEvent e)
     {
-        audioSource.PlayOneShot(noiseWaveClip, volume);
+        if (noiseWaveClip != null)
+        {
+            audioSource.PlayOneShot(noiseWaveClip, volume);
+        }
     }
 
     private void OnGuardShot(GuardShotEvent e)

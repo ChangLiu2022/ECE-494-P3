@@ -4174,6 +4174,11 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 270919634665596177, guid: 752efdd88184a5941ad0085dfda6e45e,
+        type: 3}
+      propertyPath: is_gun
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3433501535418700765, guid: 752efdd88184a5941ad0085dfda6e45e,
         type: 3}
       propertyPath: m_Pivot.x
@@ -10702,6 +10707,7 @@ MonoBehaviour:
   playerSpottedClip: {fileID: 0}
   upgradeClip: {fileID: 8300000, guid: 8d35b7a0c9e07444cbf9efd79bd4db29, type: 3}
   downgradeClip: {fileID: 8300000, guid: 8d35b7a0c9e07444cbf9efd79bd4db29, type: 3}
+  barkClip: {fileID: 0}
   volume: 0.1
 --- !u!1 &1219682216
 GameObject:
@@ -14900,6 +14906,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Center.z
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 270919634665596177, guid: 752efdd88184a5941ad0085dfda6e45e,
+        type: 3}
+      propertyPath: is_map
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3433501535418700765, guid: 752efdd88184a5941ad0085dfda6e45e,
         type: 3}

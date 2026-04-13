@@ -14,6 +14,8 @@ public class GameEvents
         public int level_number;
     }
 
+    public struct DogGrabbed { }
+
     public struct MoneyChangedEvent
     {
         public int current_money;

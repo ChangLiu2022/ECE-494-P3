@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using static GameEvents;
 
 /// <summary>
 /// Pet that auto-follows the player using NavMesh.
@@ -34,6 +35,7 @@ public class Pet : MonoBehaviour
         _agent.updateUpAxis = false;
     }
 
+
     private void Update()
     {
         if (_player == null)
@@ -48,6 +50,8 @@ public class Pet : MonoBehaviour
         {
             if (dist <= followRange)
             {
+                EventBus.Publish(new DogGrabbed { });
+
                 _following = true;
                 _agent.isStopped = false;
                 if (spriteRenderer != null && followSprite != null)
