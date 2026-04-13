@@ -4610,7 +4610,7 @@ Transform:
   m_GameObject: {fileID: 1154436230}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 15.61, y: 0, z: -0.26}
+  m_LocalPosition: {x: 21.45, y: 0, z: -0.26}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4895,6 +4895,7 @@ MonoBehaviour:
   playerSpottedClip: {fileID: 0}
   upgradeClip: {fileID: 0}
   downgradeClip: {fileID: 0}
+  barkClip: {fileID: 0}
   volume: 0.1
 --- !u!1001 &1248644300
 PrefabInstance:
@@ -5786,7 +5787,7 @@ Transform:
   m_GameObject: {fileID: 1450134978}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.61, y: 0, z: -0.26}
+  m_LocalPosition: {x: 21.43, y: 0, z: -0.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

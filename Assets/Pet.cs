@@ -68,6 +68,12 @@ public class Pet : MonoBehaviour
         {
             _agent.isStopped = false;
             _agent.SetDestination(_player.position);
+
+            if (_agent.velocity.sqrMagnitude > 0.01f)
+            {
+                float angle = Mathf.Atan2(_agent.velocity.x, _agent.velocity.z) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(90f, angle-180f, 0f);
+            }
         }
     }
 
