@@ -33,7 +33,7 @@ public class WorkbenchInteract : MonoBehaviour
 
         float dist = Vector3.Distance(transform.position, player.position);
 
-        if (dist <= interact_range && Input.GetKeyDown(interact_key))
+        if (dist <= interact_range && Input.GetKeyDown(interact_key) && !MapController.is_open)
         {
             SafehouseState.workbench_interacted = true;
             if (workbench_flash != null) workbench_flash.enabled = false;
