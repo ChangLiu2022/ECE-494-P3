@@ -4743,7 +4743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   decayDelay: 2
-  decayDelayAfterUpgrade: 10
+  decayDelayAfterUpgrade: 5
   decayRate: 0.1
   penalty: 0.75
   upgrade: {fileID: 2014422778}

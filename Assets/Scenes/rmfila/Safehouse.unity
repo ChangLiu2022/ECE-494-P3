@@ -14921,8 +14921,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5df9d92c4b22d944aa064ce511ac37b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  decayDelay: 4
-  decayDelayAfterUpgrade: 10
+  decayDelay: 2
+  decayDelayAfterUpgrade: 5
   decayRate: 0.1
   penalty: 0.75
   upgrade: {fileID: 1435399313}
