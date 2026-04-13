@@ -94,7 +94,6 @@ public class HUDController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape) && can_pause && !MapController.is_open && !BuyMenuController.IsOpen && !Whiteboard.IsOpen)
             ShowHideEscapeMenu();
-        }
     }
 
     public void ShowHideEscapeMenu()

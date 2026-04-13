@@ -291,6 +291,7 @@ MonoBehaviour:
   nextSceneName: Tutorial
   fadeDuration: 1
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  useTransitionSounds: 1
 --- !u!1 &71963819
 GameObject:
   m_ObjectHideFlags: 0
@@ -3751,6 +3752,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noiseWaveClip: {fileID: 8300000, guid: b789658446ece1942adbf4dcab7b769e, type: 3}
+  alarmClip: {fileID: 0}
+  guardHitClip: {fileID: 0}
+  playerSpottedClip: {fileID: 0}
+  upgradeClip: {fileID: 0}
+  downgradeClip: {fileID: 0}
   volume: 0.1
 --- !u!1001 &1228417446
 PrefabInstance:
@@ -5470,6 +5476,7 @@ MonoBehaviour:
   tutorial_scene: CutScene-Neighbour
   newmap_scene: first_level
   not_ready_message: Collect the gun and map before leaving.
+  check_rifle_message: Try shooting the training dummies to max your weapon.
 --- !u!65 &1663620654
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6555,12 +6562,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5df9d92c4b22d944aa064ce511ac37b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialSegments: 10
   decayDelay: 2
+  decayDelayAfterUpgrade: 10
   decayRate: 0.1
   penalty: 0.75
   upgrade: {fileID: 0}
-  downgrade: {fileID: 0}
+  next: {fileID: 0}
+  maxed: {fileID: 0}
+  forShotgun: 10
+  forRifle: 20
+  toMaxRifle: 50
   pistol_icon: {fileID: 21300000, guid: 1a3ed831295f54ff9910bdddcac061a9, type: 3}
   shotgun_icon: {fileID: 21300000, guid: b9eaa3f712f564dd3a11f7c8aac276f6, type: 3}
   rifle_icon: {fileID: 21300000, guid: 28732efe5187f46d5a39a7ddcafceec8, type: 3}

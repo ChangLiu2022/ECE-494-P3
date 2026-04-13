@@ -65,11 +65,12 @@ public class GameEvents
     public struct UpgradeActivatedEvent { }
     public struct DowngradeActivatedEvent { }
 
-    public struct GuardShotEvent { }
-
-    public struct UpgradeActivatedEvent { }
-
-    public struct DowngradeActivatedEvent { }
+    public struct UpgradePurchasedEvent
+    {
+        public GunUpgrades.Weapon weapon;
+        public GunUpgrades.Track track;
+        public int new_level;
+    }
 
     public struct TimerExpiredEvent { }
 

@@ -112,6 +112,7 @@ public class DialogueCutscene : MonoBehaviour
     [Header("Fade")]
     [SerializeField] private float fadeDuration = 1f;
     [SerializeField] private Color fadeColor = Color.black;
+    [SerializeField] private bool useTransitionSounds = false; // tick this in CutScene-Neighbour
 
     private Image _fadeImage;
 
@@ -119,13 +120,20 @@ public class DialogueCutscene : MonoBehaviour
     {
         _active = false;
         _dialoguePanel.SetActive(false);
+        Time.timeScale = 1f;
 
-        StartCoroutine(FadeAndTransition());
+        if (useTransitionSounds && FadeManager.Instance != null)
+        {
+            FadeManager.Instance.StartTransition(nextSceneName, null, 2f);
+        }
+        else
+        {
+            StartCoroutine(FadeAndTransition());
+        }
     }
 
     private System.Collections.IEnumerator FadeAndTransition()
     {
-        // Create fullscreen fade overlay
         var fadeObj = new GameObject("FadeOverlay");
         fadeObj.transform.SetParent(transform, false);
 
@@ -139,7 +147,6 @@ public class DialogueCutscene : MonoBehaviour
         rect.offsetMin = Vector2.zero;
         rect.offsetMax = Vector2.zero;
 
-        // Fade using unscaled time so it works even if timeScale is 0
         float elapsed = 0f;
         while (elapsed < fadeDuration)
         {
@@ -150,7 +157,6 @@ public class DialogueCutscene : MonoBehaviour
         }
 
         _fadeImage.color = fadeColor;
-        Time.timeScale = 1f;
 
         if (!string.IsNullOrEmpty(nextSceneName))
             UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneName);

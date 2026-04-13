@@ -3373,6 +3373,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noiseWaveClip: {fileID: 8300000, guid: b789658446ece1942adbf4dcab7b769e, type: 3}
+  alarmClip: {fileID: 0}
+  guardHitClip: {fileID: 0}
+  playerSpottedClip: {fileID: 0}
+  upgradeClip: {fileID: 0}
+  downgradeClip: {fileID: 0}
   volume: 0.2
 --- !u!1001 &298650222
 PrefabInstance:
@@ -4746,12 +4751,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5df9d92c4b22d944aa064ce511ac37b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialSegments: 10
   decayDelay: 2
+  decayDelayAfterUpgrade: 10
   decayRate: 0.1
   penalty: 0.75
   upgrade: {fileID: 1519137284}
-  downgrade: {fileID: 1869780581}
+  next: {fileID: 0}
+  maxed: {fileID: 0}
+  forShotgun: 10
+  forRifle: 20
+  toMaxRifle: 50
   pistol_icon: {fileID: 21300000, guid: 1a3ed831295f54ff9910bdddcac061a9, type: 3}
   shotgun_icon: {fileID: 21300000, guid: b9eaa3f712f564dd3a11f7c8aac276f6, type: 3}
   rifle_icon: {fileID: 21300000, guid: 28732efe5187f46d5a39a7ddcafceec8, type: 3}
@@ -6137,9 +6146,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc5e730e30f148eb9d545ec24358cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2002566388}
+  player_aiming: {fileID: 0}
   weapon_pivot: {fileID: 1628891862}
   crosshair_canvas: {fileID: 1577379125}
+  map: {fileID: 0}
 --- !u!4 &426357185
 Transform:
   m_ObjectHideFlags: 0
@@ -8837,7 +8847,8 @@ MonoBehaviour:
   fillImage: {fileID: 586273363}
   rootObject: {fileID: 1636742667}
   upgrade: {fileID: 1519137284}
-  downgrade: {fileID: 1869780581}
+  next: {fileID: 0}
+  maxed: {fileID: 0}
   pistol_icon: {fileID: 21300000, guid: 1a3ed831295f54ff9910bdddcac061a9, type: 3}
   shotgun_icon: {fileID: 21300000, guid: b9eaa3f712f564dd3a11f7c8aac276f6, type: 3}
   rifle_icon: {fileID: 21300000, guid: 28732efe5187f46d5a39a7ddcafceec8, type: 3}
@@ -11471,6 +11482,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pet
+      objectReference: {fileID: 0}
+    - target: {fileID: 6036711675453661963, guid: 28c437105798b61488c323f5036f7967,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6036711675453661963, guid: 28c437105798b61488c323f5036f7967,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6036711675453661963, guid: 28c437105798b61488c323f5036f7967,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 6036711675453661963, guid: 28c437105798b61488c323f5036f7967,
         type: 3}
@@ -15981,7 +16007,7 @@ PrefabInstance:
     - target: {fileID: 2902604888018406658, guid: 2e5d8ffc9e28823419c58c33b59e06db,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6412125528575833291, guid: 2e5d8ffc9e28823419c58c33b59e06db,
         type: 3}
