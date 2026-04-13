@@ -5063,6 +5063,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CorkBoard_Desk
       objectReference: {fileID: 0}
+    - target: {fileID: 9188905471236265199, guid: 266d20e2d1362b64087f144324e44a94,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
