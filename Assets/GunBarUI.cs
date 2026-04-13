@@ -10,7 +10,8 @@ public class GunBarUI : MonoBehaviour
     public Image fillImage;
     public Image rootObject;
     public Image upgrade;
-    public Image downgrade;
+    [SerializeField] TMP_Text next;
+    [SerializeField] TMP_Text maxed;
 
     [Header("Sprites")]
     [SerializeField] Sprite pistol_icon;
@@ -34,13 +35,13 @@ public class GunBarUI : MonoBehaviour
         gunBar = FindObjectOfType<GunBarController>();
 
         upgrade.sprite = shotgun_icon;
-        downgrade.sprite = pistol_icon;
 
+        maxed.enabled = false;
         if (SceneManager.GetActiveScene().name == "Safehouse" && !SafehouseState.gun_collected)
         {
             rootObject.enabled = false;
             upgrade.enabled = false;
-            downgrade.enabled = false;
+            next.enabled = false;
         }
     }
 
@@ -50,8 +51,7 @@ public class GunBarUI : MonoBehaviour
         hasActivated = true;
         rootObject.enabled = true;
         upgrade.enabled = true;
-        downgrade.enabled = true;
-
+        next.enabled = true;
     }
 
     void Update()

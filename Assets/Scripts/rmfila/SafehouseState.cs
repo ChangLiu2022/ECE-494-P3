@@ -5,6 +5,8 @@ public static class SafehouseState
     public static bool completed_tutorial = false;
     public static bool completed_newmap = false;
     public static bool workbench_interacted = false;
+    public static bool reached_rifle = false;
+    public static float gun_bar_mult = 1f;
 
     public static void Reset()
     {
@@ -15,5 +17,7 @@ public static class SafehouseState
         workbench_interacted = false;
         GunUpgrades.Reset();
         PlayerWallet.Reset();
+        reached_rifle = false;
+        gun_bar_mult = 1f;
     }
 }

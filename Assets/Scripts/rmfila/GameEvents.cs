@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 public class GameEvents
@@ -43,8 +43,14 @@ public class GameEvents
 
     public struct VehicleExitEvent { }
 
-    public struct GameFreezeEvent { }
-    public struct GameUnfreezeEvent { }
+    public struct GameFreezeEvent
+    {
+        public bool freeze_map;
+    }
+    public struct GameUnfreezeEvent
+    {
+        public bool freeze_map;
+    }
 
     public struct NoiseWaveEvent
     {
@@ -54,6 +60,10 @@ public class GameEvents
     }
 
     public struct FirstHitEvent { }
+    public struct GuardShotEvent { }
+    public struct GuardShootsEvent { }
+    public struct UpgradeActivatedEvent { }
+    public struct DowngradeActivatedEvent { }
 
     public struct GuardShotEvent { }
 
@@ -65,11 +75,6 @@ public class GameEvents
 
     public struct PlayerEnteredMapEvent { }
 
-    // published by GunUpgrades.TryPurchase so any in scene gun can live refresh
-    public struct UpgradePurchasedEvent
-    {
-        public GunUpgrades.Weapon weapon;
-        public GunUpgrades.Track track;
-        public int new_level;
-    }
+    public struct PlayerSpottedEvent { }
+    public struct PlayerLostEvent { }
 }

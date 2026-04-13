@@ -8,8 +8,7 @@ public class SafehouseExitTrigger : MonoBehaviour
     [SerializeField] private string tutorial_scene = "Tutorial";
     [SerializeField] private string newmap_scene = "NewMap";
     [SerializeField] private string not_ready_message = "Collect the gun and map before leaving.";
-    [SerializeField] private float fadeDuration = 1f;
-    [SerializeField] private Canvas canvas;
+    [SerializeField]private string check_rifle_message = "Try shooting the training dummies to max your weapon.";
 
     private void OnTriggerEnter(Collider other)
     {
@@ -22,8 +21,16 @@ public class SafehouseExitTrigger : MonoBehaviour
             return;
         }
 
-        string nextScene = !SafehouseState.completed_tutorial ? tutorial_scene : newmap_scene;
-        StartCoroutine(FadeAndLoadScene(nextScene));
+        if(!SafehouseState.reached_rifle)
+        {
+            InformationBoxController.instance.Show(check_rifle_message);
+            return;
+        }
+
+        if (!SafehouseState.completed_tutorial)
+            FadeManager.Instance.StartTransition(tutorial_scene, null, 2f);
+        else
+            FadeManager.Instance.StartTransition(newmap_scene, null, 2f);
     }
 
     private IEnumerator FadeAndLoadScene(string sceneName)

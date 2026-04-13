@@ -1,4 +1,5 @@
 using UnityEngine;
+using static GameEvents;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -10,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float acceleration = 50f;
     [SerializeField] private float deceleration = 50f;
 
+    private AudioSource footstepAudio;
+
     private Rigidbody rb;
     private Vector3 velocity;
 
@@ -18,12 +21,16 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        footstepAudio = GetComponent<AudioSource>();
+        if (footstepAudio == null) Debug.LogError("No AudioSource found on PlayerMovement!");
     }
 
     private void Update()
     {
         Vector3 input = GetInput();
         UpdateVelocity(input);
+
+        if(footstepAudio != null) HandleFootsteps(input);
     }
 
     private void FixedUpdate()
@@ -54,6 +61,31 @@ public class PlayerMovement : MonoBehaviour
         float rate = (input.sqrMagnitude > 0.01f) ? acceleration : deceleration;
         velocity = Vector3.MoveTowards(velocity, target, rate * Time.deltaTime);
         velocity.y = 0f;
+    }
+
+    private void HandleFootsteps(Vector3 input)
+    {
+        if(GameFreezer.IsFrozen)
+        {
+            if (footstepAudio.isPlaying)
+            {
+                footstepAudio.Stop();
+            }
+            return;
+        }
+
+        bool isMoving = input.sqrMagnitude > 0.01f;
+        
+        footstepAudio.pitch = Input.GetKey(KeyCode.LeftShift) ? 1.7f : 1.2f;
+
+        if (isMoving && !footstepAudio.isPlaying)
+        {
+            footstepAudio.Play();
+        }
+        else if (!isMoving && footstepAudio.isPlaying)
+        {
+            footstepAudio.Stop();
+        }
     }
 
     public void AddImpulse(Vector3 impulse)

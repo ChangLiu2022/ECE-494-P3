@@ -53,7 +53,7 @@ public class HUDController : MonoBehaviour
     {
         instance = this;
 
-        EventBus.Publish(new GameUnfreezeEvent());
+        EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true });
         if (gameover_panel != null)
             gameover_panel.SetActive(false);
 
@@ -92,20 +92,21 @@ public class HUDController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && can_pause && !MapController.is_open && !BuyMenuController.IsOpen)
+        if (Input.GetKeyDown(KeyCode.Escape) && can_pause && !MapController.is_open && !BuyMenuController.IsOpen && !Whiteboard.IsOpen)
             ShowHideEscapeMenu();
+        }
     }
 
     public void ShowHideEscapeMenu()
     {
         if (is_paused)
         {
-            EventBus.Publish(new GameUnfreezeEvent());
+            EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true });
             escapePanel.SetActive(false);
         }
         else
         {
-            EventBus.Publish(new GameFreezeEvent());
+            EventBus.Publish(new GameFreezeEvent() { freeze_map = true });
             escapePanel.SetActive(true);
         }
 
@@ -136,7 +137,7 @@ public class HUDController : MonoBehaviour
     private void OnWinEvent(WinEvent e)
     {
         is_final_win = e.is_final_win;
-        EventBus.Publish(new GameFreezeEvent());
+        EventBus.Publish(new GameFreezeEvent() { freeze_map = true });
         can_pause = false;
         gameover_panel.SetActive(true);
         gameover_text.text = "<b>Game Over! \n\n You Win!</b>";

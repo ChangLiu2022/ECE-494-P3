@@ -36,34 +36,6 @@ public class ExitDoorScript : MonoBehaviour
 
         PlayerWallet.AdvanceLevel();
         InformationBoxController.instance.gameObject.SetActive(false);
-        StartCoroutine(FadeAndLoadScene(target_scene));
-    }
-
-    private IEnumerator FadeAndLoadScene(string sceneName)
-    {
-        var fadeObj = new GameObject("FadeOverlay");
-        fadeObj.transform.SetParent(canvas.transform, false);
-
-        var fadeImage = fadeObj.AddComponent<Image>();
-        fadeImage.color = new Color(0f, 0f, 0f, 0f);
-        fadeImage.raycastTarget = false;
-
-        var rect = fadeObj.GetComponent<RectTransform>();
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
-        {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Clamp01(elapsed / fadeDuration);
-            fadeImage.color = new Color(0f, 0f, 0f, alpha);
-            yield return null;
-        }
-
-        fadeImage.color = Color.black;
-        SceneManager.LoadScene(sceneName);
+        FadeManager.Instance.StartTransition(target_scene, null, 1.3f);
     }
 }

@@ -1,27 +1,24 @@
 using UnityEngine;
 
-
 public class PlayerAiming : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Camera cam;
 
+    [Header("Settings")]
+    [SerializeField] private float rotationSpeed = 720f; // degrees per second
+    [SerializeField] private LayerMask groundMask;
 
     public Vector3 AimPoint;
-
     public Vector3 AimDirection;
-
-    private Plane groundPlane;
 
     private void Awake()
     {
         if (cam == null)
             cam = Camera.main;
-
-        groundPlane = new Plane(Vector3.up, Vector3.zero);
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         UpdateAimPoint();
         RotateTowardAim();
@@ -30,6 +27,8 @@ public class PlayerAiming : MonoBehaviour
     private void UpdateAimPoint()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
         if (groundPlane.Raycast(ray, out float enter))
         {
@@ -40,7 +39,10 @@ public class PlayerAiming : MonoBehaviour
         toAim.y = 0f;
 
         if (toAim.sqrMagnitude > 0.001f)
+        {
             AimDirection = toAim.normalized;
+            Debug.DrawRay(transform.position, AimDirection * 5f, Color.red);
+        }
     }
 
     private void RotateTowardAim()
@@ -50,7 +52,10 @@ public class PlayerAiming : MonoBehaviour
 
         Quaternion targetRot = Quaternion.LookRotation(AimDirection, Vector3.up);
 
-        transform.rotation = targetRot;
-
+        transform.rotation = Quaternion.RotateTowards(
+            transform.rotation,
+            targetRot,
+            rotationSpeed * Time.deltaTime
+        );
     }
 }

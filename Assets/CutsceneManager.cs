@@ -106,7 +106,7 @@ public class CutsceneManager : MonoBehaviour
         if (nodes == null || nodes.Count == 0) return;
 
         if (mapController != null) mapController.enabled = false;
-        EventBus.Publish(new GameFreezeEvent()); // Freeze the game during cutscene
+        EventBus.Publish(new GameFreezeEvent() { freeze_map = true }); // Freeze the game during cutscene
         if (followScript != null) followScript.enabled = false;
         if (currentCutscene != null)
             StopCoroutine(currentCutscene);
@@ -149,7 +149,7 @@ public class CutsceneManager : MonoBehaviour
         }
 
         if (mapController != null) mapController.enabled = true;
-        EventBus.Publish(new GameUnfreezeEvent()); // Unfreeze after cutscene
+        EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true }); // Unfreeze after cutscene
         if (followScript != null) followScript.enabled = true;
         currentCutscene = null;
     }
