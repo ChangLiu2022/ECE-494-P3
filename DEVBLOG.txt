@@ -1,3 +1,35 @@
-https://www.indiedb.com/members/ece494studio5/blogs/behind-closed-doors-game-dev-alpha-blog
+** Unfortunately, at the time of submitting p3_beta, we do not have access to either account.
+As soon as we regain access, we'll publish this devblog, but in the meantime we have included
+our responses in this document. **
 
-* We're still waiting for our Tigsource blog to be approved *
+
+This week, our primary focus was on making our game seem more professional, along with adding
+a few final mechanics we wanted to test out before focusing on our final sprint. Perhaps the
+biggest change players will notice is the addition of cutscenes that introduce the story
+(namely, our dog was taken from us and we are fighting to rescue him). We now also have
+custom scene transitions which contain varying sound effects, some basic animations, and
+theme cohesion. Some minor changes that were made to boost professionalism include adding
+sound effects (e.g., "oomfs" when the guards get shot, a bark when the dog is rescued, 
+footsteps, and more), two background tracks that convey different emotions, new sprites, 
+entrances for the player to follow up to the map, producing a trailer, and changing our
+game's title to "The Retriever". 
+
+As far as new mechanics, we introduced a timer that upon reaching zero spawns backup thus
+creating a sense of urgency and a workbench where players can upgrade their weapons' damage,
+fire rate, and upgrade decay cooldown, and a system where the dog follows the player and can be detected by guards. Finally, we tweaked the gun upgrade bar so that it upgrades automatically
+and is able to convey the relevant information quicker, and also reworked the difficulty of
+our maps to reflect the new effectivity of stealth. 
+
+We made these changes mainly with cohesion and professionalism in mind. We wanted a game
+that presented an immersive storyline with natural progression and a satisfying conclusion.
+As of right now, our project is headed towards more levels, greater cohesion/polish, and
+potentially even a final boss (Mr. Evil himself!). 
+
+With this in mind, we look forward to our final week of iterations. We expect our efforts to 
+be concentrated mainly on the aforementioned cohesion, which will look like adding new
+levels/maps for players to explore, a smoother gameplay flow that makes logical sense
+given our game's story, more polish for newly implemented features, and overall juice
+to make the game's characters feel alive. Since we are on a time constraint, we will
+also have to evaluate mechanics on an individual scale, and make the final decision
+on whether we believe it to be worth keeping or not. There are a lot of decisions to be
+made, and we're excited to have a final product to share very soon!
