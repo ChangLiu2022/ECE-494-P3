@@ -11,7 +11,7 @@ public class FixedAudioListener : MonoBehaviour
         // Follow position only
         transform.position = player.position;
 
-        // DO NOT rotate → this is the key
+        // DO NOT rotate this is the key
         transform.rotation = Quaternion.identity;
     }
 }

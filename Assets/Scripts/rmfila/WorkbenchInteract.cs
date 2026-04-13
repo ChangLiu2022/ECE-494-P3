@@ -32,6 +32,7 @@ public class WorkbenchInteract : MonoBehaviour
         if (BuyMenuController.IsOpen) return;
 
         float dist = Vector3.Distance(transform.position, player.position);
+
         if (dist <= interact_range && Input.GetKeyDown(interact_key))
         {
             SafehouseState.workbench_interacted = true;

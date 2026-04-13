@@ -130,7 +130,7 @@ public class FadeManager : MonoBehaviour
     // 1. Running
     if (runningClip != null)
     {
-        if(sceneName == "Safehouse") audioSource.pitch = 1.65f;
+        if((sceneName == "Safehouse" || sceneName == "CutScene-Neighbour-Return")) audioSource.pitch = 1.65f;
         audioSource.PlayOneShot(runningClip);
         yield return new WaitForSecondsRealtime(runningClip.length/audioSource.pitch);
         audioSource.pitch = 1f;
@@ -139,14 +139,14 @@ public class FadeManager : MonoBehaviour
     // 2. Engine start
     if (engineClip != null)
     {
-        if(sceneName == "Safehouse") audioSource.pitch = 1.5f;
+        if((sceneName == "Safehouse" || sceneName == "CutScene-Neighbour-Return")) audioSource.pitch = 1.5f;
         audioSource.PlayOneShot(engineClip);
         yield return new WaitForSecondsRealtime(engineClip.length/audioSource.pitch);
         audioSource.pitch = 1f;
     }
 
     // 3.5. Tires screeching
-    if (tiresScreechingClip != null && sceneName == "Safehouse")
+    if (tiresScreechingClip != null && (sceneName == "Safehouse" || sceneName == "CutScene-Neighbour-Return"))
     {
         audioSource.PlayOneShot(tiresScreechingClip);
         yield return new WaitForSecondsRealtime(tiresScreechingClip.length);
@@ -207,7 +207,7 @@ public class FadeManager : MonoBehaviour
 
     private IEnumerator Transition(string sceneName, AudioSource musicSource, float fadeDuration)
     {
-        newVolume = sceneName == "Safehouse" ? 0.2f : 0.5f;
+        newVolume = sceneName == "Safehouse" ? 0.1f : 0.333f;
 
         yield return StartCoroutine(FadeToBlack(musicSource, fadeDuration));
 
