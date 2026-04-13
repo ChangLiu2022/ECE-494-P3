@@ -31,7 +31,7 @@ public class TrainingDummy : MonoBehaviour
         Destroy(bullet_col.gameObject);
 
         current_health -= Mathf.Max(1, dmg);
-        EventBus.Publish(new GuardShotEvent());
+        EventBus.Publish(new GuardShotEvent { not_guard = true });
 
         if (current_health <= 0) { Destroy(gameObject); return; }
 

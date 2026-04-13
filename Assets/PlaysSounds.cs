@@ -61,6 +61,9 @@ public class PlaysSounds : MonoBehaviour
 
     private void OnGuardShot(GuardShotEvent e)
     {
+        if (e.not_guard) 
+            return;
+
         if (guardHitClip != null)
         {
             audioSource.PlayOneShot(guardHitClip, volume*2f); // Play guard hit sound at double volume for emphasis

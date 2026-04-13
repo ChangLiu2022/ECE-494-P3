@@ -60,7 +60,11 @@ public class GameEvents
     }
 
     public struct FirstHitEvent { }
-    public struct GuardShotEvent { }
+    public struct GuardShotEvent
+    {
+        public bool not_guard;
+    }
+
     public struct GuardShootsEvent { }
     public struct UpgradeActivatedEvent { }
     public struct DowngradeActivatedEvent { }
