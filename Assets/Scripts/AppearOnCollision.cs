@@ -13,7 +13,6 @@ public class AppearOnCollision : MonoBehaviour
     private TMP_Text text;
     private Coroutine currentFade;
     private bool shouldAppear = true;
-    private int count = 0;
 
     [SerializeField] private bool is_map = false;
     [SerializeField] private bool is_gun = false;

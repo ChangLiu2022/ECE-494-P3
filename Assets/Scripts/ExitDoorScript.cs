@@ -10,7 +10,6 @@ public class ExitDoorScript : MonoBehaviour
     [SerializeField] private bool set_tutorial_complete = false;
     [SerializeField] private bool set_newmap_complete = false;
     [SerializeField] private string no_gold_message = "You need to collect the gold before leaving!";
-    [SerializeField] private float fadeDuration = 1f;
     [SerializeField] private Canvas canvas;
     private bool exiting = false;
 
