@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 3258618491855903104}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.125, y: 0, z: 0.404}
+  m_LocalPosition: {x: 0.125, y: 0, z: 0.708}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1595233470680574436}
   - component: {fileID: 4662782214274533411}
   m_Layer: 6
-  m_Name: Guard
+  m_Name: GuardHeavy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,15 +88,20 @@ MonoBehaviour:
   player: {fileID: 0}
   guard: {fileID: 0}
   guard_mode: 0
-  max_health: 5
+  max_health: 10
   point_a: {fileID: 0}
   point_b: {fileID: 0}
   patrol_speed: 1.5
   pause_duration: 1.5
+  random_patrol_radius: 15
+  random_wait_min: 2
+  random_wait_max: 6
+  random_move_speed: 2
+  is_heavy_guard: 0
   turn_speed: 180
-  chase_speed: 4
-  give_up_distance: 20
-  min_chase_duration: 5
+  chase_speed: 2.5
+  give_up_distance: 100
+  min_chase_duration: 100
   wall_mask:
     serializedVersion: 2
     m_Bits: 37120
@@ -106,21 +111,21 @@ MonoBehaviour:
   bullet_prefab: {fileID: 95569608102249964, guid: 59c833da2ebe39d44b6c27b2e01a03de,
     type: 3}
   fire_point: {fileID: 619472383794619858}
-  fire_rate: 0.5
-  shoot_range: 3
-  sight_delay: 0.75
-  weapon_draw_time: 1.5
-  knockback_distance: 0.2
-  knockback_duration: 0.1
-  stagger_duration: 0
+  fire_rate: 1
+  shoot_range: 7.5
+  sight_delay: 0.5
+  weapon_draw_time: 1
+  knockback_distance: 0
+  knockback_duration: 0
+  stagger_duration: 0.2
   guards_sprite_renderer: {fileID: 430198159726640723}
-  nonlethal_guard_sprite: {fileID: 21300000, guid: 91eae6440b2ed4329a7262c998d0f64f,
+  nonlethal_guard_sprite: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b,
     type: 3}
-  lethal_guard_sprite: {fileID: 21300000, guid: cb9edd1b489bc440fbd45a8af4af3b01,
+  lethal_guard_sprite: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
     type: 3}
   bloodEffectPrefab: {fileID: 8329804670842170612}
   noise_wave_expand_speed: 20
-  start_alerted: 0
+  start_alerted: 1
   player_last_position: {x: 0, y: 0, z: 0}
 --- !u!195 &6650408569263145874
 NavMeshAgent:
@@ -132,11 +137,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 2
-  m_Acceleration: 10
+  m_Speed: 2.5
+  m_Acceleration: 100
   avoidancePriority: 50
-  m_AngularSpeed: 0
-  m_StoppingDistance: 0.5
+  m_AngularSpeed: 2.5
+  m_StoppingDistance: 3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -223,7 +228,7 @@ Transform:
   m_GameObject: {fileID: 5189316334029066553}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.153}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -395,7 +400,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cb9edd1b489bc440fbd45a8af4af3b01, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -437,7 +442,7 @@ PrefabInstance:
     - target: {fileID: 2152604812663788667, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.187
+      value: 0.214
       objectReference: {fileID: 0}
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
@@ -569,7 +574,7 @@ PrefabInstance:
     - target: {fileID: 1167187502621797821, guid: c7492b01e245e4574b653793de9c8832,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.57
       objectReference: {fileID: 0}
     - target: {fileID: 1167187502621797821, guid: c7492b01e245e4574b653793de9c8832,
         type: 3}
