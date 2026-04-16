@@ -21,6 +21,7 @@ public class Door : MonoBehaviour
 
     void Update()
     {
+        if (player == null || doorCollider == null) return; 
         Vector3 closestPoint = doorCollider.ClosestPoint(player.position);
         float distance = Vector3.Distance(closestPoint, player.position);
 

@@ -1,0 +1,63 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using static GameEvents;
+
+public class GunBarUI : MonoBehaviour
+{
+    private GunBarController gunBar;
+    public Image fillImage;
+    public Image rootObject;
+    public Image upgrade;
+    [SerializeField] TMP_Text next;
+    [SerializeField] TMP_Text maxed;
+
+    [Header("Sprites")]
+    [SerializeField] Sprite pistol_icon;
+    [SerializeField] Sprite shotgun_icon;
+    [SerializeField] Sprite rifle_icon;
+
+    private bool hasActivated = false;
+
+    void OnEnable()
+    {
+        EventBus.Subscribe<FirstHitEvent>(OnFirstHit);
+    }
+
+    void OnDisable()
+    {
+        EventBus.Unsubscribe<FirstHitEvent>(OnFirstHit);
+    }
+
+    private void Start()
+    {
+        gunBar = FindObjectOfType<GunBarController>();
+
+        upgrade.sprite = shotgun_icon;
+
+        maxed.enabled = false;
+        if (SceneManager.GetActiveScene().name == "Safehouse" && !SafehouseState.gun_collected)
+        {
+            rootObject.enabled = false;
+            upgrade.enabled = false;
+            next.enabled = false;
+        }
+    }
+
+
+    void OnFirstHit(FirstHitEvent e)
+    {
+        hasActivated = true;
+        rootObject.enabled = true;
+        upgrade.enabled = true;
+        next.enabled = true;
+    }
+
+    void Update()
+    {
+        if (!hasActivated) return;
+
+        fillImage.fillAmount = gunBar.displayedProgress;
+    }
+}
