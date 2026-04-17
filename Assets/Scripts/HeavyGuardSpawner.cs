@@ -6,21 +6,32 @@ using static GameEvents;
 
 public class HeavyGuardSpawner : MonoBehaviour
 {
+    public static bool CutsceneActive { get; private set; } = false;
+
     [Header("Spawning")]
     [SerializeField] private GameObject heavyGuardPrefab;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private float spawnInterval = 3f;
+    [SerializeField] private int max_heavy_guards = 10;
 
     [Header("Cutscene")]
     [SerializeField] private float cameraPanSpeed = 8f;
     [SerializeField] private float cutsceneHoldTime = 2f;
     [SerializeField] private float cameraHeight = 15f;
+    [SerializeField] private Transform[] camera_pan_points;
 
     [Header("Dependencies")]
     [SerializeField] private GameObject mainCamera;
 
+    [Header("References to Freeze")]
+    [SerializeField] private PlayerAiming player_aiming;
+    [SerializeField] private PlayerMovement player_movement;
+    [SerializeField] private GameObject weapon_pivot;
+    [SerializeField] private GameObject crosshair_canvas;
+
     private Transform player;
     private bool isSpawning = false;
+    private List<GameObject> active_heavy_guards = new List<GameObject>();
 
     private void OnEnable()
     {
@@ -51,15 +62,16 @@ public class HeavyGuardSpawner : MonoBehaviour
         Transform cutsceneSpawn = GetFurthestSpawnPoint();
         if (cutsceneSpawn == null) yield break;
 
-        // --- FREEZE EVERYTHING MANUALLY (but keep timeScale = 1) ---
+        // FREEZE EVERYTHING MANUALLY (but keep timeScale = 1)
+
+        CutsceneActive = true;
 
         // disable player
-        PlayerController pc = null;
-        if (player != null)
-        {
-            pc = player.GetComponentInParent<PlayerController>();
-            if (pc != null) pc.SetActive(false);
-        }
+        if (crosshair_canvas != null) crosshair_canvas.SetActive(false);
+        Cursor.visible = true;
+        if (weapon_pivot != null) weapon_pivot.SetActive(false);
+        if (player_aiming != null) player_aiming.enabled = false;
+        if (player_movement != null) player_movement.can_move = false;
 
         // disable camera follow
         CameraFollow camFollow = null;
@@ -81,6 +93,8 @@ public class HeavyGuardSpawner : MonoBehaviour
             if (gunBar != null) 
                 gunBar.enabled = false;
 
+            existingGuards[i].StopAllCoroutines();
+
             if (agent != null)
             {
                 agent.isStopped = true;
@@ -89,9 +103,6 @@ public class HeavyGuardSpawner : MonoBehaviour
             existingGuards[i].enabled = false;
         }
 
-        // hide crosshair/weapon via the same approach GameFreezer uses
-        Cursor.visible = true;
-
         // --- SPAWN THE FIRST GUARD ---
         GameObject firstGuard = Instantiate(
             heavyGuardPrefab,
@@ -99,14 +110,26 @@ public class HeavyGuardSpawner : MonoBehaviour
             cutsceneSpawn.rotation
         );
 
+        active_heavy_guards.Add(firstGuard);
+
+        Transform camPoint = GetClosestCameraPoint(cutsceneSpawn);
+
+        // if player is in vents, direct the guard to walk toward the camera point
+        // so the cutscene shows the guard arriving even while the player is hidden
+        if (Vent.PlayerInVent && camPoint != null)
+        {
+            yield return null; // wait one frame for the guard's Start() to initialize
+            GuardController firstGC = firstGuard.GetComponent<GuardController>();
+            if (firstGC != null)
+                firstGC.StartVentStandbyWalk(camPoint.position);
+        }
+
         // --- PAN CAMERA TO SPAWN POINT ---
         Transform cam = mainCamera.transform;
         Vector3 camStartPos = cam.position;
-        Vector3 camTargetPos = new Vector3(
-            cutsceneSpawn.position.x,
-            cameraHeight,
-            cutsceneSpawn.position.z
-        );
+        Vector3 camTargetPos = camPoint != null
+            ? new Vector3(camPoint.position.x, cameraHeight, camPoint.position.z)
+            : new Vector3(cutsceneSpawn.position.x, cameraHeight, cutsceneSpawn.position.z);
 
         // smoothly pan to spawn
         while (Vector3.Distance(cam.position, camTargetPos) > 0.1f)
@@ -138,7 +161,21 @@ public class HeavyGuardSpawner : MonoBehaviour
             yield return null;
         }
 
-        // --- UNFREEZE EVERYTHING ---
+        // UNFREEZE EVERYTHING 
+        // re-enable player
+        if (crosshair_canvas != null) crosshair_canvas.SetActive(true);
+        Cursor.visible = false;
+        if (weapon_pivot != null) weapon_pivot.SetActive(true);
+        if (player_aiming != null) player_aiming.enabled = true;
+        if (player_movement != null) player_movement.can_move = true;
+
+        if (gunBar != null)
+            gunBar.enabled = true;
+
+        // re-enable camera follow
+        if (camFollow != null) camFollow.enabled = true;
+
+        yield return new WaitForSeconds(0.5f); // small delay to ensure smooth transition back
 
         // re-enable existing guards
         for (int i = 0; i < existingGuards.Length; i++)
@@ -148,18 +185,7 @@ public class HeavyGuardSpawner : MonoBehaviour
                 stoppedAgents[i].isStopped = false;
         }
 
-        // re-enable player
-        if (pc != null) pc.SetActive(true);
-
-        if (gunBar != null) 
-            gunBar.enabled = true;
-
-
-        // re-enable camera follow
-        if (camFollow != null) camFollow.enabled = true;
-
-
-        Cursor.visible = false;
+        CutsceneActive = false;
 
         // --- START CONTINUOUS SPAWNING ---
         StartCoroutine(SpawnLoop());
@@ -169,12 +195,25 @@ public class HeavyGuardSpawner : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(spawnInterval);
+            // remove destroyed guards from the list
+            active_heavy_guards.RemoveAll(g => g == null);
+            int current = active_heavy_guards.Count;
 
-            Transform point = GetFurthestSpawnPoint();
-            if (point != null && heavyGuardPrefab != null)
+            if (current < max_heavy_guards)
             {
-                Instantiate(heavyGuardPrefab, point.position, point.rotation);
+                Transform point = GetFurthestSpawnPoint();
+                if (point != null && heavyGuardPrefab != null)
+                {
+                    GameObject spawned = Instantiate(
+                        heavyGuardPrefab, point.position, point.rotation);
+                    active_heavy_guards.Add(spawned);
+                }
+                yield return new WaitForSeconds(spawnInterval);
+            }
+            else
+            {
+                // at cap, check again in 1 second
+                yield return new WaitForSeconds(1f);
             }
         }
     }
@@ -199,5 +238,27 @@ public class HeavyGuardSpawner : MonoBehaviour
         }
 
         return furthest;
+    }
+
+
+    private Transform GetClosestCameraPoint(Transform toSpawn)
+    {
+        if (camera_pan_points == null || camera_pan_points.Length == 0) return null;
+
+        Transform closest = null;
+        float minDist = float.MaxValue;
+
+        foreach (Transform point in camera_pan_points)
+        {
+            if (point == null) continue;
+            float dist = Vector3.Distance(toSpawn.position, point.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closest = point;
+            }
+        }
+
+        return closest;
     }
 }
