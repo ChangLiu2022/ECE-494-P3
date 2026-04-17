@@ -19,6 +19,12 @@ public class HeavyGuardSpawner : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private GameObject mainCamera;
 
+    [Header("References to Freeze")]
+    [SerializeField] private PlayerAiming player_aiming;
+    [SerializeField] private PlayerMovement player_movement;
+    [SerializeField] private GameObject weapon_pivot;
+    [SerializeField] private GameObject crosshair_canvas;
+
     private Transform player;
     private bool isSpawning = false;
 
@@ -54,12 +60,11 @@ public class HeavyGuardSpawner : MonoBehaviour
         // --- FREEZE EVERYTHING MANUALLY (but keep timeScale = 1) ---
 
         // disable player
-        PlayerController pc = null;
-        if (player != null)
-        {
-            pc = player.GetComponentInParent<PlayerController>();
-            if (pc != null) pc.SetActive(false);
-        }
+        if (crosshair_canvas != null) crosshair_canvas.SetActive(false);
+        Cursor.visible = true;
+        if (weapon_pivot != null) weapon_pivot.SetActive(false);
+        if (player_aiming != null) player_aiming.enabled = false;
+        if (player_movement != null) player_movement.can_move = false;
 
         // disable camera follow
         CameraFollow camFollow = null;
@@ -88,9 +93,6 @@ public class HeavyGuardSpawner : MonoBehaviour
             }
             existingGuards[i].enabled = false;
         }
-
-        // hide crosshair/weapon via the same approach GameFreezer uses
-        Cursor.visible = true;
 
         // --- SPAWN THE FIRST GUARD ---
         GameObject firstGuard = Instantiate(
@@ -149,17 +151,17 @@ public class HeavyGuardSpawner : MonoBehaviour
         }
 
         // re-enable player
-        if (pc != null) pc.SetActive(true);
+        if (crosshair_canvas != null) crosshair_canvas.SetActive(true);
+        Cursor.visible = false;
+        if (weapon_pivot != null) weapon_pivot.SetActive(true);
+        if (player_aiming != null) player_aiming.enabled = true;
+        if (player_movement != null) player_movement.can_move = true;    
 
         if (gunBar != null) 
             gunBar.enabled = true;
 
-
         // re-enable camera follow
         if (camFollow != null) camFollow.enabled = true;
-
-
-        Cursor.visible = false;
 
         // --- START CONTINUOUS SPAWNING ---
         StartCoroutine(SpawnLoop());
