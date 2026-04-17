@@ -260,8 +260,8 @@ MonoBehaviour:
         m_Calls: []
   - speakerName: Neighbour
     speakerSprite: {fileID: 21300000, guid: 81bcb46a2703dbb4a959e443104dae78, type: 3}
-    text: There are plenty of other neighbors who are willing to pay you if you can
-      save their dogs too. Im sure they are locked up in the similar buildings around.
+    text: 'There are plenty of other neighbors who are willing to pay you if you
+      can save their dogs too. '
     onShow:
       m_PersistentCalls:
         m_Calls:
@@ -289,13 +289,31 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - speakerName: Neighbour
+    speakerSprite: {fileID: 21300000, guid: 81bcb46a2703dbb4a959e443104dae78, type: 3}
+    text: Im sure they are locked up in the similar buildings around.
+    onShow:
+      m_PersistentCalls:
+        m_Calls: []
   - speakerName: You
     speakerSprite: {fileID: 21300000, guid: bdcb0a1b982234f47af2bc7b40bc6566, type: 3}
     text: No problem. I'm taking this straight to get some upgrades. Mr. Evil's operation
       ends today.
     onShow:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: 
+          m_MethodName: 
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   boxColor: {r: 0, g: 0, b: 0, a: 1}
   nameColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   textColor: {r: 1, g: 1, b: 1, a: 1}
@@ -3775,6 +3793,7 @@ MonoBehaviour:
   playerSpottedClip: {fileID: 0}
   upgradeClip: {fileID: 0}
   downgradeClip: {fileID: 0}
+  barkClip: {fileID: 0}
   volume: 0.1
 --- !u!1001 &1228417446
 PrefabInstance:

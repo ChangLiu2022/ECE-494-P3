@@ -253,22 +253,43 @@ MonoBehaviour:
   lines:
   - speakerName: Neighbour
     speakerSprite: {fileID: 21300000, guid: 81bcb46a2703dbb4a959e443104dae78, type: 3}
-    text: Help! My dog was taken by some thugs! There were so many of them, it was
-      impossible to take them all at once!
-    onShow:
-      m_PersistentCalls:
-        m_Calls: []
-  - speakerName: You
-    speakerSprite: {fileID: 21300000, guid: bdcb0a1b982234f47af2bc7b40bc6566, type: 3}
-    text: '* Hmm, maybe Mr. Evil is stronger than I thought. I need to get more powerful
-      before taking him on... If only I had money to upgrade my weapons....*'
+    text: 'Help! My dog was taken by some thugs! '
     onShow:
       m_PersistentCalls:
         m_Calls: []
   - speakerName: Neighbour
     speakerSprite: {fileID: 21300000, guid: 81bcb46a2703dbb4a959e443104dae78, type: 3}
-    text: Can you help me get my dog back? I saw them take her over to that building.
-      I can pay you handsomly!
+    text: There were so many of them, it was impossible to take them all at once!
+    onShow:
+      m_PersistentCalls:
+        m_Calls: []
+  - speakerName: You
+    speakerSprite: {fileID: 21300000, guid: bdcb0a1b982234f47af2bc7b40bc6566, type: 3}
+    text: '* Hmm, maybe Mr. Evil is stronger than I thought. *'
+    onShow:
+      m_PersistentCalls:
+        m_Calls: []
+  - speakerName: You
+    speakerSprite: {fileID: 21300000, guid: bdcb0a1b982234f47af2bc7b40bc6566, type: 3}
+    text: '* I need to get more powerful before taking him on... *'
+    onShow:
+      m_PersistentCalls:
+        m_Calls: []
+  - speakerName: You
+    speakerSprite: {fileID: 21300000, guid: bdcb0a1b982234f47af2bc7b40bc6566, type: 3}
+    text: '* If only I had money to upgrade my weapons.... *'
+    onShow:
+      m_PersistentCalls:
+        m_Calls: []
+  - speakerName: Neighbour
+    speakerSprite: {fileID: 21300000, guid: 81bcb46a2703dbb4a959e443104dae78, type: 3}
+    text: 'Can you help me get my dog back? '
+    onShow:
+      m_PersistentCalls:
+        m_Calls: []
+  - speakerName: Neighbour
+    speakerSprite: {fileID: 21300000, guid: 81bcb46a2703dbb4a959e443104dae78, type: 3}
+    text: I saw them take her over to that building. I can pay you handsomly!
     onShow:
       m_PersistentCalls:
         m_Calls: []
@@ -3757,6 +3778,7 @@ MonoBehaviour:
   playerSpottedClip: {fileID: 0}
   upgradeClip: {fileID: 0}
   downgradeClip: {fileID: 0}
+  barkClip: {fileID: 0}
   volume: 0.1
 --- !u!1001 &1228417446
 PrefabInstance:
