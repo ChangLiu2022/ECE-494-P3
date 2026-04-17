@@ -44,7 +44,7 @@ public class Rifle : MonoBehaviour
 
         if (Input.GetMouseButton(0) && Time.time >= _nextFireTime && ammo != 0)
         {
-            if (Physics.CheckSphere(firePoint.position, 0.1f, wallLayer))
+            if (Physics.CheckSphere(firePoint.position, 0.2f, wallLayer))
             {
                 return;
             }
