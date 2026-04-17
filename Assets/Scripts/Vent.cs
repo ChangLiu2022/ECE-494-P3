@@ -9,6 +9,7 @@ public class Vent : MonoBehaviour
     public Transform teleportPoint;
 
     private static bool playerInVent = false;
+    public static bool PlayerInVent => playerInVent;
     private static bool usedThisFrame = false;
     private Transform player;
     private Camera cam;

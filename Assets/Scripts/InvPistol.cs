@@ -57,7 +57,7 @@ public class InvPistol : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && Time.time >= _nextFireTime)
         {
-            if (Physics.CheckSphere(firePoint.position, 0.1f, wallLayer))
+            if (Physics.CheckSphere(firePoint.position, 0.25f, wallLayer))
             {
                 return;
             }

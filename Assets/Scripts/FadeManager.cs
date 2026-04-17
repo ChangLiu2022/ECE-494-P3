@@ -207,9 +207,11 @@ public class FadeManager : MonoBehaviour
 
     private IEnumerator Transition(string sceneName, AudioSource musicSource, float fadeDuration)
     {
-        newVolume = sceneName == "Safehouse" ? 0.1f : 0.333f;
+        if (sceneName == "Safehouse") newVolume = 0.1f;
+        else if (sceneName.StartsWith("CutScene")) newVolume = 0f;
+        else newVolume = 1f;
 
-        yield return StartCoroutine(FadeToBlack(musicSource, fadeDuration));
+            yield return StartCoroutine(FadeToBlack(musicSource, fadeDuration));
 
         if(audioSource != null && fadeDuration != 1.95f) yield return StartCoroutine(PlayTransitionSounds(sceneName));
         else yield return null;
