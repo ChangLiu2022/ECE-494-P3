@@ -7,6 +7,7 @@ public class Vent : MonoBehaviour
     public float ventYOffset = 2f;
 
     private static bool playerInVent = false;
+    public static bool PlayerInVent => playerInVent;
     private static bool usedThisFrame = false;
 
     private Transform player;

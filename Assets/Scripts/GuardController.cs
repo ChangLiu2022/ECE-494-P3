@@ -88,6 +88,8 @@ public partial class GuardController : MonoBehaviour
 
     [SerializeField] private bool start_alerted = false;
 
+    [SerializeField] private AudioSource footstepAudio;
+
     // determines if the guard is staggered by the player
     private bool is_staggered = false;
 
@@ -107,6 +109,9 @@ public partial class GuardController : MonoBehaviour
     // determines if the guard gives the player a graceperiod
     // on direct contact with un unaware guard
     private bool is_catching = false;
+
+    // determines if the guard is waiting because player is in a vent
+    private bool is_in_vent_wait = false;
 
     // starting position and rotation of the guard
     private Vector3 start_position;
@@ -147,6 +152,10 @@ public partial class GuardController : MonoBehaviour
     private Coroutine static_scan_routine = null;
     private Coroutine draw_weapon_routine = null;
     private Coroutine stagger_routine = null;
+
+    private bool is_game_over = false;
+    private bool walking_to_vent_standby = false;
+    private Vector3 vent_standby_destination;
 
 
     // determines if we can see the player
@@ -203,15 +212,23 @@ public partial class GuardController : MonoBehaviour
 
 
     // determines if guard is able to open door
-    public bool IsDoorEligible()
+    public bool IsDoorEligible(Vector3 doorPosition)
     {
-        // cannot open door if staggered
-        if (is_staggered == true) 
+        if (is_staggered == true)
             return false;
 
-        // returns true if guard has moved significantly,
-        // is alert, or is returning
-        return is_alerted == true || is_returning == true;
+        if (is_alerted == true || is_returning == true)
+            return true;
+
+        // patrol guards open doors only when walking toward them,
+        // not when brushing past sideways
+        if (guard_mode == GuardMode.Patrol && guard.velocity.magnitude > 0.1f)
+        {
+            Vector3 toDoor = (doorPosition - transform.position).normalized;
+            return Vector3.Dot(guard.velocity.normalized, toDoor) >= 0.5f;
+        }
+
+        return false;
     }
 
 
@@ -229,29 +246,32 @@ public partial class GuardController : MonoBehaviour
 
     private IEnumerator PauseNavigationRoutine(float duration)
     {
-        // actively pausing the guard's movement
         is_waiting_for_door = true;
 
-        // save the current destination the guard was in to return to
-        // after unpausing
         Vector3 saved = current_destination;
 
-        // actually pause the guard's navmesh agent
         guard.isStopped = true;
 
-        // pause the guard for the duration specified
         yield return new WaitForSeconds(duration);
 
-        // unpause the guard's navmesh agent
-        guard.isStopped = false;
+        // don't override the vent-wait freeze
+        if (!is_in_vent_wait)
+            guard.isStopped = false;
 
-        // set the guard to the saved destination,
-        // unless staggered in the process
-        if (is_staggered == false) 
+        if (is_staggered == false && !is_in_vent_wait)
             SetGuardDestination(saved);
 
-        // guard is no longer being paused by the door
         is_waiting_for_door = false;
+    }
+
+
+    public void StartVentStandbyWalk(Vector3 destination)
+    {
+        walking_to_vent_standby = true;
+        is_in_vent_wait = false;
+        vent_standby_destination = destination;
+        guard.isStopped = false;
+        SetGuardDestination(destination);
     }
 
 
@@ -259,13 +279,14 @@ public partial class GuardController : MonoBehaviour
     {
         EventBus.Subscribe<AlertEvent>(OnAlertEvent);
         EventBus.Subscribe<NoiseWaveEvent>(OnNoiseWaveEvent);
+        EventBus.Subscribe<GameOverEvent>(OnGameOver);
     }
-
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<AlertEvent>(OnAlertEvent);
         EventBus.Unsubscribe<NoiseWaveEvent>(OnNoiseWaveEvent);
+        EventBus.Unsubscribe<GameOverEvent>(OnGameOver);
     }
 
 
@@ -319,6 +340,9 @@ public partial class GuardController : MonoBehaviour
 
         if (start_alerted)
             Alert();
+
+        if (footstepAudio == null)
+            footstepAudio = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -330,6 +354,46 @@ public partial class GuardController : MonoBehaviour
         // not alerted, patrol is handled by its coroutine
         if (is_alerted == false)
             return;
+
+        // pause all alerted guards while player is hiding in a vent
+        if (Vent.PlayerInVent)
+        {
+            if (walking_to_vent_standby)
+            {
+                guard.isStopped = false;
+                SetGuardDestination(vent_standby_destination);
+                FaceMovementDirection();
+
+                if (HasReachedDestination())
+                {
+                    walking_to_vent_standby = false;
+                    is_in_vent_wait = true;
+                    guard.isStopped = true;
+                    guard.ResetPath();
+                }
+
+                return;
+            }
+
+            if (!is_in_vent_wait)
+            {
+                is_in_vent_wait = true;
+                guard.isStopped = true;
+                guard.ResetPath();
+            }
+
+            return;
+        }
+
+        else if (is_in_vent_wait || walking_to_vent_standby)
+        {
+            walking_to_vent_standby = false;
+            is_in_vent_wait = false;
+            guard.isStopped = false;
+
+            if (player != null)
+                player_last_position = player.position;
+        }
 
         stuck_timer += Time.fixedDeltaTime;
 
@@ -360,6 +424,37 @@ public partial class GuardController : MonoBehaviour
 
         ChasePlayer();
         ShootAtPlayer();
+    }
+
+
+    private void Update()
+    {
+        if (footstepAudio != null)
+            HandleFootsteps();
+    }
+
+    private void HandleFootsteps()
+    {
+        bool shouldStop = is_game_over || GameFreezer.IsFrozen || 
+            is_staggered || guard.isStopped || is_in_vent_wait || 
+            HeavyGuardSpawner.CutsceneActive;
+
+        if (shouldStop)
+        {
+            if (footstepAudio.isPlaying)
+                footstepAudio.Stop();
+            return;
+        }
+
+        bool isMoving = guard.velocity.sqrMagnitude > 0.01f;
+
+        // chase speed = higher pitch, patrol speed = lower pitch
+        footstepAudio.pitch = is_alerted ? 1.5f : 1.0f;
+
+        if (isMoving && !footstepAudio.isPlaying)
+            footstepAudio.Play();
+        else if (!isMoving && footstepAudio.isPlaying)
+            footstepAudio.Stop();
     }
 
 
@@ -492,5 +587,13 @@ public partial class GuardController : MonoBehaviour
         // this returns the average length across rays higher value
         // means more open and the direction we want to rotate
         return total / ray_count;
+    }
+
+
+    private void OnGameOver(GameOverEvent e)
+    {
+        is_game_over = true;
+        if (footstepAudio != null && footstepAudio.isPlaying)
+            footstepAudio.Stop();
     }
 }

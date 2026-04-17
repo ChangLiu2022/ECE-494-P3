@@ -126,7 +126,7 @@ public class GuardDoors : MonoBehaviour
             // if found a guard controller and guard is able to open the door
             // guard cannot open door if the player is frozen and guard is not.
             // only heavy guards can open doors when player is frozen for cutscene
-            if (guard != null && guard.IsDoorEligible())
+            if (guard != null && guard.IsDoorEligible(transform.position))
             {
                 // open the door and pause the guard's nav while it opens
                 StartCoroutine(GuardOpenRoutine(guard));
