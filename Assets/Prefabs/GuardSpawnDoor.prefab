@@ -173,14 +173,15 @@ MonoBehaviour:
   swingSpeed: 5
   doorCollider: {fileID: 6678749545131503055}
   interactRange: 1
-  guard_detect_range: 1.5
-  guard_open_delay: 0.1
+  guard_detect_range: 1
+  guard_open_delay: 1
   swing_buffer: 0.4
   guard_layer:
     serializedVersion: 2
     m_Bits: 64
-  sound_blocker: {fileID: 0}
+  sound_blocker: {fileID: 6450803907698247082}
   door_obstacle: {fileID: 0}
+  guard_only_door: 0
 --- !u!65 &6678749545131503055
 BoxCollider:
   m_ObjectHideFlags: 0

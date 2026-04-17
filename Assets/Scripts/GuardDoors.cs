@@ -120,7 +120,12 @@ public class GuardDoors : MonoBehaviour
             GuardController guard = 
                 col.GetComponentInParent<GuardController>();
 
+            if (HeavyGuardSpawner.CutsceneActive && !guard.is_heavy_guard)
+                return;
+
             // if found a guard controller and guard is able to open the door
+            // guard cannot open door if the player is frozen and guard is not.
+            // only heavy guards can open doors when player is frozen for cutscene
             if (guard != null && guard.IsDoorEligible())
             {
                 // open the door and pause the guard's nav while it opens

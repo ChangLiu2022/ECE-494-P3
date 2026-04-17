@@ -6,6 +6,8 @@ using static GameEvents;
 
 public class HeavyGuardSpawner : MonoBehaviour
 {
+    public static bool CutsceneActive { get; private set; } = false;
+
     [Header("Spawning")]
     [SerializeField] private GameObject heavyGuardPrefab;
     [SerializeField] private Transform[] spawnPoints;
@@ -59,6 +61,8 @@ public class HeavyGuardSpawner : MonoBehaviour
 
         // --- FREEZE EVERYTHING MANUALLY (but keep timeScale = 1) ---
 
+        CutsceneActive = true;
+
         // disable player
         if (crosshair_canvas != null) crosshair_canvas.SetActive(false);
         Cursor.visible = true;
@@ -85,6 +89,8 @@ public class HeavyGuardSpawner : MonoBehaviour
 
             if (gunBar != null) 
                 gunBar.enabled = false;
+
+            existingGuards[i].StopAllCoroutines();
 
             if (agent != null)
             {

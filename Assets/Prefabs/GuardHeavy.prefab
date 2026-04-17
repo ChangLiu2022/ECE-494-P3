@@ -82,6 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 175283d15a828204fac5d99174056226, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  is_heavy_guard: 1
   can_see_player: 0
   is_alerted: 0
   guns_out: 0
@@ -93,11 +94,6 @@ MonoBehaviour:
   point_b: {fileID: 0}
   patrol_speed: 1.5
   pause_duration: 1.5
-  random_patrol_radius: 15
-  random_wait_min: 2
-  random_wait_max: 6
-  random_move_speed: 2
-  is_heavy_guard: 0
   turn_speed: 180
   chase_speed: 2.5
   give_up_distance: 100

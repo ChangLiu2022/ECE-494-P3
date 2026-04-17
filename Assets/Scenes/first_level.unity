@@ -140,6 +140,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewDoors (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
+        type: 3}
+      propertyPath: player_movement
+      value: 
+      objectReference: {fileID: 2002566395}
     - target: {fileID: 7918979390345602087, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1289,6 +1294,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewDoors (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
+        type: 3}
+      propertyPath: player_movement
+      value: 
+      objectReference: {fileID: 2002566395}
     - target: {fileID: 7918979390345602087, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2282,6 +2292,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewDoors (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
+        type: 3}
+      propertyPath: player_movement
+      value: 
+      objectReference: {fileID: 2002566395}
     - target: {fileID: 7918979390345602087, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8378,6 +8393,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewDoors
       objectReference: {fileID: 0}
+    - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
+        type: 3}
+      propertyPath: player_movement
+      value: 
+      objectReference: {fileID: 2002566395}
     - target: {fileID: 7918979390345602087, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10911,8 +10931,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1896015620}
   - {fileID: 1346693033}
-  spawnInterval: 3
-  cameraPanSpeed: 8
+  spawnInterval: 2
+  cameraPanSpeed: 15
   cutsceneHoldTime: 2
   cameraHeight: 15
   mainCamera: {fileID: 296088790}
@@ -10935,7 +10955,7 @@ MonoBehaviour:
   timerDuration: 10
   timerPanel: {fileID: 2091732382}
   timerText: {fileID: 1770593744}
-  flashDuration: 0.3
+  flashDuration: 0.25
   flashCount: 3
 --- !u!1001 &722190697
 PrefabInstance:
@@ -11069,6 +11089,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewDoors (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
+        type: 3}
+      propertyPath: player_movement
+      value: 
+      objectReference: {fileID: 2002566395}
     - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: guard_open_delay
@@ -11471,6 +11496,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewDoors (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
+        type: 3}
+      propertyPath: player_movement
+      value: 
+      objectReference: {fileID: 2002566395}
     - target: {fileID: 7918979390345602087, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17008,6 +17038,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewDoors (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
+        type: 3}
+      propertyPath: player_movement
+      value: 
+      objectReference: {fileID: 2002566395}
     - target: {fileID: 7918979390345602087, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -20512,6 +20547,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewDoors (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
+        type: 3}
+      propertyPath: player_movement
+      value: 
+      objectReference: {fileID: 2002566395}
     - target: {fileID: 7918979390345602087, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21189,6 +21229,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewDoors (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
+        type: 3}
+      propertyPath: player_movement
+      value: 
+      objectReference: {fileID: 2002566395}
     - target: {fileID: 7918979390345602087, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -23402,9 +23447,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
-      propertyPath: guard_only_door
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: player_movement
+      value: 
+      objectReference: {fileID: 2002566395}
     - target: {fileID: 7918979390345602087, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -32774,6 +32819,11 @@ PrefabInstance:
       propertyPath: guard_only_door
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7317370812749974377, guid: ea328deb847333f4a92df0a12b3da39d,
+        type: 3}
+      propertyPath: player_movement
+      value: 
+      objectReference: {fileID: 2002566395}
     - target: {fileID: 7918979390345602087, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_LocalPosition.x

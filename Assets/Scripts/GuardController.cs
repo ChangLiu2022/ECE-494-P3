@@ -17,6 +17,8 @@ public enum GuardMode
 
 public partial class GuardController : MonoBehaviour
 {
+    public bool is_heavy_guard = false;
+
     // determines if guard has sight of the player
     // or the palyer is in the guard's vision cone
     public bool can_see_player = false;
