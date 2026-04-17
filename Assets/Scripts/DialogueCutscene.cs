@@ -45,12 +45,18 @@ public class DialogueCutscene : MonoBehaviour
     [Header("Flow")]
     [SerializeField] private string nextSceneName;
 
+    [Header("Fade")]
+    [SerializeField] private float fadeDuration = 1f;
+    [SerializeField] private Color fadeColor = Color.black;
+    [SerializeField] private bool useTransitionSounds = false;
+
     private GameObject _dialoguePanel;
     private Image _speakerImage;
     private TextMeshProUGUI _nameText;
     private TextMeshProUGUI _bodyText;
     private int _currentLine;
     private bool _active;
+    private Image _fadeImage;
 
     private void Start()
     {
@@ -108,13 +114,6 @@ public class DialogueCutscene : MonoBehaviour
 
         line.onShow?.Invoke();
     }
-
-    [Header("Fade")]
-    [SerializeField] private float fadeDuration = 1f;
-    [SerializeField] private Color fadeColor = Color.black;
-    [SerializeField] private bool useTransitionSounds = false; // tick this in CutScene-Neighbour
-
-    private Image _fadeImage;
 
     private void EndDialogue()
     {
@@ -230,5 +229,24 @@ public class DialogueCutscene : MonoBehaviour
         bodyRect.pivot = new Vector2(0.5f, 0.5f);
         bodyRect.offsetMin = new Vector2(padding + spriteSize + padding, padding);
         bodyRect.offsetMax = new Vector2(-padding, -(padding + 35f));
+
+        // Click to continue prompt
+        var promptObj = new GameObject("ContinuePrompt");
+        promptObj.transform.SetParent(_dialoguePanel.transform, false);
+
+        var promptText = promptObj.AddComponent<TextMeshProUGUI>();
+        if (font != null) promptText.font = font;
+        promptText.fontSize = textFontSize * 0.7f;
+        promptText.color = new Color(textColor.r, textColor.g, textColor.b, 0.6f);
+        promptText.text = "Click to continue...";
+        promptText.alignment = TextAlignmentOptions.BottomRight;
+        promptText.fontStyle = FontStyles.Italic;
+
+        var promptRect = promptObj.GetComponent<RectTransform>();
+        promptRect.anchorMin = new Vector2(0f, 0f);
+        promptRect.anchorMax = new Vector2(1f, 0f);
+        promptRect.pivot = new Vector2(1f, 0f);
+        promptRect.anchoredPosition = new Vector2(-padding, padding * 0.5f);
+        promptRect.sizeDelta = new Vector2(200f, 20f);
     }
 }
