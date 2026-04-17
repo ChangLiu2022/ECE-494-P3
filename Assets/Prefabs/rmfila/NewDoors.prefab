@@ -157,7 +157,7 @@ MonoBehaviour:
   swingSpeed: 5
   doorCollider: {fileID: 644221064380075017}
   interactRange: 1
-  guard_detect_range: 1.5
+  guard_detect_range: 1
   guard_open_delay: 1
   swing_buffer: 0.4
   guard_layer:

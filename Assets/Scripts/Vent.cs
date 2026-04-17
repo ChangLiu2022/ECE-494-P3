@@ -15,7 +15,7 @@ public class Vent : MonoBehaviour
     void Start()
     {
         playerInVent = false;
-        player = GameObject.FindWithTag("Body").transform;
+        player = GameObject.FindWithTag("Player").transform;
         cam = Camera.main;
     }
 
