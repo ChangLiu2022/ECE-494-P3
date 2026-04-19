@@ -121,6 +121,8 @@ MonoBehaviour:
   lethal_guard_sprite: {fileID: 21300000, guid: cb9edd1b489bc440fbd45a8af4af3b01,
     type: 3}
   bloodEffectPrefab: {fileID: 8329804670842170612}
+  deathSpritePrefab: {fileID: 3377000088880273795, guid: 68d90f4a58a544604b367d90d3b75517,
+    type: 3}
   noise_wave_expand_speed: 20
   start_alerted: 0
   footstepAudio: {fileID: 4860968609875745816}

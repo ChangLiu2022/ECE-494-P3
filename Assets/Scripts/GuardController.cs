@@ -80,7 +80,8 @@ public partial class GuardController : MonoBehaviour
     [SerializeField] Sprite nonlethal_guard_sprite;
     [SerializeField] Sprite lethal_guard_sprite;
     [SerializeField] private ParticleSystem bloodEffectPrefab;
-
+    [SerializeField] private GameObject deathSpritePrefab;
+    
     [Header("Noise")]
     [Tooltip("How long the guard takes to hear a gunshot. " +
         "Needs to match the exact same as the NoiseWave prefab.")]
