@@ -15,6 +15,7 @@ TagManager:
   - PistolAmmo
   - Vent
   - GuardSpawnDoor
+  - Glass
   layers:
   - Default
   - TransparentFX

@@ -109,7 +109,7 @@ MonoBehaviour:
     type: 3}
   fire_point: {fileID: 619472383794619858}
   fire_rate: 0.5
-  shoot_range: 4
+  shoot_range: 3.5
   sight_delay: 0.4
   weapon_draw_time: 0.5
   knockback_distance: 0.5
@@ -513,6 +513,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2149925945423150459}
     m_Modifications:
+    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
+        type: 3}
+      propertyPath: shooting
+      value: 
+      objectReference: {fileID: 975920972793711383, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+        type: 3}
+    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
+        type: 3}
+      propertyPath: firePoint
+      value: 
+      objectReference: {fileID: 4791959475514888856, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+        type: 3}
     - target: {fileID: 2152604812663788667, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -603,18 +615,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
-        type: 3}
-      propertyPath: shooting
-      value: 
-      objectReference: {fileID: 975920972793711383, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
-        type: 3}
-    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
-        type: 3}
-      propertyPath: firePoint
-      value: 
-      objectReference: {fileID: 4791959475514888856, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
-        type: 3}
     m_RemovedComponents:
     - {fileID: 930661097910864486, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5, type: 3}
     - {fileID: 2757824123413150212, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5, type: 3}
