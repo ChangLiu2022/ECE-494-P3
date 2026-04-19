@@ -48,6 +48,7 @@ public class Rifle : MonoBehaviour
             {
                 return;
             }
+
             if (ammo > 0) ammo--;
             _nextFireTime = Time.time + effective_fire_rate;
 
