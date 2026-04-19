@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 using static GameEvents; // assuming your events are in GameEvents
 
@@ -14,10 +12,13 @@ public class PlaysSounds : MonoBehaviour
     [SerializeField] private AudioClip upgradeClip; // Assign in Inspector
     [SerializeField] private AudioClip downgradeClip; // Assign in Inspector
     [SerializeField] private AudioClip barkClip; // Assign in Inspector
+    [SerializeField] private AudioClip whineClip;
     [SerializeField] private float volume = 1f;
 
     private AudioSource audioSource;
     private bool isPlayingAlarm = false;
+
+    private bool isStopped = false;
 
     void Awake()
     {
@@ -41,6 +42,7 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Subscribe<UpgradeActivatedEvent>(UpgradeActivated); 
         EventBus.Subscribe<DowngradeActivatedEvent>(DowngradeActivated); 
         EventBus.Subscribe<DogGrabbed>(OnDogGrabbed);
+        EventBus.Subscribe<GameOverEvent>(OnGameOver);
     }
 
     void OnDisable()
@@ -55,11 +57,21 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Unsubscribe<UpgradeActivatedEvent>(UpgradeActivated); 
         EventBus.Unsubscribe<DowngradeActivatedEvent>(DowngradeActivated);
         EventBus.Unsubscribe<DogGrabbed>(OnDogGrabbed);
+        EventBus.Unsubscribe<GameOverEvent>(OnGameOver);
+    }
+
+    private void OnGameOver(GameOverEvent e)
+    {
+        isStopped = true;
+        if (whineClip != null)
+        {
+            audioSource.PlayOneShot(whineClip, volume);
+        }
     }
 
     private void OnDogGrabbed(DogGrabbed e)
     {
-        if (barkClip != null)
+        if (barkClip != null && !isStopped)
         {
             audioSource.PlayOneShot(barkClip, volume);
         }
@@ -67,7 +79,7 @@ public class PlaysSounds : MonoBehaviour
 
     private void GuardShoots(GuardShootsEvent e)
     {
-        if (noiseWaveClip != null)
+        if (noiseWaveClip != null && !isStopped)
         {
             audioSource.PlayOneShot(noiseWaveClip, volume);
         }
@@ -75,7 +87,7 @@ public class PlaysSounds : MonoBehaviour
 
     private void OnGuardShot(GuardShotEvent e)
     {
-        if (e.not_guard) 
+        if (e.not_guard && !isStopped) 
             return;
 
         if (guardHitClip != null)
@@ -87,7 +99,7 @@ public class PlaysSounds : MonoBehaviour
     private void OnNoiseWave(NoiseWaveEvent e)
     {
         // Play the assigned clip once
-        if (noiseWaveClip != null && e.is_gunshot)
+        if (noiseWaveClip != null && e.is_gunshot && !isStopped)
         {
             audioSource.PlayOneShot(noiseWaveClip, volume);
         }
@@ -96,7 +108,7 @@ public class PlaysSounds : MonoBehaviour
     private void OnAlarm(AlertEvent e)
     {
         // Play the assigned clip once
-        if (alarmClip != null && !isPlayingAlarm)
+        if (alarmClip != null && !isPlayingAlarm && !isStopped)
         {
             isPlayingAlarm = true;
             audioSource.PlayOneShot(alarmClip, volume);
@@ -123,7 +135,7 @@ public class PlaysSounds : MonoBehaviour
 
     private void OnPlayerSpotted(PlayerSpottedEvent e)
     {
-        if (playerSpottedClip != null)
+        if (playerSpottedClip != null && !isStopped)
         {
             audioSource.PlayOneShot(playerSpottedClip, volume);
         }
@@ -131,11 +143,11 @@ public class PlaysSounds : MonoBehaviour
 
     private void UpgradeActivated(UpgradeActivatedEvent e)
     {
-        if (upgradeClip != null) audioSource.PlayOneShot(upgradeClip, volume*2.5f);
+        if (upgradeClip != null && !isStopped) audioSource.PlayOneShot(upgradeClip, volume*2.5f);
     }
 
     private void DowngradeActivated(DowngradeActivatedEvent e)
     {
-        if (downgradeClip != null) audioSource.PlayOneShot(downgradeClip, volume*2.5f);
+        if (downgradeClip != null && !isStopped) audioSource.PlayOneShot(downgradeClip, volume*2.5f);
     }
 }

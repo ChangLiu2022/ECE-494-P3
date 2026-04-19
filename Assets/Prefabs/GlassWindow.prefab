@@ -173,3 +173,4 @@ MonoBehaviour:
     type: 3}
   break_sound: {fileID: 8300000, guid: d2a314f331b4f4a478f9f77f1e80b6c9, type: 3}
   break_sound_volume: 0.25
+  noise_radius: 6
