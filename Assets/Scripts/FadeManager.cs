@@ -222,6 +222,7 @@ public class FadeManager : MonoBehaviour
         if(audioSource != null && fadeDuration != 1.95f) yield return StartCoroutine(PlayTransitionSounds(sceneName));
         else yield return null;
 
+        if (sceneName == "Safehouse") SafehouseState.paper_collected = false;
         SceneManager.LoadScene(sceneName);
 
         yield return null;

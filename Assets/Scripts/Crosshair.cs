@@ -19,6 +19,10 @@ public class Crosshair : MonoBehaviour
             return;
 
         Vector3 mousePos = Input.mousePosition;
+
+        if (float.IsNaN(mousePos.x) || float.IsNaN(mousePos.y))
+            return;
+
         mousePos.x += offsetX;
         mousePos.y += offsetY;
 

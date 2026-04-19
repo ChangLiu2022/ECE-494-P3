@@ -2234,11 +2234,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 29926125}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: swingSpeed
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2298,6 +2293,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: swingSpeed
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26, type: 3}
@@ -18313,7 +18313,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1690192266}
   - component: {fileID: 1690192268}
-  - component: {fileID: 1690192267}
+  - component: {fileID: 1690192269}
+  - component: {fileID: 1690192270}
   m_Layer: 5
   m_Name: Map
   m_TagString: Untagged
@@ -18340,33 +18341,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1440, y: 1920}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1690192267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1690192265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0bf620715b2304a4095aeccf9a42dc96, type: 3}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
 --- !u!222 &1690192268
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18375,6 +18349,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1690192265}
   m_CullTransparentMesh: 1
+--- !u!114 &1690192269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690192265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae961f3e3116a8647ba951491989261d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map_one: {fileID: 21300000, guid: bc84deb8924304c87904e5a19b72b4b5, type: 3}
+  map_two: {fileID: 21300000, guid: 3056acba475fd450cbb486777e887b8f, type: 3}
+  map_three: {fileID: 21300000, guid: 3779befb14a35439e8bc3a8bad428a14, type: 3}
+--- !u!114 &1690192270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690192265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: bc84deb8924304c87904e5a19b72b4b5, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1001 &1697823578
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20435,7 +20454,6 @@ MonoBehaviour:
   set_tutorial_complete: 1
   set_newmap_complete: 0
   no_gold_message: You need to rescue the dog before leaving!
-  fadeDuration: 1
   canvas: {fileID: 0}
 --- !u!65 &1838183526
 BoxCollider:
@@ -22958,15 +22976,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 351949596}
     m_Modifications:
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: swingSpeed
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_LocalScale.y
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: swingSpeed
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9221b66e3d47e1a4c838f59850720699,
         type: 3}

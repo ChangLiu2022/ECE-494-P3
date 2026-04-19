@@ -2,6 +2,7 @@ public static class SafehouseState
 {
     public static bool gun_collected = false;
     public static bool paper_collected = false;
+    public static bool paper_collected_once = false;
     public static bool completed_tutorial = false;
     public static bool completed_newmap = false;
     public static bool workbench_interacted = false;
@@ -12,6 +13,7 @@ public static class SafehouseState
     {
         gun_collected = false;
         paper_collected = false;
+        paper_collected_once = false;
         completed_tutorial = false;
         completed_newmap = false;
         workbench_interacted = false;
