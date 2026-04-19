@@ -7,6 +7,7 @@ public class BulletMovement : MonoBehaviour
     [SerializeField] private float lifetime = 30f;
     
     [SerializeField] private ParticleSystem bloodEffectPrefab;
+    private LayerMask raycast_mask;
     
     private Collider bullet_collider;
     private float aliveTime = 0f;
@@ -32,6 +33,9 @@ public class BulletMovement : MonoBehaviour
 
         for (int i = 0; i < owner_colliders.Length; i++)
             Physics.IgnoreCollision(bullet_collider, owner_colliders[i]);
+        
+        raycast_mask = Physics.DefaultRaycastLayers & ~(1 << owner.layer);
+
     }
 
     private void Start()
@@ -57,7 +61,7 @@ public class BulletMovement : MonoBehaviour
             transform.forward, 
             out RaycastHit hit, 
             stepDistance, 
-            Physics.DefaultRaycastLayers, 
+            raycast_mask, 
             QueryTriggerInteraction.Ignore))
         {
             rb.MovePosition(transform.position + transform.forward * stepDistance);
@@ -78,6 +82,21 @@ public class BulletMovement : MonoBehaviour
 
             var dummy = hit.collider.GetComponentInParent<TrainingDummy>();
             if (dummy != null) dummy.TakeDamage(bullet_collider);
+        }
+
+        if (hit.collider.CompareTag("Glass"))
+        {
+            var glass = hit.collider.GetComponentInParent<BreakableGlass>();
+
+            if (glass != null)
+            {
+                glass.TakeDamage(bullet_collider);
+            }
+
+            rb.MovePosition(transform.position + transform.forward * stepDistance);
+
+            // bullet continues through glass instead of being destroyed
+            return;
         }
 
         Destroy(gameObject);
