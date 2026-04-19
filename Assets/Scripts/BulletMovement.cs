@@ -71,7 +71,7 @@ public class BulletMovement : MonoBehaviour
         if (hit.collider.CompareTag("Body"))
         {
             EventBus.Publish(new GameEvents.GameOverEvent());
-            Destroy(gameObject);
+            //Destroy(gameObject);
             return;
         }
 

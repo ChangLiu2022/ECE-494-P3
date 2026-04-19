@@ -88,4 +88,6 @@ public class GameEvents
     public struct SwitchMusicEvent { }
 
     public struct StopMusicEvent { }
+
+    public struct PlayerDisabledEvent { }
 }
