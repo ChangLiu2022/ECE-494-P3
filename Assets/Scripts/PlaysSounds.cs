@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 using static GameEvents; // assuming your events are in GameEvents
 
@@ -87,7 +85,7 @@ public class PlaysSounds : MonoBehaviour
     private void OnNoiseWave(NoiseWaveEvent e)
     {
         // Play the assigned clip once
-        if (noiseWaveClip != null && e.is_gunshot)
+        if (noiseWaveClip != null && e.is_gunshot && audioSource.enabled)
         {
             audioSource.PlayOneShot(noiseWaveClip, volume);
         }

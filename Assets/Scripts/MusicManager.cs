@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using static GameEvents;
 
@@ -52,15 +51,28 @@ public class MusicManager : MonoBehaviour
     void OnEnable()
     {
       EventBus.Subscribe<WinEvent>(e => StopBGMusic());  
+      EventBus.Subscribe<GameOverEvent>(e => StopBGMusic());  
       EventBus.Subscribe<StopMusicEvent>(e => StopBGMusic());
-      EventBus.Subscribe<TimerExpiredEvent>(e => SwitchMusic());
+        EventBus.Subscribe<TimerExpiredEvent>(e => SwitchMusic());
+      SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnDisable()
     {
         EventBus.Unsubscribe<WinEvent>(e => StopBGMusic());
+        EventBus.Unsubscribe<GameOverEvent>(e => StopBGMusic());  
         EventBus.Unsubscribe<StopMusicEvent>(e => StopBGMusic());
         EventBus.Unsubscribe<TimerExpiredEvent>(e => SwitchMusic());
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene != null  && scene.name != "Safehouse" &&  scene.name != "Main Menu" && !scene.name.StartsWith("CutScene"))
+        {
+            isActive = false;
+            SwitchMusic();
+        }
     }
 
     void Start()
