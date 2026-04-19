@@ -84,6 +84,21 @@ public class BulletMovement : MonoBehaviour
             if (dummy != null) dummy.TakeDamage(bullet_collider);
         }
 
+        if (hit.collider.CompareTag("Glass"))
+        {
+            var glass = hit.collider.GetComponentInParent<BreakableGlass>();
+
+            if (glass != null)
+            {
+                glass.TakeDamage(bullet_collider);
+            }
+
+            rb.MovePosition(transform.position + transform.forward * stepDistance);
+
+            // bullet continues through glass instead of being destroyed
+            return;
+        }
+
         Destroy(gameObject);
     }
 }
