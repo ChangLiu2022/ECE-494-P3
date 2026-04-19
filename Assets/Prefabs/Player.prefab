@@ -666,16 +666,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4791959475514888856}
     m_Modifications:
-    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
-        type: 3}
-      propertyPath: shooting
-      value: 
-      objectReference: {fileID: 975920972793711383}
-    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
-        type: 3}
-      propertyPath: firePoint
-      value: 
-      objectReference: {fileID: 4791959475514888856}
     - target: {fileID: 930661097910864486, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: shooting
@@ -714,7 +704,7 @@ PrefabInstance:
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6965682478070366511, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
@@ -771,6 +761,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
+        type: 3}
+      propertyPath: shooting
+      value: 
+      objectReference: {fileID: 975920972793711383}
+    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
+        type: 3}
+      propertyPath: firePoint
+      value: 
+      objectReference: {fileID: 4791959475514888856}
     m_RemovedComponents:
     - {fileID: 6250875724895450331, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5, type: 3}
     - {fileID: 4603507910656518917, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5, type: 3}
@@ -802,7 +802,7 @@ PrefabInstance:
     - target: {fileID: 1365894587642650570, guid: c17aa1019bb19ba44a12b662570d8c81,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1605972222166964158, guid: c17aa1019bb19ba44a12b662570d8c81,
         type: 3}

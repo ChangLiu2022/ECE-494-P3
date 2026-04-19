@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using TMPro;
 using UnityEngine;
 using static GameEvents;
-using static GunEvents;
 
 public class AppearOnCollision : MonoBehaviour
 {
@@ -12,19 +9,33 @@ public class AppearOnCollision : MonoBehaviour
 
     private TMP_Text text;
     private Coroutine currentFade;
-    private bool shouldAppear = true;
 
     [SerializeField] private bool is_map = false;
     [SerializeField] private bool is_gun = false;
+    [SerializeField] private bool no_dog_dependence = false;
 
     private void OnEnable()
     {
         EventBus.Subscribe<AlertEvent>(OnAlertEvent);
+        EventBus.Subscribe<PlayerDisabledEvent>(OnPlayerDisabled);
+        EventBus.Subscribe<DogGrabbed>(OnDogGrabbed);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<AlertEvent>(OnAlertEvent);
+        EventBus.Unsubscribe<PlayerDisabledEvent>(OnPlayerDisabled);
+        EventBus.Unsubscribe<DogGrabbed>(OnDogGrabbed);
+    }
+
+    private void OnDogGrabbed(DogGrabbed e)
+    {
+        if(!no_dog_dependence) Destroy(gameObject);
+    }
+
+    private void OnPlayerDisabled(PlayerDisabledEvent e)
+    {
+        StartFade(0f);
     }
 
     private void OnAlertEvent(AlertEvent e)
@@ -42,7 +53,7 @@ public class AppearOnCollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Body") && shouldAppear)
+        if (other.CompareTag("Body"))
         {
             if (is_map && SafehouseState.paper_collected_once) return;
             if (is_gun && SafehouseState.gun_collected) return;
@@ -52,10 +63,9 @@ public class AppearOnCollision : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Body") && shouldAppear)
+        if (other.CompareTag("Body"))
         {
             StartFade(0f); // fade out
-            shouldAppear = false;
         }
     }
 

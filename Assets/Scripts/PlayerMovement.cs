@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         
         footstepAudio.pitch = Input.GetKey(KeyCode.LeftShift) ? 1.7f : 1.2f;
 
-        if (isMoving && !footstepAudio.isPlaying)
+        if (isMoving && !footstepAudio.isPlaying && footstepAudio.enabled)
         {
             footstepAudio.Play();
         }
