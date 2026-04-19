@@ -12,6 +12,7 @@ public class CarExit : MonoBehaviour
     [SerializeField] private float pickup_range = 2.5f;
     [SerializeField] private KeyCode pickup_key = KeyCode.E;
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject dog;
 
     [Header("Driving Settings")]
     [SerializeField] private float distance = 5f;   // how far to move
@@ -63,6 +64,10 @@ public class CarExit : MonoBehaviour
 
         EventBus.Publish(new PlayerDisabledEvent());
         player.SetActive(false);
+
+        if (dog != null) 
+            dog.SetActive(false);
+
         if (moveRoutine != null)
             StopCoroutine(moveRoutine);
         moveRoutine = StartCoroutine(MoveRight());
