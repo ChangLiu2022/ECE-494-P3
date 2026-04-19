@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using static GameEvents;
 
 public partial class GuardController
@@ -68,6 +69,8 @@ public partial class GuardController
 
         if (current_health <= 0)
         {
+            Quaternion offset = Quaternion.Euler(90f, 180f, 0f);
+            Instantiate(deathSpritePrefab, transform.position, transform.rotation * offset);
             Destroy(gameObject);
             return;
         }
