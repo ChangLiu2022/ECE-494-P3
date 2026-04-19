@@ -48,7 +48,6 @@ public class DialogueCutscene : MonoBehaviour
     [Header("Fade")]
     [SerializeField] private float fadeDuration = 1f;
     [SerializeField] private Color fadeColor = Color.black;
-    [SerializeField] private bool useTransitionSounds = false;
 
     private GameObject _dialoguePanel;
     private Image _speakerImage;
@@ -121,9 +120,13 @@ public class DialogueCutscene : MonoBehaviour
         _dialoguePanel.SetActive(false);
         Time.timeScale = 1f;
 
-        if (useTransitionSounds && FadeManager.Instance != null)
+        if (FadeManager.Instance != null)
         {
-            FadeManager.Instance.StartTransition(nextSceneName, null, 2f);
+            float fadeDuration;
+            if (nextSceneName == "Safehouse" || nextSceneName.StartsWith("CutScene")) fadeDuration = 1.95f;
+            else fadeDuration = 2f;
+
+            FadeManager.Instance.StartTransition(nextSceneName, null, fadeDuration);
         }
         else
         {

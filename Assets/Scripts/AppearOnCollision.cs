@@ -44,7 +44,7 @@ public class AppearOnCollision : MonoBehaviour
     {
         if (other.CompareTag("Body") && shouldAppear)
         {
-            if (is_map && SafehouseState.paper_collected) return;
+            if (is_map && SafehouseState.paper_collected_once) return;
             if (is_gun && SafehouseState.gun_collected) return;
             StartFade(1f); // fade in
         }

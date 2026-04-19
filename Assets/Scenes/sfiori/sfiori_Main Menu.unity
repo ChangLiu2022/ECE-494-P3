@@ -612,7 +612,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -708,7 +708,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -3138,9 +3138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 007aad8f5fdf244c592c6a370f4cef03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  safehouseMusicSource: {fileID: 344625177}
-  chillMusicSource: {fileID: 344625181}
-  activeMusicSource: {fileID: 344625180}
+  bgMusicSource: {fileID: 344625177}
   runningClip: {fileID: 8300000, guid: 1361ea4a364d14d2f97176a4948b1cab, type: 3}
   engineClip: {fileID: 8300000, guid: 9846a89f569474bdf9393d992ee431ef, type: 3}
   doorClip: {fileID: 8300000, guid: 8ce6d5a3a40ea4c4eb0a3af5611563d9, type: 3}

@@ -154,16 +154,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swingAngle: 90
-  swingSpeed: 5
+  swingSpeed: 3
   doorCollider: {fileID: 644221064380075017}
-  interactRange: 1
-  guard_detect_range: 1
-  guard_open_delay: 1
-  swing_buffer: 0.4
+  interactRange: 0.75
+  guard_detect_range: 0.6
+  guard_open_delay: 0.25
+  swing_buffer: 0.35
   guard_layer:
     serializedVersion: 2
     m_Bits: 64
-  sound_blocker: {fileID: 6450803907698247082}
+  sound_blocker: {fileID: 0}
   door_obstacle: {fileID: 7351824790215145294}
   guard_only_door: 0
 --- !u!65 &644221064380075017
