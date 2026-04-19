@@ -121,6 +121,8 @@ MonoBehaviour:
   lethal_guard_sprite: {fileID: 21300000, guid: 77b54e86f9636634295b1b79d65cf6f4,
     type: 3}
   bloodEffectPrefab: {fileID: 8329804670842170612}
+  deathSpritePrefab: {fileID: 5993806705684643782, guid: f6049d96a934f4a2aacee5a6234cd6b9,
+    type: 3}
   noise_wave_expand_speed: 20
   start_alerted: 1
   footstepAudio: {fileID: 7315158867089051150}
@@ -513,6 +515,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2149925945423150459}
     m_Modifications:
+    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
+        type: 3}
+      propertyPath: shooting
+      value: 
+      objectReference: {fileID: 975920972793711383, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+        type: 3}
+    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
+        type: 3}
+      propertyPath: firePoint
+      value: 
+      objectReference: {fileID: 4791959475514888856, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+        type: 3}
     - target: {fileID: 2152604812663788667, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -603,18 +617,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
-        type: 3}
-      propertyPath: shooting
-      value: 
-      objectReference: {fileID: 975920972793711383, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
-        type: 3}
-    - target: {fileID: 8623275747588364515, guid: d7c4b3a4f3967ef438052f85c3a7c621,
-        type: 3}
-      propertyPath: firePoint
-      value: 
-      objectReference: {fileID: 4791959475514888856, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
-        type: 3}
     m_RemovedComponents:
     - {fileID: 930661097910864486, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5, type: 3}
     - {fileID: 2757824123413150212, guid: 8b94fcf7a1aa3aa40b7c2293b120aea5, type: 3}
