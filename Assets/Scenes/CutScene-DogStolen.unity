@@ -260,7 +260,13 @@ MonoBehaviour:
   - speakerName: Evil Inc. Employee
     speakerSprite: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b, type: 3}
     text: Mr Evil has requested everyone's dog in the area to be taken and used for
-      his new wig development. Hand over the pooch, and don't try anything funny.
+      his new wig development.
+    onShow:
+      m_PersistentCalls:
+        m_Calls: []
+  - speakerName: Evil Inc. Employee
+    speakerSprite: {fileID: 21300000, guid: 40f1ae0e702f52a4faa973c4280ff08b, type: 3}
+    text: Hand over the pooch, and don't try anything funny.
     onShow:
       m_PersistentCalls:
         m_Calls: []

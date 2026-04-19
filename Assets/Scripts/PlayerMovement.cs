@@ -4,6 +4,8 @@ using static GameEvents;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
+    public bool can_move = true;
+
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 8f;
 
@@ -27,10 +29,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Vector3 input = GetInput();
-        UpdateVelocity(input);
+        if (can_move)
+        {
+            Vector3 input = GetInput();
+            UpdateVelocity(input);
 
-        if(footstepAudio != null) HandleFootsteps(input);
+            if (footstepAudio != null) 
+                HandleFootsteps(input);
+        }
+
+        else
+        {
+            velocity = Vector3.zero;
+
+            if (footstepAudio != null)
+                HandleFootsteps(velocity);
+        }
     }
 
     private void FixedUpdate()
@@ -65,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleFootsteps(Vector3 input)
     {
-        if(GameFreezer.IsFrozen)
+        if(GameFreezer.IsFrozen || can_move == false)
         {
             if (footstepAudio.isPlaying)
             {

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using static GameEvents;
 
@@ -7,11 +8,17 @@ public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance { get; private set; }
 
-    [SerializeField] private AudioClip activeBGMusicSource; // Optional: assign in inspector for fallback
-    [SerializeField] private AudioClip chillBGMusicSource; // Optional: assign in inspector for fallback
+    [SerializeField] private AudioClip safehouseMusic;
+    [SerializeField] private AudioClip chillBGMusic;
+    [SerializeField] private AudioClip activeBGMusic;
 
-    private AudioSource audioSource;
+    [Header("AudioSources")]
+    [SerializeField] private AudioSource safehouseTrack;
+    [SerializeField] private AudioSource chillTrack;
+    [SerializeField] private AudioSource activeTrack;
+
     private string lastScene;
+    private bool isActive = false;
 
     private void Awake()
     {
@@ -25,20 +32,35 @@ public class MusicManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        audioSource = GetComponent<AudioSource>();
+        // Start muted, but playing
+        safehouseTrack.volume = 0f;
+        safehouseTrack.clip = safehouseMusic;
+        safehouseTrack.loop = true;
+        safehouseTrack.Play();
 
-        // Start muted
-        audioSource.volume = 0f;
+        chillTrack.volume = 0f;
+        chillTrack.clip = chillBGMusic;
+        chillTrack.loop = true;
+        chillTrack.Play();
+
+        activeTrack.volume = 0f;
+        activeTrack.clip = activeBGMusic;
+        activeTrack.loop = true;
+        activeTrack.Play();
     }
 
     void OnEnable()
     {
       EventBus.Subscribe<WinEvent>(e => StopBGMusic());  
+      EventBus.Subscribe<StopMusicEvent>(e => StopBGMusic());
+      EventBus.Subscribe<TimerExpiredEvent>(e => SwitchMusic());
     }
 
     void OnDisable()
     {
         EventBus.Unsubscribe<WinEvent>(e => StopBGMusic());
+        EventBus.Unsubscribe<StopMusicEvent>(e => StopBGMusic());
+        EventBus.Unsubscribe<TimerExpiredEvent>(e => SwitchMusic());
     }
 
     void Start()
@@ -49,6 +71,9 @@ public class MusicManager : MonoBehaviour
 
     void Update()
     {
+        // CHEATS
+        if (Input.GetKeyDown(KeyCode.Equals)) EventBus.Publish(new SwitchMusicEvent());
+
         string currentScene = SceneManager.GetActiveScene().name;
 
         if (currentScene != lastScene)
@@ -60,33 +85,46 @@ public class MusicManager : MonoBehaviour
 
     private void ApplyMusic()
     {
-        if (audioSource == null) return;
-
-        AudioClip targetClip =
-            SceneManager.GetActiveScene().name == "Safehouse"
-            ? chillBGMusicSource
-            : activeBGMusicSource;
-
-        if (targetClip == null) return;
-
-        // Only switch if needed
-        if (audioSource.clip == targetClip) return;
-
-        audioSource.clip = targetClip;
-        audioSource.loop = true;
-        audioSource.Play();
+        //if (lastScene == "Safehouse") JustSafehouse(0.1f);
+        //else if (lastScene.StartsWith("CutScene") || lastScene == "Main Menu") JustSafehouse(0f); 
+        if (lastScene == "Safehouse")
+        {
+            // do nothing
+        }
+        else if (lastScene.StartsWith("CutScene") || lastScene == "Main Menu")
+        {
+            // also do nothing
+        }
+        else
+        {
+            isActive = false;
+            SwitchMusic();
+        }
     }
 
-    public void StartBGMusic()
-    {
-        if (!audioSource.isPlaying)
-            audioSource.Play();
+    public void StopBGMusic() { JustSafehouse(0f); }
 
-        audioSource.volume = 1f;
+    private void JustSafehouse(float volume)
+    {
+        if (safehouseTrack == null) return;
+        if (chillTrack == null) return;
+        if (activeTrack == null) return;
+
+        safehouseTrack.volume = volume;
+        chillTrack.volume = 0f;
+        activeTrack.volume = 0f;
     }
 
-    public void StopBGMusic()
+    private void SwitchMusic()
     {
-        audioSource.volume = 0f;
+        if (safehouseTrack == null) return;
+        if (chillTrack == null) return;
+        if (activeTrack == null) return;
+
+        isActive = !isActive;
+
+        safehouseTrack.volume = 0f;
+        chillTrack.volume = isActive ? 0.5f : 0f;
+        activeTrack.volume = isActive ? 0f : 0.5f;
     }
 }

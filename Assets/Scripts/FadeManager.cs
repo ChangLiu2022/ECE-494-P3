@@ -8,7 +8,9 @@ using static GameEvents;
 public class FadeManager : MonoBehaviour
 {
     [Header("Background Music Manager")]
-    [SerializeField]AudioSource bgMusicSource;
+    [SerializeField]AudioSource safehouseMusicSource;
+    [SerializeField]AudioSource chillMusicSource;
+    [SerializeField] AudioSource activeMusicSource;
 
     [Header("Transition Sound Effects")]
     [SerializeField] private AudioClip runningClip;
@@ -64,7 +66,15 @@ public class FadeManager : MonoBehaviour
         if (!isLoading)
         {
             isLoading = true;
-            if(musicSource == null) musicSource = bgMusicSource;
+
+            if (musicSource == null)
+            {
+                string current_scene = SceneManager.GetActiveScene().name;
+                if (current_scene == "Safehouse") musicSource = safehouseMusicSource;
+                else if (current_scene.StartsWith("CutScene")) musicSource = null;
+                else musicSource = activeMusicSource.volume > 0f ? activeMusicSource : chillMusicSource;
+            }
+
             StartCoroutine(Transition(sceneName, musicSource, fadeDuration));
         }
     }
@@ -72,8 +82,6 @@ public class FadeManager : MonoBehaviour
     public IEnumerator FadeToBlack(AudioSource musicSource = null, float fadeDuration = 1f)
     {
         if (img == null) yield break;
-
-        if(musicSource == null) musicSource = bgMusicSource;
 
         EventBus.Publish(new GameFreezeEvent() { freeze_map = true }); // Freeze game during fade out
 
@@ -169,8 +177,6 @@ public class FadeManager : MonoBehaviour
 
         EventBus.Publish(new GameFreezeEvent() { freeze_map = true });
 
-        if (musicSource == null) musicSource = bgMusicSource;
-
         Color c = img.color;
 
         float startAlpha = c.a;
@@ -207,16 +213,23 @@ public class FadeManager : MonoBehaviour
 
     private IEnumerator Transition(string sceneName, AudioSource musicSource, float fadeDuration)
     {
-        newVolume = sceneName == "Safehouse" ? 0.1f : 0.333f;
+        if (sceneName == "Safehouse") newVolume = 0.1f;
+        else if (sceneName.StartsWith("CutScene")) newVolume = 0f;
+        else newVolume = 0.5f;
 
         yield return StartCoroutine(FadeToBlack(musicSource, fadeDuration));
 
         if(audioSource != null && fadeDuration != 1.95f) yield return StartCoroutine(PlayTransitionSounds(sceneName));
         else yield return null;
 
+        if (sceneName == "Safehouse") SafehouseState.paper_collected = false;
         SceneManager.LoadScene(sceneName);
 
         yield return null;
+
+        if (sceneName == "Safehouse") musicSource = safehouseMusicSource;
+        else if (sceneName.StartsWith("CutScene")) musicSource = null;
+        else musicSource = chillMusicSource;
 
         yield return StartCoroutine(FadeFromBlack(musicSource, fadeDuration / 2));
 
