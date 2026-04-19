@@ -25,8 +25,6 @@ public class FadeManager : MonoBehaviour
     private bool isLoading = false;
     private Image img;
     private AudioSource audioSource;
-    private GameObject dog;
-    private TMP_Text loadText;
     private float newVolume;
 
     void Awake()
@@ -46,22 +44,9 @@ public class FadeManager : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null) Debug.LogError("No AudioSource found on FadeManager!");
-
-        Transform canvas = transform.Find("Canvas");
-        Transform dogTransform = canvas != null ? canvas.Find("Dog") : null;
-        if (dogTransform != null) 
-        {
-            dog = dogTransform.gameObject;
-            dog.GetComponent<Image>().enabled = false;
-        }
-        else Debug.LogWarning("Dog child not found under Canvas!");
-
-        loadText = canvas != null ? canvas.GetComponentInChildren<TMP_Text>() : null;
-        if(loadText == null) Debug.LogWarning("No TMP_Text found under Canvas!");
-        else loadText.enabled = false;
     }
 
-    public void StartTransition(string sceneName, AudioSource musicSource = null, float fadeDuration = 1f)
+    public void StartTransition(string sceneName, AudioSource musicSource = null, float fadeDuration = 1f, AudioSource secondMusicSource = null)
     {
         if (!isLoading)
         {
@@ -75,11 +60,11 @@ public class FadeManager : MonoBehaviour
                 else musicSource = activeMusicSource.volume > 0f ? activeMusicSource : chillMusicSource;
             }
 
-            StartCoroutine(Transition(sceneName, musicSource, fadeDuration));
+            StartCoroutine(Transition(sceneName, musicSource, fadeDuration, secondMusicSource));
         }
     }
 
-    public IEnumerator FadeToBlack(AudioSource musicSource = null, float fadeDuration = 1f)
+    public IEnumerator FadeToBlack(AudioSource musicSource = null, float fadeDuration = 1f, AudioSource secondMusicSource = null)
     {
         if (img == null) yield break;
 
@@ -104,6 +89,7 @@ public class FadeManager : MonoBehaviour
         float startAlpha = c.a;
         float timer = 0f;
         float initialVolume = musicSource != null ? musicSource.volume : 1f;
+        float secondInitialVolume = secondMusicSource != null ? secondMusicSource.volume : 1f;
 
         while (timer < fadeDuration)
         {
@@ -118,6 +104,8 @@ public class FadeManager : MonoBehaviour
 
             if (musicSource != null)
                 musicSource.volume = Mathf.Lerp(initialVolume, 0f, t);
+            if (secondMusicSource != null)
+                secondMusicSource.volume = Mathf.Lerp(secondInitialVolume, 0f, t);
 
             yield return null;
         }
@@ -127,53 +115,17 @@ public class FadeManager : MonoBehaviour
         img.color = c;
 
         if (musicSource != null) musicSource.volume = 0f;
-        if (dog != null && fadeDuration != 1.95f) dog.GetComponent<Image>().enabled = true;
-        if(loadText != null && fadeDuration != 1.95f) loadText.enabled = true;
+        if (secondMusicSource != null) secondMusicSource.volume = 0f;
     }
-
-    private IEnumerator PlayTransitionSounds(string sceneName = "")
-{
-    if (audioSource == null) yield break;
-
-    // 1. Running
-    if (runningClip != null)
-    {
-        if((sceneName == "Safehouse" || sceneName == "CutScene-Neighbour-Return")) audioSource.pitch = 1.65f;
-        audioSource.PlayOneShot(runningClip);
-        yield return new WaitForSecondsRealtime(runningClip.length/audioSource.pitch);
-        audioSource.pitch = 1f;
-    }
-
-    // 2. Engine start
-    if (engineClip != null)
-    {
-        if((sceneName == "Safehouse" || sceneName == "CutScene-Neighbour-Return")) audioSource.pitch = 1.5f;
-        audioSource.PlayOneShot(engineClip);
-        yield return new WaitForSecondsRealtime(engineClip.length/audioSource.pitch);
-        audioSource.pitch = 1f;
-    }
-
-    // 3.5. Tires screeching
-    if (tiresScreechingClip != null && (sceneName == "Safehouse" || sceneName == "CutScene-Neighbour-Return"))
-    {
-        audioSource.PlayOneShot(tiresScreechingClip);
-        yield return new WaitForSecondsRealtime(tiresScreechingClip.length);
-    }
-
-    // 3. Door slam
-    if (doorClip != null)
-    {
-        audioSource.PlayOneShot(doorClip);
-        yield return new WaitForSecondsRealtime(doorClip.length);
-    }
-}
 
     public IEnumerator FadeFromBlack(AudioSource musicSource = null, float fadeDuration = 1f)
     {
         if (img == null) yield break;
 
-        if (dog != null) dog.GetComponent<Image>().enabled = false;
-        if (loadText != null) loadText.enabled = false;
+        AudioSource car_audio_source = null;
+        GameObject player_body = GameObject.FindWithTag("Body");
+        if (player_body != null) car_audio_source = player_body.GetComponent<AudioSource>();
+        else Debug.Log("Player body not found for fade manager!");
 
         EventBus.Publish(new GameFreezeEvent() { freeze_map = true });
 
@@ -183,6 +135,7 @@ public class FadeManager : MonoBehaviour
         float timer = 0f;
 
         float startVolume = musicSource != null ? musicSource.volume : 0f;
+        float carStartVolume = car_audio_source != null ? car_audio_source.volume : 0f;
 
         while (timer < fadeDuration)
         {
@@ -197,6 +150,7 @@ public class FadeManager : MonoBehaviour
             img.color = c;
             
             if (musicSource != null) musicSource.volume = Mathf.Lerp(startVolume, newVolume, t);
+            if (car_audio_source != null) car_audio_source.volume = Mathf.Lerp(carStartVolume, newVolume, t);
 
             yield return null;
         }
@@ -207,20 +161,18 @@ public class FadeManager : MonoBehaviour
         img.raycastTarget = false;
 
         if (musicSource != null) musicSource.volume = newVolume;
+        if (car_audio_source != null) car_audio_source.volume = newVolume;
 
         EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true });
     }
 
-    private IEnumerator Transition(string sceneName, AudioSource musicSource, float fadeDuration)
+    private IEnumerator Transition(string sceneName, AudioSource musicSource, float fadeDuration, AudioSource secondMusicSource)
     {
         if (sceneName == "Safehouse") newVolume = 0.1f;
         else if (sceneName.StartsWith("CutScene")) newVolume = 0f;
         else newVolume = 0.5f;
 
-        yield return StartCoroutine(FadeToBlack(musicSource, fadeDuration));
-
-        if(audioSource != null && fadeDuration != 1.95f) yield return StartCoroutine(PlayTransitionSounds(sceneName));
-        else yield return null;
+        yield return StartCoroutine(FadeToBlack(musicSource, fadeDuration, secondMusicSource));
 
         if (sceneName == "Safehouse") SafehouseState.paper_collected = false;
         SceneManager.LoadScene(sceneName);

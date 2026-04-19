@@ -128,9 +128,9 @@ public class HUDController : MonoBehaviour
     private void OnGameOver(GameOverEvent e)
     {
         Time.timeScale = 0;
-        gameover_panel.SetActive(true);
-        gameover_text.text = "<b>Game Over! \n\n You Lose!</b>";
-        gameover_text.color = Color.red;
+        //gameover_panel.SetActive(true);
+        //gameover_text.text = "<b>Game Over! \n\n You Lose!</b>";
+        //gameover_text.color = Color.red;
     }
 
     private void OnWinEvent(WinEvent e)
