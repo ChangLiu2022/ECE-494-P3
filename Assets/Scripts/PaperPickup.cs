@@ -19,7 +19,6 @@ public class PaperPickup : MonoBehaviour
     private MeshRenderer mesh_renderer;
     private Color[] original_colors;
 
-
     private void Awake()
     {
         mesh_renderer = GetComponent<MeshRenderer>();
@@ -28,11 +27,22 @@ public class PaperPickup : MonoBehaviour
             original_colors[i] = mesh_renderer.materials[i].color;
     }
 
+    private void Start()
+    {
+        if (!SafehouseState.paper_collected) gameObject.GetComponent<MeshRenderer>().enabled = true;
+        if (SafehouseState.completed_newmap)
+        {
+            SafehouseState.paper_collected = true;
+            SafehouseState.paper_collected_once = true;
+            Destroy(gameObject);
+        }
+    }
+
     private void Update()
     {
         if (Time.timeScale == 0f) return;
 
-        if (player == null)
+        if (player == null || SafehouseState.paper_collected)
             return;
 
         float dist = Vector3.Distance(transform.position, player.position);
@@ -42,8 +52,11 @@ public class PaperPickup : MonoBehaviour
         if (in_range && Input.GetKeyDown(pickup_key))
         {
             SafehouseState.paper_collected = true;
-            InformationBoxController.instance.Show("Press 'Tab' to view your map.");
-            Destroy(gameObject);
+            if (!SafehouseState.paper_collected_once) InformationBoxController.instance.Show("Press 'Tab' to view your map.");
+            else InformationBoxController.instance.Show("You picked up the new map.");
+            SafehouseState.paper_collected_once = true;
+
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
             return;
         }
 
