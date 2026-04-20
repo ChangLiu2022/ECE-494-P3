@@ -5213,37 +5213,37 @@ MonoBehaviour:
   lines:
   - speakerName: You
     speakerSprite: {fileID: 21300000, guid: bdcb0a1b982234f47af2bc7b40bc6566, type: 3}
-    text: AABB
+    text: Hand the dog over now. Your shenanigans end here.
     onShow:
       m_PersistentCalls:
         m_Calls: []
   - speakerName: Mr Evil
     speakerSprite: {fileID: 21300000, guid: bb19380a8b6504842a6bae00189e4c49, type: 3}
-    text: Talks shit
+    text: You can't do this to me! I'm thinning and I need help!
     onShow:
       m_PersistentCalls:
         m_Calls: []
   - speakerName: Mr Evil
     speakerSprite: {fileID: 21300000, guid: bb19380a8b6504842a6bae00189e4c49, type: 3}
-    text: Talks more shit
+    text: Do you have any idea the trouble I've been through to fix my baldness?
     onShow:
       m_PersistentCalls:
         m_Calls: []
   - speakerName: Dog
     speakerSprite: {fileID: 247290047, guid: 3b2cff2a10f6b485589c5dee4b8fb6ff, type: 3}
-    text: noises
+    text: '*Growl*'
     onShow:
       m_PersistentCalls:
         m_Calls: []
   - speakerName: You
     speakerSprite: {fileID: 21300000, guid: bdcb0a1b982234f47af2bc7b40bc6566, type: 3}
-    text: AABB
+    text: I'm done listening to you yap you pathetic manlet.
     onShow:
       m_PersistentCalls:
         m_Calls: []
   - speakerName: You
     speakerSprite: {fileID: 21300000, guid: 384e71ca185df48b89dbb10ed5c12989, type: 3}
-    text: Gun
+    text: It's time to split some wigs...
     onShow:
       m_PersistentCalls:
         m_Calls: []
@@ -5305,7 +5305,7 @@ MonoBehaviour:
   padding: 10
   font: {fileID: 0}
   spriteAsset: {fileID: 0}
-  nextSceneName: 
+  nextSceneName: Main Menu
   fadeDuration: 1
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1001 &134955926
@@ -28579,13 +28579,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 859181385}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -45.26, y: 0.01, z: 7.87}
-  m_LocalScale: {x: 0.18606998, y: 1, z: 1.49148}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.87, y: 0.01, z: 40.1765}
+  m_LocalScale: {x: 0.35373765, y: 1, z: 2.182781}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 807995754}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &859181387
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -28628,7 +28628,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e5e7f4cc17d407a438c46955c1ccd38a, type: 2}
+  - {fileID: 2100000, guid: a863d64b8036ef14ea85338bbe7c1822, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -40570,7 +40570,7 @@ Transform:
   m_GameObject: {fileID: 1119950103}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -2.188, y: 0, z: 7.4}
+  m_LocalPosition: {x: -2.17, y: 0.158, z: 7.4}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -43017,8 +43017,8 @@ Transform:
   m_GameObject: {fileID: 1199694013}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: -2.18, y: 0, z: 7.97}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: -2.18, y: 0.1, z: 7.97}
+  m_LocalScale: {x: 0.3, y: 0.4, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -67880,7 +67880,7 @@ Transform:
   m_GameObject: {fileID: 1987290053}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.14, y: 0.3361871, z: 5.08}
+  m_LocalPosition: {x: -3.14, y: 0.1, z: 5.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

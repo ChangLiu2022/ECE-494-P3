@@ -35,6 +35,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Final Map.unity
     guid: 2de03cc829e9e48dca4868af90a494fa
+  - enabled: 1
+    path: Assets/Scenes/CutScene-MrEvil.unity
+    guid: 0453346aeac17b541b8fa40a2def939d
+  - enabled: 0
+    path: Assets/Scenes/MrEvil.unity
+    guid: 262cc8fe39af8d74f939de753b32abe3
   - enabled: 0
     path: Assets/Scenes/NewMap.unity
     guid: fcd21112b06f147bcb7c1dc2a940ecc3

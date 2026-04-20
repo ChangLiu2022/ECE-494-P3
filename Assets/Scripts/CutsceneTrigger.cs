@@ -10,7 +10,7 @@ public class CutsceneTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider coll)
     {
         if (triggered) return;
-        if (!coll.CompareTag("Player")) return;
+        if (!coll.CompareTag("Body")) return;
 
         triggered = true;
         FadeManager.Instance.StartTransition(cutsceneSceneName, null, fadeDuration);
