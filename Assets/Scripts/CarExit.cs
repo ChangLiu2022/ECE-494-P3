@@ -138,6 +138,12 @@ public class CarExit : MonoBehaviour
             next_scene = scenes[Mathf.Min(current_scene, scenes.Length-1)];
             current_scene++;
         }
-        FadeManager.Instance.StartTransition(next_scene, null, 1.95f, audio);
+
+        else
+        {
+            PlayerWallet.AdvanceLevel();
+        }
+
+            FadeManager.Instance.StartTransition(next_scene, null, 1.95f, audio);
     }
 }
