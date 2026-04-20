@@ -53,7 +53,7 @@ public class HUDController : MonoBehaviour
     {
         instance = this;
 
-        EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true });
+        //EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true });
         if (gameover_panel != null)
             gameover_panel.SetActive(false);
 
@@ -78,19 +78,19 @@ public class HUDController : MonoBehaviour
 
     private void Update()
     {
-        if (gameover_panel.activeSelf && Input.GetKeyDown(KeyCode.F))
-        {
-            Time.timeScale = 1;
-            if (is_final_win)
-            {
-                SafehouseState.Reset();
-                SceneManager.LoadScene("Main Menu");
-            }
-            else
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-        }
+        //if (gameover_panel.activeSelf && Input.GetKeyDown(KeyCode.F))
+        //{
+        //    Time.timeScale = 1;
+        //    if (is_final_win)
+        //    {
+        //        SafehouseState.Reset();
+        //        SceneManager.LoadScene("Main Menu");
+        //    }
+        //    else
+        //    {
+        //        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //    }
+        //}
 
         if (Input.GetKeyDown(KeyCode.Escape) && can_pause && !MapController.is_open && !BuyMenuController.IsOpen && !Whiteboard.IsOpen)
             ShowHideEscapeMenu();

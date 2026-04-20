@@ -155,8 +155,8 @@ public class NoiseWave : MonoBehaviour
 
         // 4 verts and 6 triangle indices (2 tris × 3 verts) per cell
         // all from reached cells
-        var verticies = new Vector3[reached.Count * 4];
-        var triangles = new int[reached.Count * 6];
+        var verticies = new Vector3[reached.Count * 2];
+        var triangles = new int[reached.Count * 3];
 
         int i = 0;
         foreach (var cell in reached)
@@ -172,7 +172,7 @@ public class NoiseWave : MonoBehaviour
             //    |     c     |
             //   v+0 ------- v+1
             //
-            int v = i * 4;
+            int v = i * 2;
             // bottom left
             verticies[v + 0] = new Vector3(c.x - half, 0, c.z - half);
             // bottom right
@@ -182,7 +182,7 @@ public class NoiseWave : MonoBehaviour
             // top left
             verticies[v + 3] = new Vector3(c.x - half, 0, c.z + half);
 
-            int t = i * 6;
+            int t = i * 3;
             // triangle 1
             triangles[t + 0] = v + 0; 
             triangles[t + 1] = v + 2; 

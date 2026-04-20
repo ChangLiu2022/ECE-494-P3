@@ -5,6 +5,8 @@ public static class SafehouseState
     public static bool paper_collected_once = false;
     public static bool completed_tutorial = false;
     public static bool completed_newmap = false;
+    public static bool completed_map_2 = false;
+    public static bool completed_final_map = false;
     public static bool workbench_interacted = false;
     public static bool reached_rifle = false;
     public static float gun_bar_mult = 1f;

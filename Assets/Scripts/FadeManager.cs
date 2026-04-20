@@ -68,7 +68,7 @@ public class FadeManager : MonoBehaviour
     {
         if (img == null) yield break;
 
-        EventBus.Publish(new GameFreezeEvent() { freeze_map = true }); // Freeze game during fade out
+        // EventBus.Publish(new GameFreezeEvent() { freeze_map = true }); // Freeze game during fade out
 
         img.raycastTarget = true; // Block input during fade
 
@@ -127,7 +127,7 @@ public class FadeManager : MonoBehaviour
         if (player_body != null) car_audio_source = player_body.GetComponent<AudioSource>();
         else Debug.Log("Player body not found for fade manager!");
 
-        EventBus.Publish(new GameFreezeEvent() { freeze_map = true });
+        //EventBus.Publish(new GameFreezeEvent() { freeze_map = true });
 
         Color c = img.color;
 
@@ -163,7 +163,7 @@ public class FadeManager : MonoBehaviour
         if (musicSource != null) musicSource.volume = newVolume;
         if (car_audio_source != null) car_audio_source.volume = newVolume;
 
-        EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true });
+        //EventBus.Publish(new GameUnfreezeEvent() { freeze_map = true });
     }
 
     private IEnumerator Transition(string sceneName, AudioSource musicSource, float fadeDuration, AudioSource secondMusicSource)

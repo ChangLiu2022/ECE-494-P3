@@ -26,6 +26,7 @@ public class GameFreezer : MonoBehaviour
 
     private void OnFreezeEvent(GameFreezeEvent e)
     {
+
         isFrozen = true;
         Time.timeScale = 0f;
         if (crosshair_canvas != null) crosshair_canvas.SetActive(false);

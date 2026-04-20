@@ -14,6 +14,12 @@ public class CarExit : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject dog;
 
+    [Header("State Settings")]
+    [SerializeField] private bool set_tutorial_complete = false;
+    [SerializeField] private bool set_newmap_complete = false;
+    [SerializeField] private bool set_map2_complete = false;
+    [SerializeField] private bool set_final_map_complete = false;
+
     [Header("Driving Settings")]
     [SerializeField] private float distance = 5f;   // how far to move
     [SerializeField] private float speed = 2f;      // units per second
@@ -61,6 +67,22 @@ public class CarExit : MonoBehaviour
             InformationBoxController.instance.Show(map_not_picked_up_message);
             return;
         }
+
+        if (set_tutorial_complete)
+        {
+            SafehouseState.completed_tutorial = true;
+            Debug.Log("Tutorial marked as complete.");
+        }
+            
+
+        if (set_newmap_complete)
+            SafehouseState.completed_newmap = true;
+
+        if (set_map2_complete)
+            SafehouseState.completed_map_2 = true;
+
+        if (set_final_map_complete)
+            SafehouseState.completed_final_map = true;
 
         EventBus.Publish(new PlayerDisabledEvent());
         player.SetActive(false);
