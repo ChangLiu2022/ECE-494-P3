@@ -12,6 +12,13 @@ public class CarExit : MonoBehaviour
     [SerializeField] private float pickup_range = 2.5f;
     [SerializeField] private KeyCode pickup_key = KeyCode.E;
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject dog;
+
+    [Header("State Settings")]
+    [SerializeField] private bool set_tutorial_complete = false;
+    [SerializeField] private bool set_newmap_complete = false;
+    [SerializeField] private bool set_map2_complete = false;
+    [SerializeField] private bool set_final_map_complete = false;
 
     [Header("Driving Settings")]
     [SerializeField] private float distance = 5f;   // how far to move
@@ -61,8 +68,28 @@ public class CarExit : MonoBehaviour
             return;
         }
 
+        if (set_tutorial_complete)
+        {
+            SafehouseState.completed_tutorial = true;
+            Debug.Log("Tutorial marked as complete.");
+        }
+            
+
+        if (set_newmap_complete)
+            SafehouseState.completed_newmap = true;
+
+        if (set_map2_complete)
+            SafehouseState.completed_map_2 = true;
+
+        if (set_final_map_complete)
+            SafehouseState.completed_final_map = true;
+
         EventBus.Publish(new PlayerDisabledEvent());
         player.SetActive(false);
+
+        if (dog != null) 
+            dog.SetActive(false);
+
         if (moveRoutine != null)
             StopCoroutine(moveRoutine);
         moveRoutine = StartCoroutine(MoveRight());
@@ -111,6 +138,12 @@ public class CarExit : MonoBehaviour
             next_scene = scenes[Mathf.Min(current_scene, scenes.Length-1)];
             current_scene++;
         }
-        FadeManager.Instance.StartTransition(next_scene, null, 1.95f, audio);
+
+        else
+        {
+            PlayerWallet.AdvanceLevel();
+        }
+
+            FadeManager.Instance.StartTransition(next_scene, null, 1.95f, audio);
     }
 }

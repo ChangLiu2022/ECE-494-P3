@@ -25,6 +25,6 @@ public class SafehouseLoader : MonoBehaviour
                                    && !SafehouseState.workbench_interacted;
 
         if (exit_prefab != null)
-            exit_prefab.SetActive(SafehouseState.completed_newmap);
+            exit_prefab.SetActive(SafehouseState.completed_final_map);
     }
 }

@@ -24,6 +24,9 @@ public class NoiseWave : MonoBehaviour
     private bool needs_rebuild = false;
 
     private Mesh mesh;
+    
+    private List<Vector3> vert_list = new List<Vector3>();
+    private List<int> tri_list = new List<int>();
 
     // cells that have been reached by the wave so far
     private HashSet<Vector2Int> reached = new HashSet<Vector2Int>();
@@ -150,55 +153,31 @@ public class NoiseWave : MonoBehaviour
 
     private void RebuildMesh()
     {
-        // half of a cell, used to build corners
         float half = cell_size * 0.5f;
 
-        // 4 verts and 6 triangle indices (2 tris × 3 verts) per cell
-        // all from reached cells
-        var verticies = new Vector3[reached.Count * 4];
-        var triangles = new int[reached.Count * 6];
+        vert_list.Clear();
+        tri_list.Clear();
 
-        int i = 0;
         foreach (var cell in reached)
         {
-            // Convert grid cell to local space
-            // because the mesh lives on a child
-            // GameObject positioned at origin
             Vector3 c = ToWorld(cell) - origin;
 
-            // --- Build the 4 corners of this cell's quad ---
-            //
-            //   v+3 ------- v+2
-            //    |     c     |
-            //   v+0 ------- v+1
-            //
-            int v = i * 4;
-            // bottom left
-            verticies[v + 0] = new Vector3(c.x - half, 0, c.z - half);
-            // bottom right
-            verticies[v + 1] = new Vector3(c.x + half, 0, c.z - half);
-            // top right
-            verticies[v + 2] = new Vector3(c.x + half, 0, c.z + half);
-            // top left
-            verticies[v + 3] = new Vector3(c.x - half, 0, c.z + half);
+            int v = vert_list.Count;
 
-            int t = i * 6;
-            // triangle 1
-            triangles[t + 0] = v + 0; 
-            triangles[t + 1] = v + 2; 
-            triangles[t + 2] = v + 1;
-            // triangle 2
-            triangles[t + 3] = v + 0; 
-            triangles[t + 4] = v + 3;
-            triangles[t + 5] = v + 2;
+            vert_list.Add(new Vector3(c.x - half, 0, c.z - half)); // v+0 bottom left
+            vert_list.Add(new Vector3(c.x + half, 0, c.z - half)); // v+1 bottom right
+            vert_list.Add(new Vector3(c.x + half, 0, c.z + half)); // v+2 top right
+            vert_list.Add(new Vector3(c.x - half, 0, c.z + half)); // v+3 top left
 
-            i++;
+            // tri 1
+            tri_list.Add(v + 0); tri_list.Add(v + 2); tri_list.Add(v + 1);
+            // tri 2
+            tri_list.Add(v + 0); tri_list.Add(v + 3); tri_list.Add(v + 2);
         }
 
-        // Upload new geometry to the mesh
         mesh.Clear();
-        mesh.vertices = verticies;
-        mesh.triangles = triangles;
+        mesh.SetVertices(vert_list);
+        mesh.SetTriangles(tri_list, 0);
         mesh.RecalculateNormals();
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static GameEvents;
 
 public class CarEnter : MonoBehaviour
@@ -21,6 +22,22 @@ public class CarEnter : MonoBehaviour
 
     private static bool has_seen_entrance = false;
 
+
+    private void OnEnable()
+    {
+        EventBus.Subscribe<GameOverEvent>(OnGameOver);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<GameOverEvent>(OnGameOver);
+    }
+
+    private void OnGameOver(GameOverEvent evt)
+    {
+        has_seen_entrance = true;
+    }
+
     private void Start()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -31,16 +48,36 @@ public class CarEnter : MonoBehaviour
 
         if(!has_seen_entrance)
         {
-            if (sr != null) sr.enabled = false;
+            if (sr != null) 
+                sr.enabled = false;
+
+
             EventBus.Publish(new GameFreezeEvent());
-            if (moveRoutine != null) StopCoroutine(moveRoutine);
+
+            if (moveRoutine != null) 
+                StopCoroutine(moveRoutine);
+
             moveRoutine = StartCoroutine(MoveRight());
+        }
+
+       else
+        {
+            has_seen_entrance = false;
+
+            EventBus.Publish(new GameUnfreezeEvent());
         }
     }
 
     private IEnumerator MoveRight()
     {
-        has_seen_entrance = true;
+        if (SafehouseState.completed_tutorial == false && SceneManager.GetActiveScene().name == "Safehouse")
+        {
+            if (sr != null) sr.enabled = true;
+
+            EventBus.Publish(new GameUnfreezeEvent());
+            yield break;
+        }
+
         if (audio != null) audio.PlayOneShot(car_driving);
 
         Vector3 targetPos = car_transform.position;
@@ -69,6 +106,7 @@ public class CarEnter : MonoBehaviour
         yield return new WaitForSecondsRealtime(door_closing.length);
 
         if (sr != null) sr.enabled = true;
+
         EventBus.Publish(new GameUnfreezeEvent());
     }
 }
