@@ -6324,9 +6324,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2700766272421478189, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
+      propertyPath: teleport_pos
+      value: 
+      objectReference: {fileID: 417856776}
+    - target: {fileID: 2700766272421478189, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+        type: 3}
       propertyPath: car_transform
       value: 
       objectReference: {fileID: 607357371}
+    - target: {fileID: 2700766272421478189, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
+        type: 3}
+      propertyPath: player_transform
+      value: 
+      objectReference: {fileID: 1014193629}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3852020852804275515, guid: 0e3a11b8e5db6cc46abe56d979c4553f, type: 3}

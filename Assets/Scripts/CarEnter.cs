@@ -11,6 +11,9 @@ public class CarEnter : MonoBehaviour
     [SerializeField] private bool useLocalRight = true; // local vs world right
     [SerializeField] private Transform car_transform;
 
+    [SerializeField] private Transform teleport_pos;
+    [SerializeField] private Transform player_transform;
+
     [Header("Audio Settings")]
     [SerializeField] private AudioClip door_closing;
     [SerializeField] private AudioClip car_driving;
@@ -72,10 +75,15 @@ public class CarEnter : MonoBehaviour
     {
         if (SafehouseState.completed_tutorial == false && SceneManager.GetActiveScene().name == "Safehouse")
         {
+            player_transform.position = teleport_pos.position + new Vector3(0f,0.1f,0f);
+            Camera.main.transform.position = teleport_pos.position + new Vector3(0f, 15f, 0f);
+
             if (sr != null) sr.enabled = true;
 
             EventBus.Publish(new GameUnfreezeEvent());
             yield break;
+
+
         }
 
         if (audio != null) audio.PlayOneShot(car_driving);
