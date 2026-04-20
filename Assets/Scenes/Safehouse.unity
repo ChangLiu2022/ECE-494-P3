@@ -5708,6 +5708,37 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &417856775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 417856776}
+  m_Layer: 0
+  m_Name: Teleport
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &417856776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417856775}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 3.17, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &418366060
 Mesh:
   m_ObjectHideFlags: 0
@@ -6229,7 +6260,7 @@ PrefabInstance:
     - target: {fileID: 1283731058123813256, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.09
+      value: 14.54
       objectReference: {fileID: 0}
     - target: {fileID: 1283731058123813256, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
@@ -6239,12 +6270,12 @@ PrefabInstance:
     - target: {fileID: 1283731058123813256, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.13
+      value: 0.339
       objectReference: {fileID: 0}
     - target: {fileID: 1283731058123813256, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1283731058123813256, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
@@ -6254,7 +6285,7 @@ PrefabInstance:
     - target: {fileID: 1283731058123813256, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1283731058123813256, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
@@ -6269,7 +6300,7 @@ PrefabInstance:
     - target: {fileID: 1283731058123813256, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 1283731058123813256, guid: 0e3a11b8e5db6cc46abe56d979c4553f,
         type: 3}
@@ -7908,6 +7939,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 976375271473864291, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 420996132}
     - target: {fileID: 4857120183632714089, guid: 1381cc51b29e77f4aab074f31fa38b21,
         type: 3}
       propertyPath: m_Name
@@ -7916,17 +7952,17 @@ PrefabInstance:
     - target: {fileID: 8283188632703071377, guid: 1381cc51b29e77f4aab074f31fa38b21,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.7
+      value: 1.207
       objectReference: {fileID: 0}
     - target: {fileID: 8283188632703071377, guid: 1381cc51b29e77f4aab074f31fa38b21,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.99
+      value: 0.006
       objectReference: {fileID: 0}
     - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.75
+      value: 13.32
       objectReference: {fileID: 0}
     - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
         type: 3}
@@ -7936,7 +7972,7 @@ PrefabInstance:
     - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.88
+      value: 2.4
       objectReference: {fileID: 0}
     - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
         type: 3}
@@ -7977,6 +8013,7 @@ PrefabInstance:
     - {fileID: 8522243094128721655, guid: 1381cc51b29e77f4aab074f31fa38b21, type: 3}
     - {fileID: 8074173956214298205, guid: 1381cc51b29e77f4aab074f31fa38b21, type: 3}
     - {fileID: 1402672864462403444, guid: 1381cc51b29e77f4aab074f31fa38b21, type: 3}
+    - {fileID: 976375271473864291, guid: 1381cc51b29e77f4aab074f31fa38b21, type: 3}
     m_RemovedGameObjects:
     - {fileID: 835883151700506066, guid: 1381cc51b29e77f4aab074f31fa38b21, type: 3}
     - {fileID: 2393668481635945410, guid: 1381cc51b29e77f4aab074f31fa38b21, type: 3}
@@ -8111,7 +8148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9fad6cf169070b488b7b3128f5aacc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  next_scene: Tutorial
+  next_scene: penis
   not_ready_message: Collect the gun and map before leaving.
   map_not_picked_up_message: Collect the new map before leaving.
   pickup_range: 2.5
@@ -8129,7 +8166,7 @@ MonoBehaviour:
   car_driving: {fileID: 8300000, guid: 642621ff907f9794aa871205ae0b2085, type: 3}
   is_safehouse_car: 1
   scenes:
-  - Tutorial
+  - CutScene-Neighbour
   - first_level
   - Map 2
   - Final Map
@@ -22422,6 +22459,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1202485199}
+  - {fileID: 417856776}
   - {fileID: 420996131}
   - {fileID: 901154850}
   - {fileID: 75260435}

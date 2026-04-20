@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static GameEvents;
 
 public class CarExit : MonoBehaviour
@@ -51,7 +52,16 @@ public class CarExit : MonoBehaviour
         float dist = Vector3.Distance(transform.position, player.GetComponent<Transform>().position);
         in_range = dist <= pickup_range;
 
-        if (in_range && Input.GetKeyDown(pickup_key)) RunExit();
+        if (in_range && Input.GetKeyDown(pickup_key))
+        {
+            if (!PlayerWallet.level_reward_claimed && SceneManager.GetActiveScene().name != "Safehouse")
+            {
+                InformationBoxController.instance.Show("You need to rescue the dog before leaving!");
+                return;
+            }
+
+            RunExit();
+        }
     }
 
     private void RunExit()

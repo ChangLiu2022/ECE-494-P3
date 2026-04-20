@@ -327,7 +327,6 @@ MonoBehaviour:
   nextSceneName: Safehouse
   fadeDuration: 1
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
-  useTransitionSounds: 0
 --- !u!1 &71963819
 GameObject:
   m_ObjectHideFlags: 0
@@ -1437,13 +1436,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 288268198}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 12.34, y: 0.1, z: 0.121}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: 7.36, y: 0.1, z: 20.86}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
 --- !u!1001 &356638080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2864,6 +2863,74 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 766523187}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &798823772
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4857120183632714089, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_Name
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.906751
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.29999733
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 24.104599
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1381cc51b29e77f4aab074f31fa38b21, type: 3}
 --- !u!1 &856840031
 GameObject:
   m_ObjectHideFlags: 0
@@ -3708,7 +3775,7 @@ Transform:
   m_GameObject: {fileID: 1202485196}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 12.91, y: 15, z: -0.04}
+  m_LocalPosition: {x: 9.03, y: 15, z: 21.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3794,6 +3861,7 @@ MonoBehaviour:
   upgradeClip: {fileID: 0}
   downgradeClip: {fileID: 0}
   barkClip: {fileID: 0}
+  whineClip: {fileID: 0}
   volume: 0.1
 --- !u!1001 &1228417446
 PrefabInstance:
@@ -4990,13 +5058,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1514285241}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 13.817, y: -0, z: 0.67}
+  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 7.56, y: 0, z: 22.05}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
 --- !u!1 &1571399648
 GameObject:
   m_ObjectHideFlags: 0
@@ -5610,7 +5678,7 @@ MonoBehaviour:
   tutorial_scene: CutScene-Neighbour
   newmap_scene: first_level
   not_ready_message: Collect the gun and map before leaving.
-  check_rifle_message: Test your gun on the targets till you are maxed out.
+  map_not_picked_up_message: Collect the new map before leaving.
 --- !u!65 &1663620654
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5657,7 +5725,7 @@ Transform:
   m_GameObject: {fileID: 1682021694}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.24, y: 0, z: -0.75}
+  m_LocalPosition: {x: 11.747, y: 0, z: 20.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6214,13 +6282,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1770120634}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 10.55, y: 0.1, z: 0.121}
+  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 10.77, y: 0.1, z: 21.01}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: -90, z: 0}
 --- !u!1001 &1782370223
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7213,3 +7281,4 @@ SceneRoots:
   - {fileID: 1770120636}
   - {fileID: 1514285244}
   - {fileID: 1682021695}
+  - {fileID: 798823772}

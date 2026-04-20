@@ -46,7 +46,7 @@ public class CarEnter : MonoBehaviour
         audio = GetComponent<AudioSource>();
         if (audio == null) Debug.Log("No AudioSource component assigned to the Player Body!");
 
-        if(!has_seen_entrance)
+        if (!has_seen_entrance)
         {
             if (sr != null) 
                 sr.enabled = false;
