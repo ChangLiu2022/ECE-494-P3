@@ -373,7 +373,6 @@ MonoBehaviour:
   nextSceneName: Safehouse
   fadeDuration: 1
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
-  useTransitionSounds: 0
 --- !u!1 &33230466
 GameObject:
   m_ObjectHideFlags: 0
@@ -3609,7 +3608,7 @@ MonoBehaviour:
   tutorial_scene: CutScene-Neighbour
   newmap_scene: first_level
   not_ready_message: Collect the gun and map before leaving.
-  check_rifle_message: Try shooting the training dummies to max your weapon.
+  map_not_picked_up_message: Collect the new map before leaving.
 --- !u!65 &881942019
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3783,6 +3782,74 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &941263400
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4857120183632714089, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_Name
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 12.980335
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.29999733
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.3157415
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981445372037857355, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1381cc51b29e77f4aab074f31fa38b21, type: 3}
 --- !u!1 &966717730
 GameObject:
   m_ObjectHideFlags: 0
@@ -4902,6 +4969,7 @@ MonoBehaviour:
   upgradeClip: {fileID: 0}
   downgradeClip: {fileID: 0}
   barkClip: {fileID: 0}
+  whineClip: {fileID: 0}
   volume: 0.1
 --- !u!1001 &1248644300
 PrefabInstance:
@@ -8745,3 +8813,4 @@ SceneRoots:
   - {fileID: 1450134979}
   - {fileID: 1873525284}
   - {fileID: 573203873}
+  - {fileID: 941263400}
