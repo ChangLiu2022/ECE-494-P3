@@ -40489,7 +40489,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1119950107}
   - component: {fileID: 1119950106}
-  - component: {fileID: 1119950105}
   - component: {fileID: 1119950104}
   m_Layer: 0
   m_Name: Dog
@@ -40510,20 +40509,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 408fa6d0b1a98e549a0af4c28e716433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1119950105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119950103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 841b2818107084f46a515526ddfd86f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1119950106}
-  newSprite: {fileID: 21300000, guid: 48299657517e049328a0e4d0d12537a4, type: 3}
 --- !u!212 &1119950106
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -40565,7 +40550,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 792499223, guid: 3b2cff2a10f6b485589c5dee4b8fb6ff, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0b94807b2493a48159f0853f063228db, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -40584,13 +40569,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119950103}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: -2.188, y: 0, z: 7.4}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
 --- !u!1001 &1120675358
 PrefabInstance:
   m_ObjectHideFlags: 0
