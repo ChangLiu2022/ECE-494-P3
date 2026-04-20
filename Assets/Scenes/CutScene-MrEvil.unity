@@ -5249,7 +5249,7 @@ MonoBehaviour:
         m_Calls: []
   - speakerName: You
     speakerSprite: {fileID: 21300000, guid: 384e71ca185df48b89dbb10ed5c12989, type: 3}
-    text: Gun shot
+    text: '*Gun shot*'
     onShow:
       m_PersistentCalls:
         m_Calls:
@@ -5267,13 +5267,13 @@ MonoBehaviour:
           m_CallState: 2
   - speakerName: Mr Evil
     speakerSprite: {fileID: 21300000, guid: 48299657517e049328a0e4d0d12537a4, type: 3}
-    text: Dies, some last words
+    text: '*ARGH*'
     onShow:
       m_PersistentCalls:
         m_Calls: []
   - speakerName: You
     speakerSprite: {fileID: 21300000, guid: bdcb0a1b982234f47af2bc7b40bc6566, type: 3}
-    text: Catch phrases
+    text: Looks like your reign got clipped short.
     onShow:
       m_PersistentCalls:
         m_Calls:
@@ -5291,7 +5291,7 @@ MonoBehaviour:
           m_CallState: 2
   - speakerName: Dog
     speakerSprite: {fileID: 792499223, guid: 3b2cff2a10f6b485589c5dee4b8fb6ff, type: 3}
-    text: Noises
+    text: '*woof woof*'
     onShow:
       m_PersistentCalls:
         m_Calls: []
