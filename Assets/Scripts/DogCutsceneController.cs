@@ -11,4 +11,9 @@ public class DogController : MonoBehaviour
     {
         transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
+
+    public void RotateOpp()
+    {
+        transform.rotation = Quaternion.Euler(90f, 90f, 0f);
+    }
 }

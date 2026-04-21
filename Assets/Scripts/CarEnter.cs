@@ -62,9 +62,6 @@ public class CarEnter : MonoBehaviour
         {
             Debug.Log("Map controller not found in scene: " + scene.name);
         }
-
-        if (currentHUD != null) currentHUD.enabled = false;
-        if (mapController != null) mapController.enabled = false;
     }
 
     //private IEnumerator FindCanvasNextFrame(string sceneName)
@@ -128,9 +125,10 @@ public class CarEnter : MonoBehaviour
 
             EventBus.Publish(new GameUnfreezeEvent());
             yield break;
-
-
         }
+
+        if (currentHUD != null) currentHUD.enabled = false;
+        if (mapController != null) mapController.enabled = false;
 
         if (audio != null) audio.PlayOneShot(car_driving);
 

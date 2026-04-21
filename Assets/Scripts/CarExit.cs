@@ -139,6 +139,7 @@ public class CarExit : MonoBehaviour
 
         if (moveRoutine != null)
             StopCoroutine(moveRoutine);
+
         moveRoutine = StartCoroutine(MoveRight());
         StartCoroutine(PlayAudio());
 
@@ -191,6 +192,6 @@ public class CarExit : MonoBehaviour
             PlayerWallet.AdvanceLevel();
         }
 
-            FadeManager.Instance.StartTransition(next_scene, null, 1.95f, audio);
+        FadeManager.Instance.StartTransition(next_scene, null, 1.95f, audio);
     }
 }

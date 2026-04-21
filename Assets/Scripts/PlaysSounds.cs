@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 using static GameEvents; // assuming your events are in GameEvents
 
@@ -13,12 +14,16 @@ public class PlaysSounds : MonoBehaviour
     [SerializeField] private AudioClip downgradeClip; // Assign in Inspector
     [SerializeField] private AudioClip barkClip; // Assign in Inspector
     [SerializeField] private AudioClip whineClip;
+    [SerializeField] private AudioClip guard_death;
     [SerializeField] private float volume = 1f;
 
     private AudioSource audioSource;
     private bool isPlayingAlarm = false;
 
     private bool isStopped = false;
+
+    private float _lastHitSoundTime = -999f;
+    [SerializeField] private float hitSoundCooldown = 0.3f; // min seconds between hit sounds
 
     void Awake()
     {
@@ -43,6 +48,7 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Subscribe<DowngradeActivatedEvent>(DowngradeActivated); 
         EventBus.Subscribe<DogGrabbed>(OnDogGrabbed);
         EventBus.Subscribe<GameOverEvent>(OnGameOver);
+        EventBus.Subscribe<GuardDead>(OnGuardDeath);
     }
 
     void OnDisable()
@@ -58,6 +64,7 @@ public class PlaysSounds : MonoBehaviour
         EventBus.Unsubscribe<DowngradeActivatedEvent>(DowngradeActivated);
         EventBus.Unsubscribe<DogGrabbed>(OnDogGrabbed);
         EventBus.Unsubscribe<GameOverEvent>(OnGameOver);
+        EventBus.Unsubscribe<GuardDead>(OnGuardDeath);
     }
 
     private void OnGameOver(GameOverEvent e)
@@ -88,12 +95,22 @@ public class PlaysSounds : MonoBehaviour
 
     private void OnGuardShot(GuardShotEvent e)
     {
-        if (e.not_guard && !isStopped) 
-            return;
+        if (isStopped || e.not_guard) return;
+        // throttle rapid hits regardless of source
+        if (Time.time - _lastHitSoundTime < hitSoundCooldown) return;
 
         if (guardHitClip != null)
         {
-            audioSource.PlayOneShot(guardHitClip, volume*2f); // Play guard hit sound at double volume for emphasis
+            _lastHitSoundTime = Time.time;
+            audioSource.PlayOneShot(guardHitClip, volume * 3f);
+        }
+    }
+
+    private void OnGuardDeath(GuardDead e)
+    {
+        if (guard_death != null && !isStopped)
+        {
+            audioSource.PlayOneShot(guard_death, volume*2f); // Play guard death sound at double volume for emphasis
         }
     }
 
@@ -138,7 +155,7 @@ public class PlaysSounds : MonoBehaviour
     {
         if (playerSpottedClip != null && !isStopped)
         {
-            audioSource.PlayOneShot(playerSpottedClip, volume);
+            audioSource.PlayOneShot(playerSpottedClip, volume*2f);
         }
     }
 

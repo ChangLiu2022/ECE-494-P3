@@ -47994,12 +47994,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseWaveClip: {fileID: 8300000, guid: b789658446ece1942adbf4dcab7b769e, type: 3}
   alarmClip: {fileID: 8300000, guid: b9e6034afb1044d4bb3a268253a18b23, type: 3}
-  guardHitClip: {fileID: 8300000, guid: 7ef79548a47de462e87f287a3db118ae, type: 3}
-  playerSpottedClip: {fileID: 8300000, guid: 13f781c2fe6f34a9ba69053a623d5f06, type: 3}
+  guardHitClip: {fileID: 8300000, guid: 63c875ce447350c40a214efad9d04ebb, type: 3}
+  playerSpottedClip: {fileID: 8300000, guid: 77c237ed4a5a62144b17d6784443713f, type: 3}
   upgradeClip: {fileID: 8300000, guid: 8d35b7a0c9e07444cbf9efd79bd4db29, type: 3}
   downgradeClip: {fileID: 8300000, guid: 8d35b7a0c9e07444cbf9efd79bd4db29, type: 3}
   barkClip: {fileID: 8300000, guid: af62fde3c9bceb140893615771feef7c, type: 3}
   whineClip: {fileID: 8300000, guid: 57236fd2cffcfc7478651f4f007eba2b, type: 3}
+  guard_death: {fileID: 8300000, guid: 50c1205bbbffbf74491a9c1cc145f303, type: 3}
   volume: 0.2
 --- !u!114 &1166509893
 MonoBehaviour:
