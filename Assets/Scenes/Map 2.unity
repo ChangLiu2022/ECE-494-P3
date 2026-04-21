@@ -9487,7 +9487,7 @@ Transform:
   m_GameObject: {fileID: 444557502}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1000, y: -0.1, z: -1000}
+  m_LocalPosition: {x: -1000, y: -0.3, z: -1000}
   m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21597,6 +21597,7 @@ MonoBehaviour:
   whineClip: {fileID: 8300000, guid: 57236fd2cffcfc7478651f4f007eba2b, type: 3}
   guard_death: {fileID: 8300000, guid: 50c1205bbbffbf74491a9c1cc145f303, type: 3}
   volume: 0.2
+  hitSoundCooldown: 0.3
 --- !u!114 &1008329093
 MonoBehaviour:
   m_ObjectHideFlags: 0
