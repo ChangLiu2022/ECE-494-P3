@@ -26878,7 +26878,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1176111755}
   - component: {fileID: 1176111758}
-  - component: {fileID: 1176111757}
   - component: {fileID: 1176111756}
   m_Layer: 5
   m_Name: Map
@@ -26926,7 +26925,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bc84deb8924304c87904e5a19b72b4b5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: af2b784579df8d84f9efc9b82e1a212b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -26936,21 +26935,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1176111757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1176111754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae961f3e3116a8647ba951491989261d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  map_one: {fileID: 21300000, guid: bc84deb8924304c87904e5a19b72b4b5, type: 3}
-  map_two: {fileID: 21300000, guid: 3056acba475fd450cbb486777e887b8f, type: 3}
-  map_three: {fileID: 21300000, guid: 3779befb14a35439e8bc3a8bad428a14, type: 3}
 --- !u!222 &1176111758
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -41155,6 +41139,11 @@ PrefabInstance:
       propertyPath: m_Carve
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1416987106568017827, guid: 888071d80faf5e44bbf4f16927822283,
+        type: 3}
+      propertyPath: m_CarveOnlyStationary
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6306187034106454815, guid: 888071d80faf5e44bbf4f16927822283,
         type: 3}
       propertyPath: noise_radius
@@ -41188,7 +41177,7 @@ PrefabInstance:
     - target: {fileID: 8705282743640132200, guid: 888071d80faf5e44bbf4f16927822283,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.733
+      value: 0.726
       objectReference: {fileID: 0}
     - target: {fileID: 8705282743640132200, guid: 888071d80faf5e44bbf4f16927822283,
         type: 3}

@@ -30,7 +30,7 @@ public class PaperPickup : MonoBehaviour
     private void Start()
     {
         if (!SafehouseState.paper_collected) gameObject.GetComponent<MeshRenderer>().enabled = true;
-        if (SafehouseState.completed_newmap)
+        if (SafehouseState.completed_map_2)
         {
             SafehouseState.paper_collected = true;
             SafehouseState.paper_collected_once = true;
