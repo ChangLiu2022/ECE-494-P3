@@ -1,3 +1,7 @@
+Voice Acting and Sound Effects:  Matt Richardson https://mricha25.wixsite.com/website
+
+Music:Anurag Komaragiri
+
 Crosshair courtesy of hc
 https://opengameart.org/content/crosshairs-and-reticles
 
@@ -81,4 +85,15 @@ Chihuahua Puppy Whine by AustinXYZ -- https://freesound.org/s/350593/ -- License
 Sound Effect by <a href="https://pixabay.com/users/dragon-studio-38165424/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=419014">DRAGON-STUDIO</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=419014">Pixabay</a> - dog barking!!!!
 
 Sound Effect by <a href="https://pixabay.com/users/dragon-studio-38165424/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=504033">DRAGON-STUDIO</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=504033">Pixabay</a> - glass breaking sound
+
+3D Assets for props:
+
+https://assetstore.unity.com/packages/3d/vehicles/land/free-cartoon-car-pack-simple-vehicles-282425
+https://assetstore.unity.com/packages/3d/environments/wasteovergrowth-comprehensive-trash-and-waste-pack-290387
+https://assetstore.unity.com/packages/3d/environments/sci-fi/free-demo-low-poly-sci-fi-laboratory-cosmic-retro-346024
+https://assetstore.unity.com/packages/3d/environments/sci-fi/free-demo-low-poly-sci-fi-hangar-cosmic-retro-361516
+https://assetstore.unity.com/packages/3d/environments/sci-fi/free-demo-low-poly-sci-fi-mess-cosmic-retro-325596
+https://assetstore.unity.com/packages/3d/environments/sci-fi/free-demo-low-poly-sci-fi-bedroom-cosmic-retro-361594
+https://assetstore.unity.com/packages/3d/environments/sci-fi/free-demo-low-poly-sci-fi-station-cosmic-retro-323347
+
 
