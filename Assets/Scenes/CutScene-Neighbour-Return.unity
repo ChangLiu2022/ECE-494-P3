@@ -197,7 +197,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -3862,7 +3862,9 @@ MonoBehaviour:
   downgradeClip: {fileID: 0}
   barkClip: {fileID: 0}
   whineClip: {fileID: 0}
+  guard_death: {fileID: 0}
   volume: 0.1
+  hitSoundCooldown: 0.3
 --- !u!1001 &1228417446
 PrefabInstance:
   m_ObjectHideFlags: 0

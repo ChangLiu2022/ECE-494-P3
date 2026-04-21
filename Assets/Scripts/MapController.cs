@@ -16,10 +16,15 @@ public class MapController : MonoBehaviour
     private bool mapOpen = false;
     private float slideProgress = 0f; // 0 = hidden, 1 = visible
 
+    // At the top, get the RectTransform
+    RectTransform mapRect;
+
     void Start()
     {
-        mapPanel = GetComponent<RectTransform>();
-        if (mapPanel != null) mapPanel.anchoredPosition = hiddenPosition;
+        mapRect = GetComponent<RectTransform>();
+        mapPanel = mapRect; // ADD THIS
+        hiddenPosition = new Vector2(0, mapRect.rect.height);
+        mapPanel.anchoredPosition = hiddenPosition;
     }
 
     void Update()
