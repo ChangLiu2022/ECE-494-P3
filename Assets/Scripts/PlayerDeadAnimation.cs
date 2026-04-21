@@ -5,7 +5,7 @@ using static GameEvents;
 public class PlayerDeadAnimation : MonoBehaviour
 {
     [SerializeField] Sprite dead_sprite;
-    [SerializeField] float scale = 1.15f;
+    private float scale = 0.3f;
 
     private SpriteRenderer sr;
 
