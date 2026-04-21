@@ -13,6 +13,7 @@ public class AppearOnCollision : MonoBehaviour
     [SerializeField] private bool is_map = false;
     [SerializeField] private bool is_gun = false;
     [SerializeField] private bool no_dog_dependence = false;
+    [SerializeField] private bool gone_after_first_level = false;
 
     private void OnEnable()
     {
@@ -49,6 +50,11 @@ public class AppearOnCollision : MonoBehaviour
         if (text == null) Debug.Log("TMP_Text component not found!");
 
         SetAlpha(0f);
+
+        if (gone_after_first_level && SafehouseState.completed_tutorial)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

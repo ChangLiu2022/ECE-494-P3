@@ -18936,9 +18936,19 @@ PrefabInstance:
       objectReference: {fileID: 572829960}
     - target: {fileID: 976375271473864291, guid: 1381cc51b29e77f4aab074f31fa38b21,
         type: 3}
+      propertyPath: speed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 976375271473864291, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 384702023}
+    - target: {fileID: 976375271473864291, guid: 1381cc51b29e77f4aab074f31fa38b21,
+        type: 3}
+      propertyPath: car_tires
+      value: 
+      objectReference: {fileID: 8300000, guid: 9defe383a7b7b4a3f977d071cf26490e, type: 3}
     - target: {fileID: 4857120183632714089, guid: 1381cc51b29e77f4aab074f31fa38b21,
         type: 3}
       propertyPath: m_Name

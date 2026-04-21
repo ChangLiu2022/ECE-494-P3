@@ -18,6 +18,7 @@ public class PlaysSounds : MonoBehaviour
     [SerializeField] private float volume = 1f;
 
     private AudioSource audioSource;
+    private AudioSource alarmSource;
     private bool isPlayingAlarm = false;
 
     private bool isStopped = false;
@@ -33,6 +34,9 @@ public class PlaysSounds : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+
+        alarmSource = gameObject.AddComponent<AudioSource>();
+        alarmSource.loop = true;
     }
 
     void OnEnable()
@@ -123,33 +127,44 @@ public class PlaysSounds : MonoBehaviour
         }
     }
 
+    //private void OnAlarm(AlertEvent e)
+    //{
+    //    // Play the assigned clip once
+    //    if (alarmClip != null && !isPlayingAlarm && !isStopped)
+    //    {
+    //        isPlayingAlarm = true;
+    //        alarmSource.PlayOneShot(alarmClip, volume);
+    //        StartCoroutine(WaitUntilNotPlaying(alarmSource));
+    //    }
+    //}
+
     private void OnAlarm(AlertEvent e)
     {
-        // Play the assigned clip once
-        if (alarmClip != null && !isPlayingAlarm && !isStopped)
+        if (alarmClip != null && !alarmSource.isPlaying && !isStopped)
         {
-            isPlayingAlarm = true;
-            audioSource.PlayOneShot(alarmClip, volume);
-            StartCoroutine(WaitUntilNotPlaying(audioSource));
+            alarmSource.clip = alarmClip;
+            alarmSource.volume = volume;
+            alarmSource.loop = true;
+            alarmSource.Play();
         }
     }
 
     private void OnLightsOff(PowerOffEvent e)
     {
-        if (audioSource != null && audioSource.isPlaying)
+        if (alarmSource.isPlaying)
         {
-            audioSource.Stop();
+            alarmSource.Stop();
         }
     }
 
-    IEnumerator WaitUntilNotPlaying(AudioSource source)
-    {
-        while (source.isPlaying)
-        {
-            yield return null; // wait for the next frame
-        }
-        isPlayingAlarm = false;
-    }
+    //IEnumerator WaitUntilNotPlaying(AudioSource source)
+    //{
+    //    while (source.isPlaying)
+    //    {
+    //        yield return null; // wait for the next frame
+    //    }
+    //    isPlayingAlarm = false;
+    //}
 
     private void OnPlayerSpotted(PlayerSpottedEvent e)
     {

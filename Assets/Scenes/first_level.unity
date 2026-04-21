@@ -4779,6 +4779,7 @@ MonoBehaviour:
   whineClip: {fileID: 8300000, guid: 57236fd2cffcfc7478651f4f007eba2b, type: 3}
   guard_death: {fileID: 8300000, guid: 50c1205bbbffbf74491a9c1cc145f303, type: 3}
   volume: 0.2
+  hitSoundCooldown: 0.3
 --- !u!81 &296088797
 AudioListener:
   m_ObjectHideFlags: 0
@@ -17700,7 +17701,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 43d1c131d640b4391a176980ac07ba20,
+      objectReference: {fileID: 21300000, guid: 43ad94ce79c8240eab2c620aae99ec4c,
         type: 3}
     - target: {fileID: 706970406274123371, guid: 28c437105798b61488c323f5036f7967,
         type: 3}
@@ -53276,10 +53277,11 @@ MonoBehaviour:
   set_map2_complete: 0
   set_final_map_complete: 0
   distance: 25
-  speed: 5
+  speed: 10
   useLocalRight: 1
   engine_starting: {fileID: 8300000, guid: 9846a89f569474bdf9393d992ee431ef, type: 3}
   car_driving: {fileID: 8300000, guid: 642621ff907f9794aa871205ae0b2085, type: 3}
+  car_tires: {fileID: 8300000, guid: 9defe383a7b7b4a3f977d071cf26490e, type: 3}
   is_safehouse_car: 0
   scenes: []
 --- !u!82 &2085017770
