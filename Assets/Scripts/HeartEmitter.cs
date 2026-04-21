@@ -6,16 +6,20 @@ public class HeartEmitter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("Body"))
         {
+            Debug.Log("Player entered heart emitter trigger.");
             heartParticles.Play();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+
+        if (other.CompareTag("Player") | other.CompareTag("Body"))
         {
+            Debug.Log("Player left heart emitter trigger.");
+
             heartParticles.Stop();
         }
     }

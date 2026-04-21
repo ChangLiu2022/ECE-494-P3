@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e0f341b399c267b4da05f592093295f7, type: 2}
+  - {fileID: 2100000, guid: 3caa0d6ab2519874d9ca53d4e0b4912b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
   guard_layer:
     serializedVersion: 2
     m_Bits: 64
-  sound_blocker: {fileID: 0}
+  sound_blocker: {fileID: 6450803907698247082}
   door_obstacle: {fileID: 7351824790215145294}
   guard_only_door: 0
 --- !u!65 &644221064380075017

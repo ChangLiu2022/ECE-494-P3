@@ -98,7 +98,6 @@ public class GunBarController : MonoBehaviour
 
             // Step 4: convert back to normalized progress
             progress = finalIndex / maxSegments;
-            Debug.Log(progress.ToString());
         }
 
         currentDecayDelay = decayDelay * GunUpgrades.GetCooldownMultiplier((GunUpgrades.Weapon)upgradeLevel);
@@ -150,7 +149,6 @@ public class GunBarController : MonoBehaviour
     {
         if (upgradeLevel == 2) return;
 
-        Debug.Log("Upgrade Activated!");
 
         EventBus.Publish(new UpgradeActivatedEvent());
 
@@ -182,7 +180,6 @@ public class GunBarController : MonoBehaviour
 
     void Downgrade()
     {
-        Debug.Log("Downgrade Activated!");
 
         EventBus.Publish(new DowngradeActivatedEvent());
 
