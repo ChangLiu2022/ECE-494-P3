@@ -15,6 +15,7 @@ public class FloatingSpriteSpawner : MonoBehaviour
 
     [Header("Visuals")]
     [SerializeField] private Vector2 size = new Vector2(100f, 100f);
+    [SerializeField] private bool invert = false;
 
     private void Start()
     {
@@ -56,7 +57,7 @@ public class FloatingSpriteSpawner : MonoBehaviour
         // Compute direction and rotation once
         Vector2 dir = (end - start).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        rect.rotation = Quaternion.Euler(0f, 0f, 270f - angle);
+        rect.rotation = invert ? Quaternion.Euler(0f, 0f, angle - 90f)  : Quaternion.Euler(0f, 0f, angle - 270f);
 
         while (time < moveDuration)
         {
