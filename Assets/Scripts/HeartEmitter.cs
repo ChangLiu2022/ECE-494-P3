@@ -8,7 +8,6 @@ public class HeartEmitter : MonoBehaviour
     {
         if (other.CompareTag("Player") || other.CompareTag("Body"))
         {
-            Debug.Log("Player entered heart emitter trigger.");
             heartParticles.Play();
         }
     }
@@ -18,7 +17,6 @@ public class HeartEmitter : MonoBehaviour
 
         if (other.CompareTag("Player") | other.CompareTag("Body"))
         {
-            Debug.Log("Player left heart emitter trigger.");
 
             heartParticles.Stop();
         }

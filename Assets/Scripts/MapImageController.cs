@@ -7,6 +7,7 @@ public class MapImageController : MonoBehaviour
     [SerializeField] Sprite map_one;
     [SerializeField] Sprite map_two;
     [SerializeField] Sprite map_three;
+    [SerializeField] Sprite map_four;
 
     private Image map_img;
 
@@ -30,8 +31,9 @@ public class MapImageController : MonoBehaviour
     {
         if (map_img == null) return;
 
-        if (!SafehouseState.completed_tutorial && !SafehouseState.completed_newmap) map_img.sprite = map_one;
+        if (!SafehouseState.completed_tutorial) map_img.sprite = map_one;
         else if (!SafehouseState.completed_newmap) map_img.sprite = map_two;
-        else map_img.sprite = map_three;
+        else  if (!SafehouseState.completed_map_2) map_img.sprite = map_three;
+        else map_img.sprite = map_four;
     }
 }
