@@ -21,6 +21,7 @@ public class Pet : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite idleSprite;
     [SerializeField] private Sprite followSprite;
+    [SerializeField] private float rotationSpeed = 360f; // degrees per second
 
     private Transform _player;
     private bool _following;
@@ -72,7 +73,8 @@ public class Pet : MonoBehaviour
             if (_agent.velocity.sqrMagnitude > 0.01f)
             {
                 float angle = Mathf.Atan2(_agent.velocity.x, _agent.velocity.z) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(90f, angle-180f, 0f);
+                Quaternion target = Quaternion.Euler(90f, angle - 180f, 0f);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, target, rotationSpeed * Time.deltaTime);
             }
         }
     }

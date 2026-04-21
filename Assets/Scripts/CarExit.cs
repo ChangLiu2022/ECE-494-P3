@@ -81,7 +81,6 @@ public class CarExit : MonoBehaviour
         if (set_tutorial_complete)
         {
             SafehouseState.completed_tutorial = true;
-            Debug.Log("Tutorial marked as complete.");
         }
             
 

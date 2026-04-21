@@ -63,6 +63,7 @@ public class PlaysSounds : MonoBehaviour
     private void OnGameOver(GameOverEvent e)
     {
         isStopped = true;
+
         if (whineClip != null)
         {
             audioSource.PlayOneShot(whineClip, volume);
