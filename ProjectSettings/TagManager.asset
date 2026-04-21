@@ -16,6 +16,8 @@ TagManager:
   - Vent
   - GuardSpawnDoor
   - Glass
+  - Map
+  - MainCanvas
   layers:
   - Default
   - TransparentFX

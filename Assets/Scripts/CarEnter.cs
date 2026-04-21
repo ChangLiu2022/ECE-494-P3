@@ -22,6 +22,8 @@ public class CarEnter : MonoBehaviour
 
     private SpriteRenderer sr;
     private AudioSource audio;
+    private HUDController currentHUD;
+    private MapController mapController;
 
     private static bool has_seen_entrance = false;
 
@@ -29,17 +31,63 @@ public class CarEnter : MonoBehaviour
     private void OnEnable()
     {
         EventBus.Subscribe<GameOverEvent>(OnGameOver);
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<GameOverEvent>(OnGameOver);
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnGameOver(GameOverEvent evt)
     {
         has_seen_entrance = true;
     }
+
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        //StartCoroutine(FindCanvasNextFrame(scene.name));
+
+        currentHUD = FindObjectOfType<HUDController>(true);
+
+        if (currentHUD == null)
+        {
+            Debug.Log("HUDController not found in scene: " + scene.name);
+        }
+
+        mapController = FindObjectOfType<MapController>(true);
+
+        if (mapController == null)
+        {
+            Debug.Log("Map controller not found in scene: " + scene.name);
+        }
+
+        if (currentHUD != null) currentHUD.enabled = false;
+        if (mapController != null) mapController.enabled = false;
+    }
+
+    //private IEnumerator FindCanvasNextFrame(string sceneName)
+    //{
+    //    yield return null; // wait 1 frame to ensure scene objects are initialized
+
+    //    currentHUD = FindObjectOfType<HUDController>(true);
+
+    //    if (currentHUD == null)
+    //    {
+    //        Debug.Log("HUDController not found in scene: " + sceneName);
+    //    }
+
+    //    mapController = FindObjectOfType<MapController>(true);
+
+    //    if (mapController == null)
+    //    {
+    //        Debug.Log("Map controller not found in scene: " + sceneName);
+    //    }
+
+    //    if (currentHUD != null) currentHUD.enabled = false;
+    //    if (mapController != null) mapController.enabled = false;
+    //}
 
     private void Start()
     {
@@ -51,9 +99,7 @@ public class CarEnter : MonoBehaviour
 
         if (!has_seen_entrance)
         {
-            if (sr != null) 
-                sr.enabled = false;
-
+            if (sr != null) sr.enabled = false;
 
             EventBus.Publish(new GameFreezeEvent());
 
@@ -114,6 +160,8 @@ public class CarEnter : MonoBehaviour
         yield return new WaitForSecondsRealtime(door_closing.length);
 
         if (sr != null) sr.enabled = true;
+        if (currentHUD != null) currentHUD.enabled = true;
+        if (mapController != null) mapController.enabled = true;
 
         EventBus.Publish(new GameUnfreezeEvent());
     }

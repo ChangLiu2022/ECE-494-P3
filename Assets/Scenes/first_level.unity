@@ -130,6 +130,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1736315290}
     m_Modifications:
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1018114397}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -204,16 +214,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1018114397}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1752,6 +1752,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1736315290}
     m_Modifications:
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1446713097}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1826,16 +1836,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1446713097}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13037,6 +13037,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1736315290}
     m_Modifications:
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1044200619}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -13111,16 +13121,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1044200619}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17959,6 +17959,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1736315290}
     m_Modifications:
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1933140326}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -18033,16 +18043,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1933140326}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -22930,7 +22930,7 @@ GameObject:
   - component: {fileID: 936704571}
   m_Layer: 5
   m_Name: MapPanel
-  m_TagString: Untagged
+  m_TagString: Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34100,6 +34100,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1736315290}
     m_Modifications:
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1134012996}
+    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
+        type: 3}
+      propertyPath: interactRange
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 2922938043160194069, guid: ea328deb847333f4a92df0a12b3da39d,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -34174,16 +34184,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: doorCollider
-      value: 
-      objectReference: {fileID: 1134012996}
-    - target: {fileID: 4556241299153521603, guid: 061459ba072f24dd19491d4569de9a26,
-        type: 3}
-      propertyPath: interactRange
-      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -34991,7 +34991,7 @@ GameObject:
   - component: {fileID: 1320194591}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: MainCanvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

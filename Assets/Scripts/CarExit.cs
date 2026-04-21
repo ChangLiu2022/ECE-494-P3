@@ -38,11 +38,47 @@ public class CarExit : MonoBehaviour
     private bool in_range = false;
     private AudioSource audio;
     private static int current_scene = 0;
+    private HUDController currentHUD;
+    private MapController mapController;
 
     private void Awake()
     {
         audio = GetComponent<AudioSource>();
         if (audio == null) Debug.Log("No AudioSource component found on Car!");
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        StartCoroutine(FindCanvasNextFrame(scene.name));
+    }
+
+    private IEnumerator FindCanvasNextFrame(string sceneName)
+    {
+        yield return null; // wait 1 frame to ensure scene objects are initialized
+
+        currentHUD = FindObjectOfType<HUDController>(true);
+
+        if (currentHUD == null)
+        {
+            Debug.Log("HUDController not found in scene: " + sceneName);
+        }
+
+        mapController = FindObjectOfType<MapController>(true);
+
+        if (mapController == null)
+        {
+            Debug.Log("Map controller not found in scene: " + sceneName);
+        }
     }
 
     private void Update()
@@ -95,6 +131,8 @@ public class CarExit : MonoBehaviour
 
         EventBus.Publish(new PlayerDisabledEvent());
         player.SetActive(false);
+        if (currentHUD != null) currentHUD.enabled = false;
+        if (mapController != null) mapController.enabled = false;
 
         if (dog != null) 
             dog.SetActive(false);

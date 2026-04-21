@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 17717166}
   m_Layer: 0
   m_Name: SafehouseUIScreenOverlay
-  m_TagString: Untagged
+  m_TagString: MainCanvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16298,7 +16298,7 @@ GameObject:
   - component: {fileID: 1555345119}
   m_Layer: 5
   m_Name: MapPanel
-  m_TagString: Untagged
+  m_TagString: Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

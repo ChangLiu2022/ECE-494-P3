@@ -1,9 +1,8 @@
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
+using UnityEditor.SearchService;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using static GameEvents;
+using UnityEngine.UI;
 
 public class FadeManager : MonoBehaviour
 {
@@ -26,6 +25,7 @@ public class FadeManager : MonoBehaviour
     private Image img;
     private AudioSource audioSource;
     private float newVolume;
+    private HUDController currentHUD; // reference to scene HUD
 
     void Awake()
     {
