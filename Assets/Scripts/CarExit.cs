@@ -1,6 +1,8 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 using static GameEvents;
 
 public class CarExit : MonoBehaviour
@@ -29,6 +31,7 @@ public class CarExit : MonoBehaviour
     [Header("Audio Settings")]
     [SerializeField] private AudioClip engine_starting;
     [SerializeField] private AudioClip car_driving;
+    [SerializeField] private AudioClip car_tires;
 
     [Header("Safehouse Car Settings")]
     [SerializeField] private bool is_safehouse_car = false;
@@ -40,6 +43,7 @@ public class CarExit : MonoBehaviour
     private static int current_scene = 0;
     private HUDController currentHUD;
     private MapController mapController;
+    private bool leaving_level = false;
 
     private void Awake()
     {
@@ -150,17 +154,24 @@ public class CarExit : MonoBehaviour
     {
         if (engine_starting == null) yield break;
 
+        string cur_scene = SceneManager.GetActiveScene().name;
+        if (cur_scene == "Tutorial" || cur_scene == "first_level" || cur_scene == "Map 2") leaving_level = true;
 
-        if (next_scene == "Safehouse") audio.pitch = 1.65f;
+        if(leaving_level) audio.pitch = 1.65f;
         audio.PlayOneShot(engine_starting);
-        yield return new WaitForSecondsRealtime(engine_starting.length / audio.pitch);
+        yield return new WaitForSecondsRealtime(engine_starting.length / audio.pitch - 0.8f);
 
         if (car_driving != null) audio.PlayOneShot(car_driving);
     }
 
     private IEnumerator MoveRight()
     {
-        yield return new WaitForSecondsRealtime(engine_starting.length-0.5f);
+        float wait_time  = engine_starting.length - 0.5f;
+        if (leaving_level) wait_time /= 1.65f;
+
+        yield return new WaitForSecondsRealtime(wait_time);
+
+        if (car_tires != null && leaving_level) audio.PlayOneShot(car_tires);
 
         Vector3 startPos = transform.position;
         Vector3 direction = useLocalRight ? transform.right : Vector3.right;
@@ -192,6 +203,7 @@ public class CarExit : MonoBehaviour
             PlayerWallet.AdvanceLevel();
         }
 
+        audio.pitch = 1f;
         FadeManager.Instance.StartTransition(next_scene, null, 1.95f, audio);
     }
 }
